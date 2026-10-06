@@ -1,0 +1,8 @@
+# The web link: https://carebridge-wad2g4.pages.dev
+name = "carebridge-wad2g4"
+pages_build_output_dir = "./site"
+compatibility_date = "2026-09-01"
+
+[[services]]
+binding = "API"
+service = "carebridge-api"
