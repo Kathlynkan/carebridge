@@ -3,14 +3,13 @@
 // -------------------------------------------------------------
 // Differences from running on your own computer:
 //   - the database string comes from a Worker secret (named DB; set once with: npx wrangler secret put DB --name carebridge-api)
-//   - Cloudflare cannot share one database connection between requests, so each request opens its own connection and
-//     closes it afterwards, one request at a time per copy of the Worker
+//   - every request opens its own database connection and closes it afterwards (per-request-db.js)
 //   - logins use signed tokens (see auth.stateless.js) because memory does not last
 // =============================================================
 import { httpServerHandler } from 'cloudflare:node'
+import { connectForRequest } from './per-request-db.js' // keep this first: it must load before the models
 import express from 'express'
 import cors from 'cors'
-import mongoose from 'mongoose'
 import { dbString } from './db-string.js'
 
 import authRoutes from './routes/auth.js'
@@ -28,27 +27,8 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-// One request at a time: connect, handle it, wait until the answer is sent, disconnect.
-let line = Promise.resolve()
-app.use((req, res, next) => {
-  line = line.catch(() => {}).then(async () => {
-    const uri = dbString()
-    if (!uri) return res.status(503).json({ message: 'The server has no database set up yet.' })
-    try {
-      await mongoose.connect(uri, { maxPoolSize: 1, serverSelectionTimeoutMS: 10000 })
-    } catch (error) {
-      console.error('database connection failed:', error.message)
-      return res.status(503).json({ message: 'Could not reach the database. Try again in a moment.' })
-    }
-    await new Promise((done) => {
-      res.once('finish', done)
-      res.once('close', done)
-      setTimeout(done, 25000) // never let one stuck request block the line
-      next()
-    })
-    await mongoose.disconnect().catch(() => {})
-  })
-})
+// Every request gets its own database connection (see per-request-db.js).
+app.use(connectForRequest(dbString))
 
 app.get('/', (req, res) => {
   res.json({ status: 'ok', app: 'CareBridge API' })

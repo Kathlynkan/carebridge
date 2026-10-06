@@ -12,7 +12,7 @@ browser -> carebridge-wad2g4.pages.dev
 
 - `worker.js` runs the same Express routes as `server/server.js` inside a Cloudflare Worker.
 - `auth.stateless.js` replaces `server/middleware/auth.js` **in the Cloudflare build only**. The normal server remembers logins in memory, which does not work on Cloudflare (many short-lived copies of the server), so here the login token carries the user id and an expiry, signed with a key made from the database string. Tokens last 7 days; logging out only clears the browser.
-- Cloudflare cannot share one database connection between requests, so each request opens its own and closes it afterwards, one at a time. Fine for a demo; a bit slower than running locally.
+- Cloudflare cannot share work between requests (a shared connection or a queue makes the server hang when several requests arrive together), so `per-request-db.js` gives every request its own database connection and closes it when the answer is sent. The models are used exactly as before. Each request pays about 0.3 seconds to connect, so it feels a little slower than running locally.
 - `pages/site-worker.js` is the front door: `/api/...` goes to the API Worker (with `/api` removed), everything else is the website.
 
 ## First-time setup
