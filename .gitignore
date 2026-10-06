@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+dist-ssr/
+coverage/
+*.local
+
+# secrets - never commit API keys
+config.env
+.env
+
+# test output
+client/test-results/
+client/playwright-report/
+client/blob-report/
+client/playwright/.cache/
+.eslintcache
+
+# editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.log

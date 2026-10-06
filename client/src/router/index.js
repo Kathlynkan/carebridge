@@ -1,0 +1,143 @@
+// =============================================================
+// All pages (routes) of the app.        Owner: Kai Sen (everyone may ADD routes)
+// -------------------------------------------------------------
+// meta.roles = which roles may open the page. Not logged in -> /login.
+// Wrong role -> sent to their own home page.
+// =============================================================
+import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+import HomeView from '@/views/HomeView.vue'
+import LoginView from '@/views/auth/LoginView.vue'
+
+const routes = [
+  // ---------- Public (Kai Sen) ----------
+  { path: '/', name: 'home', component: HomeView },
+  { path: '/login', name: 'login', component: LoginView, meta: { guestOnly: true } },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: () => import('@/views/auth/SignupView.vue'),
+    meta: { guestOnly: true },
+  },
+
+  // ---------- Volunteer (Yuqi + Ning Xuan) ----------
+  {
+    path: '/volunteer',
+    name: 'volunteer-home',
+    component: () => import('@/views/volunteer/VolunteerHomeView.vue'), // Yuqi
+    meta: { roles: ['volunteer'] },
+  },
+  {
+    path: '/children/:id',
+    name: 'child-profile',
+    component: () => import('@/views/volunteer/ChildProfileView.vue'), // Yuqi
+    meta: { roles: ['volunteer', 'coordinator'] },
+  },
+  {
+    path: '/children/:id/sessions/new',
+    name: 'session-new',
+    component: () => import('@/views/volunteer/SessionFormView.vue'), // Ning Xuan
+    meta: { roles: ['volunteer'] },
+  },
+  {
+    path: '/sessions/:sessionId/edit',
+    name: 'session-edit',
+    component: () => import('@/views/volunteer/SessionFormView.vue'), // Ning Xuan (same form)
+    meta: { roles: ['volunteer', 'coordinator'] },
+  },
+  {
+    path: '/children/:id/homework/new',
+    name: 'homework-new',
+    component: () => import('@/views/volunteer/HomeworkAssignView.vue'), // Ning Xuan
+    meta: { roles: ['volunteer'] },
+  },
+
+  // ---------- Messages (Kat) - shared by volunteer, parent, coordinator ----------
+  {
+    path: '/messages/:childId?',
+    name: 'messages',
+    component: () => import('@/views/shared/MessagesView.vue'),
+    meta: { roles: ['volunteer', 'parent', 'coordinator'] },
+  },
+
+  // ---------- Parent (Kat) ----------
+  {
+    path: '/parent',
+    name: 'parent-home',
+    component: () => import('@/views/parent/ParentHomeView.vue'),
+    meta: { roles: ['parent'] },
+  },
+
+  // ---------- Child (Jachin) ----------
+  {
+    path: '/child',
+    name: 'child-home',
+    component: () => import('@/views/child/ChildHomeView.vue'),
+    meta: { roles: ['child'] },
+  },
+  {
+    path: '/child/leaderboard',
+    name: 'leaderboard',
+    component: () => import('@/views/child/LeaderboardView.vue'),
+    meta: { roles: ['child'] },
+  },
+
+  // ---------- Coordinator (Yu Xuan + Kai Sen) ----------
+  {
+    path: '/coordinator',
+    name: 'coordinator-home',
+    component: () => import('@/views/coordinator/CoordinatorDashboardView.vue'), // Yu Xuan
+    meta: { roles: ['coordinator'] },
+  },
+  {
+    path: '/coordinator/children',
+    name: 'manage-children',
+    component: () => import('@/views/coordinator/ManageChildrenView.vue'), // Kai Sen
+    meta: { roles: ['coordinator'] },
+  },
+  {
+    path: '/coordinator/volunteers',
+    name: 'manage-volunteers',
+    component: () => import('@/views/coordinator/ManageVolunteersView.vue'), // Yu Xuan
+    meta: { roles: ['coordinator'] },
+  },
+  {
+    path: '/coordinator/matchmaking/:childId?',
+    name: 'matchmaking',
+    component: () => import('@/views/coordinator/MatchmakingView.vue'), // Yu Xuan
+    meta: { roles: ['coordinator'] },
+  },
+
+  // ---------- 404 ----------
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/views/NotFoundView.vue'),
+  },
+]
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
+  scrollBehavior: () => ({ top: 0 }),
+})
+
+// Navigation guard: runs before every page change
+router.beforeEach((to) => {
+  const auth = useAuthStore()
+
+  if (to.meta.guestOnly && auth.isLoggedIn) {
+    return auth.homePath
+  }
+  if (to.meta.roles) {
+    if (!auth.isLoggedIn) {
+      return { name: 'login', query: { redirect: to.fullPath } }
+    }
+    if (!to.meta.roles.includes(auth.role)) {
+      return auth.homePath
+    }
+  }
+})
+
+export default router

@@ -1,0 +1,13 @@
+{
+  "name": "carebridge",
+  "private": true,
+  "description": "Convenience scripts - you can also cd into server/ and client/ and run pnpm there",
+  "scripts": {
+    "install:all": "pnpm --dir server install && pnpm --dir client install",
+    "dev:server": "pnpm --dir server dev",
+    "dev:client": "pnpm --dir client dev",
+    "seed": "pnpm --dir server seed",
+    "test:unit": "pnpm --dir client test:unit --run",
+    "test:e2e": "pnpm --dir client test:e2e"
+  }
+}

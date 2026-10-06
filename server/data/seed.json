@@ -1,0 +1,677 @@
+{
+  "meta": {
+    "seedAnchor": "2026-10-06",
+    "note": "Dates are shifted to be relative to today whenever the db is (re)created from this seed."
+  },
+  "users": [
+    {
+      "id": "u_coord",
+      "name": "Tan Mei Ling",
+      "email": "coordinator@carebridge.sg",
+      "password": "password123",
+      "role": "coordinator",
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    },
+    {
+      "id": "u_vol1",
+      "name": "Aisha Rahman",
+      "email": "volunteer@carebridge.sg",
+      "password": "password123",
+      "role": "volunteer",
+      "skills": [
+        "Primary Math",
+        "Fractions",
+        "English Comprehension"
+      ],
+      "availability": [
+        "Mon",
+        "Wed"
+      ],
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    },
+    {
+      "id": "u_vol2",
+      "name": "Daniel Lim",
+      "email": "volunteer2@carebridge.sg",
+      "password": "password123",
+      "role": "volunteer",
+      "skills": [
+        "Primary Math",
+        "Problem Sums",
+        "Science"
+      ],
+      "availability": [
+        "Tue",
+        "Thu"
+      ],
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    },
+    {
+      "id": "u_vol3",
+      "name": "Priya Nair",
+      "email": "volunteer3@carebridge.sg",
+      "password": "password123",
+      "role": "volunteer",
+      "skills": [
+        "English Comprehension",
+        "Composition",
+        "Spelling"
+      ],
+      "availability": [
+        "Wed",
+        "Fri"
+      ],
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    },
+    {
+      "id": "u_par1",
+      "name": "Grace Wong",
+      "email": "parent@carebridge.sg",
+      "password": "password123",
+      "role": "parent",
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    },
+    {
+      "id": "u_par2",
+      "name": "Ravi Kumar",
+      "email": "parent2@carebridge.sg",
+      "password": "password123",
+      "role": "parent",
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    },
+    {
+      "id": "u_par3",
+      "name": "Linda Lee",
+      "email": "parent3@carebridge.sg",
+      "password": "password123",
+      "role": "parent",
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    },
+    {
+      "id": "u_par4",
+      "name": "Marcus Ong",
+      "email": "parent4@carebridge.sg",
+      "password": "password123",
+      "role": "parent",
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    },
+    {
+      "id": "u_kid1",
+      "name": "Ethan",
+      "email": "child@carebridge.sg",
+      "password": "password123",
+      "role": "child",
+      "childId": "c_1",
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    },
+    {
+      "id": "u_kid2",
+      "name": "Meera",
+      "email": "child2@carebridge.sg",
+      "password": "password123",
+      "role": "child",
+      "childId": "c_2",
+      "createdAt": "2026-08-07T01:00:00.000Z"
+    }
+  ],
+  "children": [
+    {
+      "id": "c_1",
+      "name": "Ethan Wong",
+      "level": "P4",
+      "school": "Riverside Primary",
+      "parentId": "u_par1",
+      "volunteerIds": [
+        "u_vol1",
+        "u_vol2"
+      ],
+      "needs": [
+        "Primary Math",
+        "Fractions"
+      ],
+      "points": 120,
+      "avatar": "🦊",
+      "followUp": false
+    },
+    {
+      "id": "c_2",
+      "name": "Meera Kumar",
+      "level": "P5",
+      "school": "Riverside Primary",
+      "parentId": "u_par2",
+      "volunteerIds": [
+        "u_vol2"
+      ],
+      "needs": [
+        "Problem Sums",
+        "Science"
+      ],
+      "points": 210,
+      "avatar": "🐼",
+      "followUp": false
+    },
+    {
+      "id": "c_3",
+      "name": "Arjun Kumar",
+      "level": "P3",
+      "school": "Riverside Primary",
+      "parentId": "u_par2",
+      "volunteerIds": [
+        "u_vol1",
+        "u_vol3"
+      ],
+      "needs": [
+        "English Comprehension",
+        "Spelling"
+      ],
+      "points": 60,
+      "avatar": "🐯",
+      "followUp": false
+    },
+    {
+      "id": "c_4",
+      "name": "Chloe Lee",
+      "level": "P4",
+      "school": "Hillview Primary",
+      "parentId": "u_par3",
+      "volunteerIds": [
+        "u_vol1"
+      ],
+      "needs": [
+        "Primary Math",
+        "Composition"
+      ],
+      "points": 90,
+      "avatar": "🐰",
+      "followUp": false
+    },
+    {
+      "id": "c_5",
+      "name": "Ryan Ong",
+      "level": "P6",
+      "school": "Hillview Primary",
+      "parentId": "u_par4",
+      "volunteerIds": [
+        "u_vol2"
+      ],
+      "needs": [
+        "Problem Sums"
+      ],
+      "points": 150,
+      "avatar": "🦁",
+      "followUp": false
+    },
+    {
+      "id": "c_6",
+      "name": "Sofia Ong",
+      "level": "P2",
+      "school": "Hillview Primary",
+      "parentId": "u_par4",
+      "volunteerIds": [],
+      "needs": [
+        "Spelling",
+        "Primary Math"
+      ],
+      "points": 0,
+      "avatar": "🐨",
+      "followUp": false
+    }
+  ],
+  "sessions": [
+    {
+      "id": "s_1",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "date": "2026-09-17",
+      "subject": "Math",
+      "topic": "Fractions",
+      "attempted": 5,
+      "correct": 1,
+      "struggles": [
+        "Finding common denominators",
+        "Simplifying fractions"
+      ],
+      "whatWorked": "Pizza drawings",
+      "nextStep": "Revise equivalent fractions",
+      "mood": "frustrated",
+      "notes": "Got upset after 3 wrong answers; a short break helped."
+    },
+    {
+      "id": "s_2",
+      "childId": "c_1",
+      "volunteerId": "u_vol2",
+      "date": "2026-09-21",
+      "subject": "Math",
+      "topic": "Fractions",
+      "attempted": 5,
+      "correct": 2,
+      "struggles": [
+        "Finding common denominators"
+      ],
+      "whatWorked": "Fraction strips",
+      "nextStep": "Practise equivalent fractions with strips",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_3",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "date": "2026-09-24",
+      "subject": "Math",
+      "topic": "Fractions",
+      "attempted": 5,
+      "correct": 3,
+      "struggles": [
+        "Finding common denominators"
+      ],
+      "whatWorked": "Visual diagrams",
+      "nextStep": "Practise basic fraction addition",
+      "mood": "happy",
+      "notes": ""
+    },
+    {
+      "id": "s_4",
+      "childId": "c_1",
+      "volunteerId": "u_vol2",
+      "date": "2026-09-28",
+      "subject": "Math",
+      "topic": "Multiplication",
+      "attempted": 10,
+      "correct": 8,
+      "struggles": [
+        "7 and 8 times tables"
+      ],
+      "whatWorked": "Skip counting songs",
+      "nextStep": "Timed times-table drill",
+      "mood": "happy",
+      "notes": ""
+    },
+    {
+      "id": "s_5",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "date": "2026-10-01",
+      "subject": "English",
+      "topic": "Comprehension",
+      "attempted": 6,
+      "correct": 4,
+      "struggles": [
+        "Inference questions"
+      ],
+      "whatWorked": "Highlighting keywords",
+      "nextStep": "Try one inference passage",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_6",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "date": "2026-10-04",
+      "subject": "Math",
+      "topic": "Fractions",
+      "attempted": 5,
+      "correct": 4,
+      "struggles": [
+        "Mixed numbers"
+      ],
+      "whatWorked": "Visual diagrams",
+      "nextStep": "Practise basic fraction addition",
+      "mood": "happy",
+      "notes": "Much more confident today!"
+    },
+    {
+      "id": "s_7",
+      "childId": "c_2",
+      "volunteerId": "u_vol2",
+      "date": "2026-09-20",
+      "subject": "Math",
+      "topic": "Problem Sums",
+      "attempted": 4,
+      "correct": 2,
+      "struggles": [
+        "Before-after models"
+      ],
+      "whatWorked": "Bar models",
+      "nextStep": "More before-after questions",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_8",
+      "childId": "c_2",
+      "volunteerId": "u_vol2",
+      "date": "2026-09-27",
+      "subject": "Math",
+      "topic": "Problem Sums",
+      "attempted": 4,
+      "correct": 3,
+      "struggles": [
+        "Before-after models"
+      ],
+      "whatWorked": "Bar models",
+      "nextStep": "Mixed problem sums",
+      "mood": "happy",
+      "notes": ""
+    },
+    {
+      "id": "s_9",
+      "childId": "c_2",
+      "volunteerId": "u_vol2",
+      "date": "2026-10-03",
+      "subject": "Science",
+      "topic": "Energy",
+      "attempted": 8,
+      "correct": 7,
+      "struggles": [],
+      "whatWorked": "Real-life examples",
+      "nextStep": "Revise energy conversion",
+      "mood": "happy",
+      "notes": ""
+    },
+    {
+      "id": "s_10",
+      "childId": "c_3",
+      "volunteerId": "u_vol3",
+      "date": "2026-09-22",
+      "subject": "English",
+      "topic": "Spelling",
+      "attempted": 10,
+      "correct": 5,
+      "struggles": [
+        "Silent letters",
+        "Double consonants"
+      ],
+      "whatWorked": "Word families",
+      "nextStep": "Spelling list 4",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_11",
+      "childId": "c_3",
+      "volunteerId": "u_vol1",
+      "date": "2026-09-26",
+      "subject": "English",
+      "topic": "Comprehension",
+      "attempted": 5,
+      "correct": 2,
+      "struggles": [
+        "Vocabulary",
+        "Inference questions"
+      ],
+      "whatWorked": "Reading aloud together",
+      "nextStep": "Picture-based comprehension",
+      "mood": "tired",
+      "notes": ""
+    },
+    {
+      "id": "s_12",
+      "childId": "c_3",
+      "volunteerId": "u_vol3",
+      "date": "2026-09-30",
+      "subject": "English",
+      "topic": "Spelling",
+      "attempted": 10,
+      "correct": 6,
+      "struggles": [
+        "Silent letters"
+      ],
+      "whatWorked": "Word families",
+      "nextStep": "Spelling list 5",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_13",
+      "childId": "c_3",
+      "volunteerId": "u_vol3",
+      "date": "2026-10-05",
+      "subject": "English",
+      "topic": "Spelling",
+      "attempted": 10,
+      "correct": 7,
+      "struggles": [
+        "Silent letters"
+      ],
+      "whatWorked": "Mnemonics",
+      "nextStep": "Spelling list 6",
+      "mood": "happy",
+      "notes": ""
+    },
+    {
+      "id": "s_14",
+      "childId": "c_4",
+      "volunteerId": "u_vol1",
+      "date": "2026-09-11",
+      "subject": "Math",
+      "topic": "Area and Perimeter",
+      "attempted": 6,
+      "correct": 3,
+      "struggles": [
+        "Mixing up area and perimeter"
+      ],
+      "whatWorked": "Drawing on grid paper",
+      "nextStep": "More grid-paper questions",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_15",
+      "childId": "c_4",
+      "volunteerId": "u_vol1",
+      "date": "2026-09-18",
+      "subject": "English",
+      "topic": "Composition",
+      "attempted": 1,
+      "correct": 1,
+      "struggles": [
+        "Paragraphing"
+      ],
+      "whatWorked": "Mind map before writing",
+      "nextStep": "Write a 3-paragraph story",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_16",
+      "childId": "c_4",
+      "volunteerId": "u_vol1",
+      "date": "2026-09-25",
+      "subject": "Math",
+      "topic": "Area and Perimeter",
+      "attempted": 6,
+      "correct": 4,
+      "struggles": [
+        "Mixing up area and perimeter"
+      ],
+      "whatWorked": "Drawing on grid paper",
+      "nextStep": "Composite figures",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_17",
+      "childId": "c_5",
+      "volunteerId": "u_vol2",
+      "date": "2026-09-23",
+      "subject": "Math",
+      "topic": "Ratio",
+      "attempted": 6,
+      "correct": 2,
+      "struggles": [
+        "Changing ratios",
+        "Problem Sums"
+      ],
+      "whatWorked": "Unit method",
+      "nextStep": "Revise unit method",
+      "mood": "frustrated",
+      "notes": ""
+    },
+    {
+      "id": "s_18",
+      "childId": "c_5",
+      "volunteerId": "u_vol2",
+      "date": "2026-09-29",
+      "subject": "Math",
+      "topic": "Ratio",
+      "attempted": 6,
+      "correct": 3,
+      "struggles": [
+        "Changing ratios"
+      ],
+      "whatWorked": "Bar models",
+      "nextStep": "More changing-ratio questions",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_19",
+      "childId": "c_5",
+      "volunteerId": "u_vol2",
+      "date": "2026-10-02",
+      "subject": "Math",
+      "topic": "Percentage",
+      "attempted": 8,
+      "correct": 5,
+      "struggles": [
+        "Percentage increase"
+      ],
+      "whatWorked": "Money examples",
+      "nextStep": "Percentage word problems",
+      "mood": "okay",
+      "notes": ""
+    }
+  ],
+  "homework": [
+    {
+      "id": "h_1",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "title": "Fraction addition worksheet",
+      "subject": "Math",
+      "details": "Question book p.42, Q1-10. Draw a diagram for each!",
+      "dueDate": "2026-10-08",
+      "points": 20,
+      "status": "assigned",
+      "completedAt": null
+    },
+    {
+      "id": "h_2",
+      "childId": "c_1",
+      "volunteerId": "u_vol2",
+      "title": "7 times table x3",
+      "subject": "Math",
+      "details": "Say the 7 times table out loud three times.",
+      "dueDate": "2026-10-02",
+      "points": 10,
+      "status": "verified",
+      "completedAt": "2026-10-01T11:00:00.000Z"
+    },
+    {
+      "id": "h_3",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "title": "Read one story",
+      "subject": "English",
+      "details": "Read any story book for 15 minutes and tell me what happened.",
+      "dueDate": "2026-10-05",
+      "points": 10,
+      "status": "submitted",
+      "completedAt": "2026-10-05T11:00:00.000Z"
+    },
+    {
+      "id": "h_4",
+      "childId": "c_2",
+      "volunteerId": "u_vol2",
+      "title": "Before-after problem sums",
+      "subject": "Math",
+      "details": "Workbook Unit 6, Q1-5",
+      "dueDate": "2026-10-09",
+      "points": 20,
+      "status": "assigned",
+      "completedAt": null
+    },
+    {
+      "id": "h_5",
+      "childId": "c_3",
+      "volunteerId": "u_vol3",
+      "title": "Spelling list 6",
+      "subject": "English",
+      "details": "Practise list 6 with look-cover-write-check.",
+      "dueDate": "2026-10-07",
+      "points": 15,
+      "status": "assigned",
+      "completedAt": null
+    },
+    {
+      "id": "h_6",
+      "childId": "c_4",
+      "volunteerId": "u_vol1",
+      "title": "Area worksheet",
+      "subject": "Math",
+      "details": "Worksheet 3B",
+      "dueDate": "2026-09-30",
+      "points": 15,
+      "status": "assigned",
+      "completedAt": null
+    },
+    {
+      "id": "h_7",
+      "childId": "c_5",
+      "volunteerId": "u_vol2",
+      "title": "Percentage practice",
+      "subject": "Math",
+      "details": "Question book p.18",
+      "dueDate": "2026-10-10",
+      "points": 20,
+      "status": "assigned",
+      "completedAt": null
+    }
+  ],
+  "messages": [
+    {
+      "id": "m_1",
+      "childId": "c_1",
+      "fromId": "u_vol1",
+      "text": "Hi Mrs Wong! Ethan did really well with fractions today - 4/5 correct.",
+      "sentAt": "2026-10-04T09:40:00.000Z",
+      "readBy": [
+        "u_vol1",
+        "u_par1"
+      ]
+    },
+    {
+      "id": "m_2",
+      "childId": "c_1",
+      "fromId": "u_par1",
+      "text": "Thank you Aisha! He told me about the pizza drawings haha",
+      "sentAt": "2026-10-04T12:15:00.000Z",
+      "readBy": [
+        "u_par1",
+        "u_vol1"
+      ]
+    },
+    {
+      "id": "m_3",
+      "childId": "c_1",
+      "fromId": "u_vol1",
+      "text": "I gave him a short fraction worksheet - could you remind him to try it this weekend?",
+      "sentAt": "2026-10-05T09:35:00.000Z",
+      "readBy": [
+        "u_vol1"
+      ]
+    },
+    {
+      "id": "m_4",
+      "childId": "c_3",
+      "fromId": "u_vol3",
+      "text": "Arjun's spelling is improving! Silent letters are still tricky.",
+      "sentAt": "2026-10-05T10:00:00.000Z",
+      "readBy": [
+        "u_vol3"
+      ]
+    }
+  ]
+}

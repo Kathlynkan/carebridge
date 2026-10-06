@@ -1,0 +1,161 @@
+/* =============================================================
+   Global styles - shared design tokens for the whole team.
+   Use these variables (and Bootstrap classes) instead of random
+   hex codes so every page looks like ONE app.
+   Owner of the overall look: Kai Sen (but anyone can propose changes)
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --cb-primary: #2f6f62; /* calm teal - main brand colour */
+  --cb-primary-dark: #24574d;
+  --cb-primary-soft: #e3efec;
+  --cb-accent: #f2b63d; /* warm amber - rewards, highlights */
+  --cb-accent-soft: #fdf3dc;
+  --cb-danger-soft: #fbe5e1;
+  --cb-bg: #f7f5f0; /* page background */
+  --cb-surface: #ffffff; /* cards */
+  --cb-text: #23302d;
+  --cb-muted: #6b7774;
+  --cb-border: #e4e0d8;
+  --cb-radius: 14px;
+
+  /* Re-colour Bootstrap's primary to our brand */
+  --bs-primary: var(--cb-primary);
+  --bs-primary-rgb: 47, 111, 98;
+  --bs-link-color: var(--cb-primary);
+  --bs-link-hover-color: var(--cb-primary-dark);
+  --bs-body-font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --bs-body-color: var(--cb-text);
+  --bs-body-bg: var(--cb-bg);
+  --bs-border-radius: 10px;
+}
+
+body {
+  background: var(--cb-bg);
+  color: var(--cb-text);
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+}
+
+.app-footer {
+  color: var(--cb-muted);
+}
+
+h1,
+h2,
+h3,
+.fw-heavy {
+  font-weight: 800;
+}
+
+.text-muted-cb {
+  color: var(--cb-muted);
+}
+
+/* Bootstrap buttons in brand colours */
+.btn-primary {
+  --bs-btn-bg: var(--cb-primary);
+  --bs-btn-border-color: var(--cb-primary);
+  --bs-btn-hover-bg: var(--cb-primary-dark);
+  --bs-btn-hover-border-color: var(--cb-primary-dark);
+  --bs-btn-active-bg: var(--cb-primary-dark);
+  --bs-btn-active-border-color: var(--cb-primary-dark);
+  --bs-btn-disabled-bg: var(--cb-primary);
+  --bs-btn-disabled-border-color: var(--cb-primary);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--cb-primary);
+  --bs-btn-border-color: var(--cb-primary);
+  --bs-btn-hover-bg: var(--cb-primary);
+  --bs-btn-hover-border-color: var(--cb-primary);
+  --bs-btn-active-bg: var(--cb-primary);
+  --bs-btn-active-border-color: var(--cb-primary);
+}
+
+/* Card style used everywhere: <div class="cb-card p-3"> */
+.cb-card {
+  background: var(--cb-surface);
+  border: 1px solid var(--cb-border);
+  border-radius: var(--cb-radius);
+}
+
+.cb-card-hover {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.cb-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(35, 48, 45, 0.08);
+}
+
+.badge-soft {
+  background: var(--cb-primary-soft);
+  color: var(--cb-primary-dark);
+  font-weight: 700;
+}
+
+.badge-accent {
+  background: var(--cb-accent-soft);
+  color: #8a5d00;
+  font-weight: 700;
+}
+
+.badge-danger-soft {
+  background: var(--cb-danger-soft);
+  color: #a3341f;
+  font-weight: 700;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  background: var(--cb-accent-soft);
+  flex-shrink: 0;
+}
+
+.form-label {
+  font-weight: 700;
+}
+
+/* Other Bootstrap components that default to blue */
+.progress {
+  --bs-progress-bar-bg: var(--cb-primary);
+}
+
+.list-group {
+  --bs-list-group-active-bg: var(--cb-primary);
+  --bs-list-group-active-border-color: var(--cb-primary);
+}
+
+.nav-pills {
+  --bs-nav-pills-link-active-bg: var(--cb-primary);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--cb-primary);
+  box-shadow: 0 0 0 0.2rem rgba(47, 111, 98, 0.2);
+}
+
+.form-check-input:checked {
+  background-color: var(--cb-primary);
+  border-color: var(--cb-primary);
+}
