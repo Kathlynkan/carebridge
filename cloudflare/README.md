@@ -21,7 +21,7 @@ browser -> carebridge-wad2g4.pages.dev
 2. In MongoDB Atlas, Network Access: allow `0.0.0.0/0` (Cloudflare's addresses change).
 3. Give the API Worker its database (use a deployed database name such as `carebridge`, not your own dev database):
    ```bash
-   npx wrangler secret put DB --name carebridge-api
+   npx wrangler secret put DB --name carebridge-api   # any secret name works if its value is a mongodb:// address
    ```
 4. Load the demo data once from your own computer (this wipes that database): put the same string in `server/config.env` and run `pnpm seed`.
 5. Create the web link once: `npx wrangler pages project create carebridge-wad2g4 --production-branch main` (if wrangler says to use `--force`, add it, and run it from a folder that has no `wrangler.toml`).

@@ -16,6 +16,7 @@ mkdirSync(out, { recursive: true })
 for (const folder of ['routes', 'middleware', 'models', 'utils']) cpSync(join(server, folder), join(out, folder), { recursive: true })
 cpSync(join(here, 'auth.stateless.js'), join(out, 'middleware', 'auth.js'))
 cpSync(join(here, 'worker.js'), join(out, 'worker.js'))
+cpSync(join(here, 'db-string.js'), join(out, 'db-string.js'))
 console.log('API copy ready in server/.cf')
 
 // The website talks to "/api" on its own address; the front door forwards that to the API.

@@ -7,10 +7,11 @@
 // =============================================================
 import crypto from 'node:crypto'
 import { User } from '../models/index.js'
+import { dbString } from '../db-string.js'
 
 const WEEK = 7 * 24 * 60 * 60 * 1000
 
-const key = () => crypto.createHash('sha256').update('carebridge-token-key:' + (process.env.DB || '')).digest()
+const key = () => crypto.createHash('sha256').update('carebridge-token-key:' + dbString()).digest()
 const sign = (payload) => crypto.createHmac('sha256', key()).update(payload).digest('base64url')
 
 export function issueToken(userId) {

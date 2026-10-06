@@ -2,7 +2,7 @@
 // CareBridge API as a Cloudflare Worker (Express + Mongoose, the same routes as server/server.js)
 // -------------------------------------------------------------
 // Differences from running on your own computer:
-//   - the database string comes from the Worker secret "DB" (set once with: npx wrangler secret put DB)
+//   - the database string comes from a Worker secret (named DB; set once with: npx wrangler secret put DB --name carebridge-api)
 //   - Cloudflare cannot share one database connection between requests, so each request opens its own connection and
 //     closes it afterwards, one request at a time per copy of the Worker
 //   - logins use signed tokens (see auth.stateless.js) because memory does not last
@@ -11,6 +11,7 @@ import { httpServerHandler } from 'cloudflare:node'
 import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
+import { dbString } from './db-string.js'
 
 import authRoutes from './routes/auth.js'
 import userRoutes from './routes/users.js'
@@ -31,9 +32,10 @@ app.use(express.json())
 let line = Promise.resolve()
 app.use((req, res, next) => {
   line = line.catch(() => {}).then(async () => {
-    if (!process.env.DB) return res.status(503).json({ message: 'The server has no database set up yet.' })
+    const uri = dbString()
+    if (!uri) return res.status(503).json({ message: 'The server has no database set up yet.' })
     try {
-      await mongoose.connect(process.env.DB, { maxPoolSize: 1, serverSelectionTimeoutMS: 10000 })
+      await mongoose.connect(uri, { maxPoolSize: 1, serverSelectionTimeoutMS: 10000 })
     } catch (error) {
       console.error('database connection failed:', error.message)
       return res.status(503).json({ message: 'Could not reach the database. Try again in a moment.' })
