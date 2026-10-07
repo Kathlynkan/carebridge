@@ -5,11 +5,13 @@
 // Wrong role -> sent to their own home page.
 // =============================================================
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/auth' // get Pinia auth store
 
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/auth/LoginView.vue'
 
+// array of all pages
+// meta is extra information
 const routes = [
   // ---------- Public (Kai Sen) ----------
   { path: '/', name: 'home', component: HomeView },
@@ -25,11 +27,13 @@ const routes = [
   {
     path: '/volunteer',
     name: 'volunteer-home',
+    // lazy loading: load volunteer page only when needed
+    // wait until user visits /volunteer
     component: () => import('@/views/volunteer/VolunteerHomeView.vue'), // Yuqi
-    meta: { roles: ['volunteer'] },
+    meta: { roles: ['volunteer'] }, // only volunteers allowed
   },
   {
-    path: '/children/:id',
+    path: '/children/:id', // dynamic route
     name: 'child-profile',
     component: () => import('@/views/volunteer/ChildProfileView.vue'), // Yuqi
     meta: { roles: ['volunteer', 'coordinator'] },
@@ -55,7 +59,7 @@ const routes = [
 
   // ---------- Messages (Kat) - shared by volunteer, parent, coordinator ----------
   {
-    path: '/messages/:childId?',
+    path: '/messages/:childId?', // ?: childId parameter optional
     name: 'messages',
     component: () => import('@/views/shared/MessagesView.vue'),
     meta: { roles: ['volunteer', 'parent', 'coordinator'] },
@@ -111,31 +115,40 @@ const routes = [
 
   // ---------- 404 ----------
   {
-    path: '/:pathMatch(.*)*',
+    path: '/:pathMatch(.*)*', // catch everything not matched earlier
     name: 'not-found',
     component: () => import('@/views/NotFoundView.vue'),
   },
 ]
 
+// create router
 const router = createRouter({
+  // use normal URLs
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
+  routes, // above array of all pages
+  // when changing pages, automatically scroll to the top
   scrollBehavior: () => ({ top: 0 }),
 })
 
 // Navigation guard: runs before every page change
 router.beforeEach((to) => {
-  const auth = useAuthStore()
+  const auth = useAuthStore() // open auth store
 
+  // if user is guest and is already logged in
   if (to.meta.guestOnly && auth.isLoggedIn) {
-    return auth.homePath
+    return auth.homePath // direct to user role homepage
   }
+  // if protected page
   if (to.meta.roles) {
+    // if user not logged in
     if (!auth.isLoggedIn) {
+      // direct to login page
+      // query: redirect to query page after logging in
       return { name: 'login', query: { redirect: to.fullPath } }
     }
+    // if wrong role: role not in meta{ (roles:[xx,xx]) }
     if (!to.meta.roles.includes(auth.role)) {
-      return auth.homePath
+      return auth.homePath // direct to user correct role homepage
     }
   }
 })
