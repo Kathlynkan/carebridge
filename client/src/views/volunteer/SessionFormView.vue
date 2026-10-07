@@ -15,18 +15,27 @@
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PageHeader from '@/components/PageHeader.vue'
-import TodoPanel from '@/components/TodoPanel.vue'
 import { SUBJECTS, MOODS } from '@/utils/constants'
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute() // read infromation
+const router = useRouter() // navigate elsewhere, allow to change pages
 
-const isEdit = computed(() => !!route.params.sessionId)
-// eslint-disable-next-line no-unused-vars
-const childId = route.params.id // needed for POST /sessions (create mode)
+const isEdit = computed(() => {
+  if (route.params.sessionId) {
+    return true
+  } else {
+    return false
+  }
+})
+
+const childId = route.params.id
+
+const today = new Date()
+const dateString = today.toISOString() // convert to string
+const date = dateString.slice(0, 10) // format to yyyy-mm-dd
 
 const form = ref({
-  date: new Date().toISOString().slice(0, 10),
+  date: date,
   subject: 'Math',
   topic: '',
   attempted: 0,
@@ -43,7 +52,7 @@ const error = ref('')
 
 async function handleSubmit() {
   // TODO (Ning Xuan): send the form to the API (see LoginView.vue for the pattern)
-  error.value = 'Saving is not built yet (TODO Ning Xuan).'
+  error.value = 'Saving is not built yet.'
 }
 
 function cancel() {
@@ -56,16 +65,6 @@ function cancel() {
     <PageHeader
       :title="isEdit ? 'Edit session' : 'Record a session'"
       subtitle="Takes about a minute. The next volunteer will thank you!"
-    />
-
-    <TodoPanel
-      owner="Ning Xuan"
-      :items="[
-        'Submit to POST /sessions (and PUT for edit)',
-        'Load existing session in edit mode',
-        'Validation (correct <= attempted, topic required)',
-        'Struggles as add/remove tags',
-      ]"
     />
 
     <div class="row justify-content-center">
@@ -115,7 +114,7 @@ function cancel() {
                 id="struggle"
                 v-model.trim="newStruggle"
                 class="form-control"
-                placeholder="Type a skill and press Enter (TODO)"
+                placeholder="Type a skill and press Enter"
               />
               <div class="mt-2">
                 <span v-for="s in form.struggles" :key="s" class="badge badge-danger-soft me-1">{{ s }}</span>
