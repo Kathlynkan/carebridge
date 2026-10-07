@@ -13,14 +13,14 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 // import api, { errorMessage } from '@/services/api'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/auth' // get auth sotre from Pinia
 import PageHeader from '@/components/PageHeader.vue'
 import ChildCard from '@/components/ChildCard.vue'
 import StateMessage from '@/components/StateMessage.vue'
 import TodoPanel from '@/components/TodoPanel.vue'
 import { firstName } from '@/utils/format'
 
-const auth = useAuthStore()
+const auth = useAuthStore() // open auth store
 const router = useRouter()
 
 const children = ref([])
@@ -72,6 +72,7 @@ async function loadData() {
 
 const filteredChildren = computed(() => {
   const search = searchText.value.toLowerCase()
+  // filter through each child whose name includes search text, store in results array
   let result = children.value.filter((child) => child.name.toLowerCase().includes(search))
   if (selectedLevel.value !== '') {
       result = result.filter((child) => child.level === selectedLevel.value)
