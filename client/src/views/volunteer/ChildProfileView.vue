@@ -109,7 +109,7 @@ onMounted(loadData)
         </RouterLink>
       </PageHeader>
 
-      <TodoPanel
+      <!-- <TodoPanel 
         owner="Yuqi (page) · Ning Xuan (history) · Jachin (charts)"
         :items="[
           'Yuqi: At-a-glance cards (recent topics, recurring struggles, what worked)',
@@ -117,7 +117,7 @@ onMounted(loadData)
           'Ning Xuan: edit / delete session buttons',
           'Jachin: real Chart.js charts inside the two chart components',
         ]"
-      />
+      />-->
 
       <div class="row g-4">
         <div class="col-lg-7">
