@@ -39,19 +39,19 @@ const routes = [
     meta: { roles: ['volunteer', 'coordinator'] },
   },
   {
-    path: '/children/:id/sessions/new',
+    path: '/children/:id/sessions/new', // record new session
     name: 'session-new',
     component: () => import('@/views/volunteer/SessionFormView.vue'), // Ning Xuan
     meta: { roles: ['volunteer'] },
   },
   {
-    path: '/sessions/:sessionId/edit',
+    path: '/sessions/:sessionId/edit', // edit existing session
     name: 'session-edit',
     component: () => import('@/views/volunteer/SessionFormView.vue'), // Ning Xuan (same form)
     meta: { roles: ['volunteer', 'coordinator'] },
   },
   {
-    path: '/children/:id/homework/new',
+    path: '/children/:id/homework/new', // assign new homework
     name: 'homework-new',
     component: () => import('@/views/volunteer/HomeworkAssignView.vue'), // Ning Xuan
     meta: { roles: ['volunteer'] },
