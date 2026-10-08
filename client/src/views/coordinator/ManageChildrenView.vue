@@ -14,7 +14,6 @@ import api, { errorMessage } from '@/services/api'
 import { LEVELS, SKILL_OPTIONS } from '@/utils/constants'
 import PageHeader from '@/components/PageHeader.vue'
 import StateMessage from '@/components/StateMessage.vue'
-import TodoPanel from '@/components/TodoPanel.vue'
 
 // ---------- Table of children ----------
 const children = ref([])
@@ -90,10 +89,6 @@ async function addChild() {
         <i class="bi bi-plus-lg me-1"></i>Add child
       </button>
     </PageHeader>
-    <TodoPanel
-      owner="Kai Sen"
-      :items="['Edit / delete', 'Child login + parent link code', 'Search, mobile layout']"
-    />
 
     <div v-if="successMessage" class="alert alert-success small" data-test="add-child-success">
       {{ successMessage }}
