@@ -83,7 +83,7 @@ onMounted(async () => {
         <div>
           <h2 class="h5 mb-0">{{ selectedChild.name }}</h2>
           <div class="small text-muted-cb">
-            {{ selectedChild.level }} &middot; {{ selectedChild.points }} ⭐ earned
+            {{ selectedChild.level }} &middot; ฿{{ selectedChild.points }} berries earned
           </div>
         </div>
       </div>

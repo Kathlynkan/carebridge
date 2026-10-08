@@ -97,7 +97,7 @@
     },
     {
       "id": "u_kid1",
-      "name": "Ethan",
+      "name": "Luffy",
       "email": "child@carebridge.sg",
       "password": "password123",
       "role": "child",
@@ -117,7 +117,7 @@
   "children": [
     {
       "id": "c_1",
-      "name": "Ethan Wong",
+      "name": "Luffy Wong",
       "level": "P4",
       "school": "Riverside Primary",
       "parentId": "u_par1",
@@ -131,6 +131,7 @@
       ],
       "points": 120,
       "avatar": "🦊",
+      "photo": "/photos/luffy.png",
       "followUp": false
     },
     {
@@ -628,6 +629,42 @@
       "points": 20,
       "status": "assigned",
       "completedAt": null
+    },
+    {
+      "id": "h_8",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "title": "Spelling list 3",
+      "subject": "English",
+      "details": "Write each word 3 times, then cover the list and test yourself.",
+      "dueDate": "2026-10-09",
+      "points": 10,
+      "status": "assigned",
+      "completedAt": null
+    },
+    {
+      "id": "h_9",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "title": "6 and 8 times tables",
+      "subject": "Math",
+      "details": "Say the 6 and 8 times tables out loud, then write them out.",
+      "dueDate": "2026-10-10",
+      "points": 15,
+      "status": "assigned",
+      "completedAt": null
+    },
+    {
+      "id": "h_10",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "title": "Parts of a plant",
+      "subject": "Science",
+      "details": "Draw a plant and label the roots, stem, leaves and flower.",
+      "dueDate": "2026-10-11",
+      "points": 15,
+      "status": "assigned",
+      "completedAt": null
     }
   ],
   "messages": [
@@ -635,7 +672,7 @@
       "id": "m_1",
       "childId": "c_1",
       "fromId": "u_vol1",
-      "text": "Hi Mrs Wong! Ethan did really well with fractions today - 4/5 correct.",
+      "text": "Hi Mrs Wong! Luffy did really well with fractions today - 4/5 correct.",
       "sentAt": "2026-10-04T09:40:00.000Z",
       "readBy": [
         "u_vol1",

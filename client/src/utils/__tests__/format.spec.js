@@ -28,6 +28,6 @@ describe('daysSince / relativeDay', () => {
 
 describe('firstName', () => {
   it('keeps only the first name (child privacy on leaderboards)', () => {
-    expect(firstName('Ethan Wong')).toBe('Ethan')
+    expect(firstName('Luffy Wong')).toBe('Luffy')
   })
 })

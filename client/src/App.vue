@@ -6,7 +6,7 @@ import NavBar from './components/NavBar.vue'
 <template>
   <NavBar />
   <main class="app-main">
-    <RouterView />
+    <RouterView /> <!--Routes the current page, for exmaple if child page then /child etc-->
   </main>
   <footer class="app-footer text-center small py-4">
     CareBridge &middot; IS216 WAD2 Group Project

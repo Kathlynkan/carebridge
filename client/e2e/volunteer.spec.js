@@ -9,12 +9,12 @@ test.describe('Volunteer handover', () => {
   })
 
   test('sees only the children assigned to them', async ({ page }) => {
-    // Aisha (volunteer@) is assigned Ethan, Arjun and Chloe in the seed data
+    // Aisha (volunteer@) is assigned Luffy, Arjun and Chloe in the seed data
     await expect(page.locator('[data-test="child-card"]')).toHaveCount(3)
   })
 
   test('opening a child shows the handover and history', async ({ page }) => {
-    await page.locator('[data-test="child-card"]', { hasText: 'Ethan Wong' }).click()
+    await page.locator('[data-test="child-card"]', { hasText: 'Luffy Wong' }).click()
     await expect(page).toHaveURL(/\/children\/c_1$/)
 
     const handover = page.locator('[data-test="handover-card"]')
@@ -25,7 +25,7 @@ test.describe('Volunteer handover', () => {
   })
 
   test('can open the record-session form', async ({ page }) => {
-    await page.locator('[data-test="child-card"]', { hasText: 'Ethan Wong' }).click()
+    await page.locator('[data-test="child-card"]', { hasText: 'Luffy Wong' }).click()
     await page.locator('[data-test="record-session"]').click()
     await expect(page.locator('[data-test="session-form"]')).toBeVisible()
   })

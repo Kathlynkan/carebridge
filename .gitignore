@@ -29,3 +29,10 @@ client/playwright/.cache/
 server/.cf/
 cloudflare/pages/site/
 .wrangler/
+
+# Pictures of children for the wanted posters (demo only, never real children). Keep them out of the public repo.
+client/public/photos/*.png
+client/public/photos/*.jpg
+client/public/photos/*.jpeg
+client/public/photos/*.webp
+client/public/photos/*.gif

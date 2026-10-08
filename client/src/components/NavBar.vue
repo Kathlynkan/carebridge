@@ -29,7 +29,7 @@ const LINKS = {
   ],
   child: [
     { to: '/child', label: 'My Quests', icon: 'bi-stars' },
-    { to: '/child/leaderboard', label: 'Leaderboard', icon: 'bi-trophy' },
+    { to: '/child/leaderboard', label: 'Bounty Board', icon: 'bi-trophy' },
   ],
 }
 

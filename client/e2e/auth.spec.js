@@ -23,13 +23,13 @@ test.describe('Authentication', () => {
   test('parent lands on the parent page', async ({ page }) => {
     await loginAs(page, 'parent')
     await expect(page).toHaveURL(/\/parent$/)
-    await expect(page.getByText('Ethan Wong')).toBeVisible()
+    await expect(page.getByText('Luffy Wong')).toBeVisible()
   })
 
   test('child lands on My Quests', async ({ page }) => {
     await loginAs(page, 'child')
     await expect(page).toHaveURL(/\/child$/)
-    await expect(page.getByText('Quests to do')).toBeVisible()
+    await expect(page.getByText('Quests on the Bounty Board')).toBeVisible()
   })
 
   test('wrong password shows an error', async ({ page }) => {

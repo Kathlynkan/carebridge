@@ -74,6 +74,21 @@ function editSession(sessionId) {
   router.push({ name: 'session-edit', params: { sessionId } })
 }
 
+// The child handed a quest in; the volunteer checks it and the child is paid the berries (PUT /homework/:id/verify)
+const checkingQuestId = ref(null)
+async function verifyQuest(homeworkId) {
+  checkingQuestId.value = homeworkId
+  try {
+    await api.put(`/homework/${homeworkId}/verify`)
+    const h = await api.get('/homework', { params: { childId } })
+    homework.value = h.data
+  } catch (err) {
+    error.value = errorMessage(err)
+  } finally {
+    checkingQuestId.value = null
+  }
+}
+
 // eslint-disable-next-line no-unused-vars
 async function deleteSession(sessionId) {
   // TODO (Ning Xuan): confirm, await api.delete(`/sessions/${sessionId}`), then reload
@@ -144,7 +159,14 @@ onMounted(loadData)
           <div>
             <h2 class="h5 mb-3">Homework ({{ pendingHomework.length }} pending)</h2>
             <div class="d-flex flex-column gap-2">
-              <HomeworkQuestCard v-for="h in homework" :key="h.id" :homework="h" mode="volunteer" />
+              <HomeworkQuestCard
+                v-for="h in homework"
+                :key="h.id"
+                :homework="h"
+                mode="volunteer"
+                :busy="checkingQuestId !== null"
+                @verify="verifyQuest"
+              />
             </div>
           </div>
         </div>
