@@ -9,7 +9,7 @@
     [ ] HandoverCard refresh -> POST /handover/:id again (after Gemini is wired up)
     [ ] tabs (Overview / History / Homework) on mobile so the page isn't too long
   TODO (Ning Xuan):
-    [ ] wire SessionCard @edit / @delete (DELETE /sessions/:id, then reload)
+    [done] wire SessionCard @edit / @delete (DELETE /sessions/:id, then reload)
 ============================================================= -->
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -18,7 +18,6 @@ import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 import PageHeader from '@/components/PageHeader.vue'
 import StateMessage from '@/components/StateMessage.vue'
-import TodoPanel from '@/components/TodoPanel.vue'
 import HandoverCard from '@/components/HandoverCard.vue'
 import SessionCard from '@/components/SessionCard.vue'
 import HomeworkQuestCard from '@/components/HomeworkQuestCard.vue'
@@ -74,9 +73,23 @@ function editSession(sessionId) {
   router.push({ name: 'session-edit', params: { sessionId } })
 }
 
-// eslint-disable-next-line no-unused-vars
 async function deleteSession(sessionId) {
-  // TODO (Ning Xuan): confirm, await api.delete(`/sessions/${sessionId}`), then reload
+  const confirmed = window.confirm(
+    'Are you sure you want to delete this session?'
+  )
+
+  // stop if user clicks cancel
+  if (!confirmed) {
+    return
+  }
+
+  try {
+    await api.delete(`/sessions/${sessionId}`)
+
+    await loadData() // reload data after successful deletion
+  } catch (err) {
+    error.value = errorMessage(err)
+  }
 }
 
 onMounted(loadData)
@@ -108,16 +121,6 @@ onMounted(loadData)
           <i class="bi bi-chat-dots me-1"></i>Message parent
         </RouterLink>
       </PageHeader>
-
-      <!-- <TodoPanel 
-        owner="Yuqi (page) · Ning Xuan (history) · Jachin (charts)"
-        :items="[
-          'Yuqi: At-a-glance cards (recent topics, recurring struggles, what worked)',
-          'Yuqi: AI handover via Gemini + refresh button',
-          'Ning Xuan: edit / delete session buttons',
-          'Jachin: real Chart.js charts inside the two chart components',
-        ]"
-      />-->
 
       <div class="row g-4">
         <div class="col-lg-7">
