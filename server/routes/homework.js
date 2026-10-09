@@ -1,13 +1,13 @@
 // =============================================================
 // /homework  - homework "quests"
-// Owners: Ning Xuan (volunteer assigns)  +  Jachin (child completes, points & badges)
+// Owners: Ning Xuan (volunteer assigns) [done]  +  Jachin (child completes, points & badges)
 // -------------------------------------------------------------
 // Fields: see models/Homework.js
 // Flow:  volunteer assigns ('assigned')  ->  child marks done ('submitted')
 //        ->  volunteer verifies at next session ('verified') -> child gets points
 // =============================================================
 import { Router } from 'express'
-import { Homework } from '../models/index.js'
+import { Child, Homework } from '../models/index.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
 import { visibleChildIds } from '../utils/access.js'
 
@@ -33,10 +33,78 @@ router.get('/leaderboard', async (req, res) => {
   res.status(501).json({ message: 'TODO (Jachin): leaderboard' })
 })
 
-// POST /homework   (Ning Xuan)  body: { childId, title, subject, details, dueDate, points }
+// POST /homework
 router.post('/', requireRole('volunteer', 'coordinator'), async (req, res) => {
-  // TODO (Ning Xuan): validate, then Homework.create({ ...fields, volunteerId: req.user.id })
-  res.status(501).json({ message: 'TODO (Ning Xuan): assign homework' })
+  // only volunteers and coordinators can assign homework
+  try {
+    const child = await Child.findById(req.body.childId)
+
+    // check if child exists
+    if (!child) {
+      return res.status(404).json({
+        message: 'Child not found'
+      })
+    }
+
+    // check user access
+    const allowedChildren = await visibleChildIds(req.user)
+
+    if (!allowedChildren.includes(req.body.childId)) {
+      return res.status(403).json({
+        message: 'No access'
+      })
+    }
+
+    const today = new Date().toISOString().slice(0, 10)
+
+    // check due date exists
+    if (!req.body.dueDate) {
+      return res.status(400).json({
+        message: 'Due date is required'
+      })
+    }
+
+    // validate due date
+    if (req.body.dueDate < today) {
+      return res.status(400).json({
+        message: 'Due date cannot be in the past'
+      })
+    }
+    
+    // validate title
+    if (!req.body.title) {
+      return res.status(400).json({
+        message: 'Title is required'
+      })
+    }
+
+    // validate points
+    if (req.body.points < 0) {
+      return res.status(400).json({
+        message: 'Points cannot be negative'
+      })
+    }
+
+    // create homework
+    const homework = await Homework.create({
+      childId: req.body.childId,
+      title: req.body.title,
+      subject: req.body.subject,
+      details: req.body.details,
+      dueDate: req.body.dueDate,
+      points: req.body.points,
+      volunteerId: req.user.id
+    })
+
+    // return new homework
+    return res.status(201).json(homework) 
+    // status 201: request succeeded and created new homework
+    // default status 200: request succeeded
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Failed to assign homework'
+    })
+  }
 })
 
 // PUT /homework/:id/submit   (Jachin)  -> child marks homework as done
