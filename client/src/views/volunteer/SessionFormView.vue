@@ -16,9 +16,10 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PageHeader from '@/components/PageHeader.vue'
 import { SUBJECTS, MOODS } from '@/utils/constants'
+import api, { errorMessage } from '@/services/api'
 
-const route = useRoute() // read infromation
-const router = useRouter() // navigate elsewhere, allow to change pages
+const route = useRoute() // read information
+const router = useRouter() // navigate to another page
 
 const isEdit = computed(() => {
   if (route.params.sessionId) {
@@ -28,7 +29,7 @@ const isEdit = computed(() => {
   }
 })
 
-const childId = route.params.id
+const childId = route.params.id // get childID from URL
 
 const today = new Date()
 const dateString = today.toISOString() // convert to string
@@ -47,16 +48,55 @@ const form = ref({
   notes: '',
 })
 const newStruggle = ref('')
-const saving = ref(false)
+const saving = ref(false) // track whether the form is currently saving (?)
 const error = ref('')
 
 async function handleSubmit() {
-  // TODO (Ning Xuan): send the form to the API (see LoginView.vue for the pattern)
-  error.value = 'Saving is not built yet.'
+  try {
+    saving.value = true
+    error.value = ''
+
+    // if edit form, update exisitng session
+    if (isEdit.value) {
+      await api.put(
+        `/sessions/${route.params.sessionId}`, 
+        form.value
+      )
+    } else {
+      // else, create new session
+      await api.post('/sessions', {
+        childId: childId,
+        date: form.value.date,
+        subject: form.value.subject,
+        topic: form.value.topic,
+        attempted: form.value.attempted,
+        correct: form.value.correct,
+        struggles: form.value.struggles,
+        whatWorked: form.value.whatWorked,
+        nextStep: form.value.nextStep,
+        mood: form.value.mood,
+        notes: form.value.notes,
+      })
+    }
+
+    // push /children/childId=c_1
+    // redirect to child profile page after successful submission
+    router.push({
+      name: 'child-profile',
+      params: {
+        id: childId
+      }
+    })
+  } catch (err) {
+    // convert error message into readable text
+    error.value = errorMessage(err)
+  } finally {
+    saving.value = false // after submission
+  }
 }
 
 function cancel() {
-  router.back()
+  router.back() // return user to wherever they came from
 }
 </script>
 
