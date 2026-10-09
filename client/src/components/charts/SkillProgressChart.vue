@@ -1,56 +1,108 @@
-<!-- =============================================================
-  SkillProgressChart - accuracy over time, one line per topic.   Owner: Jachin
-  Used on: Child profile (Yuqi), Parent page (Kat)
-  Props:  sessions (Array)  - straight from GET /sessions?childId=...
-  -------------------------------------------------------------
-  The other pages already use this component with this prop,
-  so keep the prop name the same and only change the inside.
-
-  TODO (Jachin):
-    [ ] Render a Chart.js line chart with vue-chartjs:
-          import { Line } from 'vue-chartjs'
-          import { Chart as ChartJS, LineElement, PointElement, CategoryScale,
-                   LinearScale, Tooltip, Legend } from 'chart.js'
-          ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend)
-    [ ] x = date, y = accuracy %, one dataset per topic (computed property)
-    [ ] responsive: true, maintainAspectRatio: false, readable on mobile
-    [ ] a text summary under the chart ("Fractions: improving 20% -> 80%") for accessibility
-============================================================= -->
+<!-- SkillProgressChart - accuracy over time, one line per topic.   Owner: Jachin
+     Props: sessions (Array) - from GET /sessions?childId=...
+     Used on: Child profile (Yuqi), Parent page (Kat) -->
 <script setup>
 import { computed } from 'vue'
+import { Line } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from 'chart.js'
 import { accuracy, formatDate } from '@/utils/format'
+
+ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend)
 
 const props = defineProps({
   sessions: { type: Array, default: () => [] },
 })
 
-// Placeholder: oldest -> newest, so Jachin can see the data shape
-const points = computed(() =>
-  [...props.sessions]
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .map((s) => ({ date: s.date, topic: s.topic, accuracy: accuracy(s) })),
-)
+const COLORS = ['#2f6f62', '#f2b63d', '#e05c3a', '#5a8fd4', '#9b6cc7', '#4caf7d']
+
+const chartData = computed(() => {
+  const byTopic = {}
+  const sorted = [...props.sessions].sort((a, b) => a.date.localeCompare(b.date))
+  for (const s of sorted) {
+    byTopic[s.topic] ??= []
+    byTopic[s.topic].push(s)
+  }
+  const allDates = [...new Set(sorted.map((s) => s.date))]
+  const datasets = Object.entries(byTopic).map(([topic, list], i) => {
+    const byDate = Object.fromEntries(list.map((s) => [s.date, accuracy(s)]))
+    return {
+      label: topic,
+      data: allDates.map((d) => byDate[d] ?? null),
+      borderColor: COLORS[i % COLORS.length],
+      backgroundColor: COLORS[i % COLORS.length] + '22',
+      tension: 0.3,
+      spanGaps: true,
+    }
+  })
+  return { labels: allDates.map(formatDate), datasets }
+})
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    y: { min: 0, max: 100, ticks: { callback: (v) => v + '%' } },
+  },
+  plugins: {
+    tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}%` } },
+    legend: { position: 'bottom' },
+  },
+}
+
+const summaries = computed(() => {
+  const byTopic = {}
+  for (const s of props.sessions) {
+    byTopic[s.topic] ??= []
+    byTopic[s.topic].push(s)
+  }
+  return Object.entries(byTopic).map(([topic, list]) => {
+    const sorted = [...list].sort((a, b) => a.date.localeCompare(b.date))
+    const n = sorted.length
+    if (n === 1) {
+      return { topic, text: `${accuracy(sorted[0])}% (1 session — too early to show a trend)` }
+    }
+    const first = accuracy(sorted[0])
+    const last = accuracy(sorted[n - 1])
+    const trend = trendLabel(sorted)
+    return { topic, text: `${first}% → ${last}% (${n} sessions, ${trend})` }
+  })
+})
+
+function trendLabel(sorted) {
+  if (sorted.length < 2) return 'steady'
+  const earlier = sorted.slice(0, -3)
+  const last3 = sorted.slice(-3)
+  if (earlier.length === 0) return 'steady'
+  const avg = (list) =>
+    list.reduce((s, x) => s + (x.attempted ? x.correct / x.attempted : 0), 0) / list.length
+  const diff = avg(last3) - avg(earlier)
+  if (diff > 0.1) return 'improving ↑'
+  if (diff < -0.1) return 'needs attention ↓'
+  return 'steady →'
+}
 </script>
 
 <template>
   <div class="cb-card p-3" data-test="skill-progress-chart">
     <h2 class="h6 mb-3"><i class="bi bi-graph-up-arrow me-2"></i>Progress over time</h2>
-    <!-- TODO (Jachin): replace this placeholder bar list with the real chart -->
-    <div v-for="p in points" :key="p.date + p.topic" class="d-flex align-items-center gap-2 small mb-1">
-      <span class="label">{{ formatDate(p.date) }}</span>
-      <span class="label text-truncate">{{ p.topic }}</span>
-      <div class="progress flex-grow-1" role="progressbar" style="height: 10px">
-        <div class="progress-bar" :style="{ width: p.accuracy + '%' }"></div>
+    <p v-if="sessions.length === 0" class="small text-muted-cb mb-0">No data yet.</p>
+    <template v-else>
+      <div style="height: 220px; position: relative">
+        <Line :data="chartData" :options="chartOptions" />
       </div>
-      <span>{{ p.accuracy }}%</span>
-    </div>
-    <p v-if="points.length === 0" class="small text-muted-cb mb-0">No data yet.</p>
+      <ul class="list-unstyled small mt-3 mb-0" data-test="chart-summary">
+        <li v-for="s in summaries" :key="s.topic" class="text-muted-cb">
+          <strong>{{ s.topic }}:</strong> {{ s.text }}
+        </li>
+      </ul>
+    </template>
   </div>
 </template>
-
-<style scoped>
-.label {
-  width: 90px;
-  flex-shrink: 0;
-}
-</style>

@@ -1,13 +1,9 @@
 // =============================================================
 // /homework  - homework "quests"
 // Owners: Ning Xuan (volunteer assigns)  +  Jachin (child completes, points & badges)
-// -------------------------------------------------------------
-// Fields: see models/Homework.js
-// Flow:  volunteer assigns ('assigned')  ->  child marks done ('submitted')
-//        ->  volunteer verifies at next session ('verified') -> child gets points
 // =============================================================
 import { Router } from 'express'
-import { Homework } from '../models/index.js'
+import { Homework, Child } from '../models/index.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
 import { visibleChildIds } from '../utils/access.js'
 
@@ -25,12 +21,49 @@ router.get('/', async (req, res) => {
   res.json(list)
 })
 
-// GET /homework/leaderboard   (Jachin)  -> [{ childId, name, points }] sorted, first names only
-// (defined before any '/:id' routes so 'leaderboard' is not treated as an id)
+// GET /homework/leaderboard                     (Jachin)
+// ?period=week  -> most improved (points from verified homework completed in the last 7 days)
+// default       -> all-time (total child points, top 10)
 router.get('/leaderboard', async (req, res) => {
-  // TODO (Jachin): Child.find().sort({ points: -1 }).limit(10).select('name points avatar')
-  // and only send first names (child privacy)
-  res.status(501).json({ message: 'TODO (Jachin): leaderboard' })
+  if (req.query.period === 'week') {
+    // Use YYYY-MM-DD string comparison — works for both date-only and ISO strings
+    const sevenDaysAgoStr = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10)
+
+    const recentVerified = await Homework.find({
+      status: 'verified',
+      completedAt: { $gte: sevenDaysAgoStr },
+    })
+
+    // Sum points earned per child this week
+    const weekPoints = {}
+    for (const hw of recentVerified) {
+      weekPoints[hw.childId] = (weekPoints[hw.childId] || 0) + hw.points
+    }
+
+    if (Object.keys(weekPoints).length === 0) return res.json([])
+
+    const children = await Child.find({ _id: { $in: Object.keys(weekPoints) } }).select(
+      'name points avatar',
+    )
+    const entries = children
+      .map((c) => ({
+        childId: c.id,
+        name: c.name,
+        avatar: c.avatar,
+        points: weekPoints[c.id] || 0,
+      }))
+      .sort((a, b) => b.points - a.points)
+
+    return res.json(entries)
+  }
+
+  // Default: all-time by total points
+  const children = await Child.find({}).sort({ points: -1 }).limit(10).select('name points avatar')
+  res.json(
+    children.map((c) => ({ childId: c.id, name: c.name, avatar: c.avatar, points: c.points })),
+  )
 })
 
 // POST /homework   (Ning Xuan)  body: { childId, title, subject, details, dueDate, points }
@@ -39,19 +72,37 @@ router.post('/', requireRole('volunteer', 'coordinator'), async (req, res) => {
   res.status(501).json({ message: 'TODO (Ning Xuan): assign homework' })
 })
 
-// PUT /homework/:id/submit   (Jachin)  -> child marks homework as done
+// PUT /homework/:id/submit  (Jachin) -> child marks homework as done
 router.put('/:id/submit', requireRole('child'), async (req, res) => {
-  // TODO (Jachin): check homework.childId === req.user.childId,
-  // set status 'submitted' + completedAt, await homework.save()
-  res.status(501).json({ message: 'TODO (Jachin): submit homework' })
+  const hw = await Homework.findById(req.params.id)
+  if (!hw) return res.status(404).json({ message: 'Homework not found.' })
+  if (hw.childId !== req.user.childId) {
+    return res.status(403).json({ message: 'This is not your homework.' })
+  }
+  if (hw.status !== 'assigned') {
+    return res.status(400).json({ message: 'Homework is already submitted or verified.' })
+  }
+  hw.status = 'submitted'
+  hw.completedAt = new Date().toISOString().slice(0, 10)
+  await hw.save()
+  res.json(hw)
 })
 
-// PUT /homework/:id/verify   (Jachin)  -> volunteer confirms, child earns points
+// PUT /homework/:id/verify  (Jachin) -> volunteer confirms, child earns points
 router.put('/:id/verify', requireRole('volunteer', 'coordinator'), async (req, res) => {
-  // TODO (Jachin): set status 'verified', then add points to the child:
-  //   await Child.findByIdAndUpdate(homework.childId, { $inc: { points: homework.points } })
-  // and check badge rules (client/src/utils/gamification.js)
-  res.status(501).json({ message: 'TODO (Jachin): verify homework + award points' })
+  const hw = await Homework.findById(req.params.id)
+  if (!hw) return res.status(404).json({ message: 'Homework not found.' })
+  if (hw.status !== 'submitted') {
+    return res.status(400).json({ message: 'Homework must be submitted before it can be verified.' })
+  }
+  hw.status = 'verified'
+  await hw.save()
+  const child = await Child.findByIdAndUpdate(
+    hw.childId,
+    { $inc: { points: hw.points } },
+    { new: true },
+  )
+  res.json({ homework: hw, points: child.points })
 })
 
 export default router
