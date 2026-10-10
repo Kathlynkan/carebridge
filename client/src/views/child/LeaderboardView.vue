@@ -1,43 +1,49 @@
-<!-- =============================================================
-  THE BOUNTY BOARD  (the leaderboard)                      Owner: Jachin
-  =============================================================
-  Which pirates have the most berries?
-  This page shows the 10 children with the biggest bounty, and where the child looking at the page stands.
-
-  Everything for this page is in THIS ONE FILE, written with plain HTML tags (div, h1, p...).
-
-  How the page is built:
-    - one row for each of the top 10 children, the biggest bounty first
-    - if the child is not in the top 10, their own place is shown at the bottom
-
-  PRIVACY: the server only sends FIRST NAMES (GET /homework/leaderboard),
-  so nobody can be recognised outside the centre.
-
-  TODO (Jachin):
-    [ ] think about fairness: a weekly reset? show "most improved" and not only the biggest scores?
-============================================================= -->
+<!-- Leaderboard                                          Owner: Jachin -->
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import api, { errorMessage } from '@/services/api' // api talks to our server
-import { berries, rankFor } from '@/utils/gamification'
-import '@/assets/childpage.css' // the pirate look
+import { ref, computed, onMounted } from 'vue'
+import api, { errorMessage } from '@/services/api'
+import { useAuthStore } from '@/stores/auth'
+import PageHeader from '@/components/PageHeader.vue'
+import StateMessage from '@/components/StateMessage.vue'
+import { firstName } from '@/utils/format'
 
-const router = useRouter()
+const auth = useAuthStore()
+const allTime = ref([])
+const improved = ref([])
+const loading = ref(true)
+const loadingImproved = ref(false)
+const improvedLoaded = ref(false)
+const error = ref('')
+const activeTab = ref('alltime')
 
-// ---------- the data of this page ----------
-const board = ref([]) // the list of children, best first
-const me = ref(null) // my own row (my place, my berries)
-const loading = ref(true) // true while we wait for the server
-const error = ref('') // an error message, if something went wrong
+const current = computed(() => (activeTab.value === 'alltime' ? allTime.value : improved.value))
+const podium = computed(() => current.value.slice(0, 3))
+const rest = computed(() => current.value.slice(3))
+const isInList = computed(() => current.value.some((e) => e.childId === auth.user?.childId))
 
-// ---------- when the page opens ----------
+async function loadImproved() {
+  if (improvedLoaded.value) return
+  loadingImproved.value = true
+  try {
+    const res = await api.get('/homework/leaderboard', { params: { period: 'week' } })
+    improved.value = res.data
+    improvedLoaded.value = true
+  } catch (err) {
+    error.value = errorMessage(err)
+  } finally {
+    loadingImproved.value = false
+  }
+}
+
+function switchTab(tab) {
+  activeTab.value = tab
+  if (tab === 'week') loadImproved()
+}
+
 onMounted(async () => {
   try {
-    // Ask the server for the board. It answers with { top: [...], me: {...} }.
-    const response = await api.get('/homework/leaderboard')
-    board.value = response.data.top
-    me.value = response.data.me
+    const res = await api.get('/homework/leaderboard')
+    allTime.value = res.data
   } catch (err) {
     error.value = errorMessage(err)
   } finally {
@@ -47,57 +53,109 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="page-background childpage">
-    <div class="container py-4">
-      <!-- the back button at the top left. A large screen shows the button with words (d-none d-lg-block hides it on smaller screens). -->
-      <div class="text-start d-none d-lg-block">
-        <button class="action-button back-to-quests" @click="router.push('/child')"><i class="bi bi-arrow-left"></i> BACK TO QUESTS</button>
-      </div>
-      <!-- A small or medium screen shows only an arrow, flush against the top left corner (d-lg-none hides it on large screens). -->
-      <button class="action-button back-to-quests-arrow d-lg-none position-absolute top-0 start-0" aria-label="Back to quests" title="Back to quests" @click="router.push('/child')">
-        <i class="bi bi-arrow-left"></i>
-      </button>
+  <div class="container py-4">
+    <PageHeader title="🏆 Leaderboard" subtitle="See how everyone is doing!" />
 
-      <!-- The page title (display-4 is a Bootstrap class: a big font size that shrinks by itself on a small screen) -->
-      <h1 class="sections title display-4 text-center mb-3">THE BOUNTY BOARD</h1>
-      <p class="inner-box text-center fw-bold mx-auto px-3 py-2 mb-4" style="max-width: 560px">
-        Which pirates have the biggest bounty? Only first names are shown.
-      </p>
+    <StateMessage v-if="loading" type="loading" />
+    <StateMessage v-else-if="error" type="error" :message="error" />
 
-      <!-- While we wait, or if something failed, or if nobody is on the board yet, show a message. -->
-      <p v-if="loading" class="text-center fw-bold py-5">Checking the bounty board...</p>
-      <div v-else-if="error" class="alert alert-danger">{{ error }}</div>
-      <div v-else-if="board.length === 0" class="inner-box text-center fw-bold p-4">
-        No pirates on the board yet. Finish a quest to be the first!
-      </div>
+    <template v-else>
+      <!-- Tabs -->
+      <ul class="nav nav-pills mb-4 gap-2">
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            :class="{ active: activeTab === 'alltime' }"
+            data-test="tab-alltime"
+            @click="switchTab('alltime')"
+          >
+            ⭐ All-time stars
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            :class="{ active: activeTab === 'week' }"
+            data-test="tab-improved"
+            @click="switchTab('week')"
+          >
+            🔥 Stars earned this week
+          </button>
+        </li>
+      </ul>
 
-      <!-- The board itself. v-for makes one row for every child. -->
-      <div v-else class="bounty-board" data-test="bounty-board">
-        <div v-for="row in board" :key="row.rank" class="bountyboard-row" :class="{ 'current-child': row.isMe }" data-test="bounty-row">
-          <div class="place-number">{{ row.rank }}</div>
-          <!-- the child's picture if there is one, otherwise the emoji -->
-          <img v-if="row.photo" :src="row.photo" alt="" class="board-photo" @error="row.photo = ''" />
-          <span v-else class="fs-2">{{ row.avatar }}</span>
-          <div class="flex-grow-1">
-            <div class="subheadings">{{ row.name }}</div>
-            <div class="small fw-bold"><i class="bi" :class="rankFor(row.points).rank.icon"></i> {{ rankFor(row.points).rank.name }}</div>
+      <StateMessage v-if="loadingImproved" type="loading" />
+
+      <template v-else>
+        <StateMessage
+          v-if="current.length === 0"
+          :message="
+            activeTab === 'week'
+              ? 'No quests verified this week yet — complete one to appear!'
+              : 'No scores yet — complete a quest to appear!'
+          "
+        />
+
+        <template v-else>
+          <!-- Podium top 3 -->
+          <div class="d-flex justify-content-center align-items-end gap-3 mb-4 mt-2">
+            <template v-for="(entry, i) in podium" :key="entry.childId">
+              <div
+                class="text-center podium-col"
+                :style="{ order: [2, 1, 3][i] }"
+                :data-test="'podium-' + (i + 1)"
+              >
+                <div class="fs-1 mb-1">{{ entry.avatar }}</div>
+                <div class="fw-heavy">
+                  {{ firstName(entry.name) }}
+                  <span v-if="entry.childId === auth.user?.childId" class="badge bg-primary ms-1" style="font-size:0.6rem">You</span>
+                </div>
+                <div class="small text-muted-cb mb-1">⭐ {{ entry.points }}</div>
+                <div
+                  class="podium-bar d-flex align-items-center justify-content-center fw-heavy"
+                  :style="{ height: [100, 70, 55][i] + 'px' }"
+                >
+                  {{ ['🥇', '🥈', '🥉'][i] }}
+                </div>
+              </div>
+            </template>
           </div>
-          <span class="red-stamp berry-reward">{{ berries(row.points) }}</span>
-        </div>
 
-        <!-- If I am not in the top 10, still show my own place at the bottom. -->
-        <div v-if="me && me.rank > board.length" class="bountyboard-row current-child" data-test="my-place">
-          <div class="place-number">{{ me.rank }}</div>
-          <img v-if="me.photo" :src="me.photo" alt="" class="board-photo" @error="me.photo = ''" />
-          <span v-else class="fs-2">{{ me.avatar }}</span>
-          <div class="flex-grow-1 subheadings">{{ me.name }}</div>
-          <span class="red-stamp berry-reward">{{ berries(me.points) }}</span>
-        </div>
-      </div>
+          <!-- 4th place onwards -->
+          <div v-if="rest.length" class="cb-card">
+            <table class="table table-sm mb-0">
+              <tbody>
+                <tr
+                  v-for="(entry, i) in rest"
+                  :key="entry.childId"
+                  :class="{ 'table-active fw-bold': entry.childId === auth.user?.childId }"
+                  data-test="leaderboard-row"
+                >
+                  <td class="text-muted-cb ps-3" style="width: 40px">{{ i + 4 }}</td>
+                  <td>{{ entry.avatar }} {{ firstName(entry.name) }}</td>
+                  <td class="text-end pe-3 fw-bold">⭐ {{ entry.points }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-      <p v-if="!loading && !error && board.length > 0" class="text-center fw-bold mt-4 mb-0">
-        Finish quests to earn berries and climb the board!
-      </p>
-    </div>
+          <p v-if="isInList" class="small text-muted-cb text-center mt-3">
+            Your row is highlighted above.
+          </p>
+        </template>
+      </template>
+    </template>
   </div>
 </template>
+
+<style scoped>
+.podium-col {
+  min-width: 88px;
+}
+.podium-bar {
+  background: var(--cb-primary-soft);
+  border-radius: var(--cb-radius) var(--cb-radius) 0 0;
+  font-size: 1.6rem;
+  width: 100%;
+}
+</style>

@@ -1,59 +1,61 @@
-// The child's pirate adventure: berries, the Road to Becoming King of the Pirates, handing a quest in, the Bounty Board.   Owner: Jachin
+// Child journey: quests and leaderboard.              Owner: Jachin
+// Seed data used:
+//   child@carebridge.sg = Ethan (c_1)
+//   h_1 "Fraction addition worksheet" is status='assigned' at the start of each run
+//   h_2 is status='verified' (Ethan has 120 points in seed)
+//
+// Note: tests run sequentially across projects (chromium then mobile) against one
+// shared database. The submit test mutates h_1, so it is marked chromium-only.
+// Mobile tests check structure and read-only behaviour only.
 import { test, expect } from '@playwright/test'
 import { loginAs } from './helpers'
 
-test.describe('Child: Road to Becoming King of the Pirates', () => {
-  test('sees the wanted poster, berries, rank and the road', async ({ page }) => {
+test.describe('Child quests', () => {
+  test.beforeEach(async ({ page }) => {
     await loginAs(page, 'child')
-    await expect(page.locator('[data-test="wanted-poster"]')).toContainText('WANTED')
-    await expect(page.locator('[data-test="wanted-poster"]')).toContainText('Luffytaro')
-    await expect(page.locator('[data-test="berries"]')).toContainText(/฿\d+/)
-    await expect(page.locator('[data-test="rank"]')).toBeVisible()
-    await expect(page.locator('[data-test="road"]')).toBeVisible()
-    await expect(page.locator('[data-test="road-next"]')).toContainText('to go')
+    await expect(page).toHaveURL(/\/child$/)
   })
 
-  test('shows every pirate badge, earned ones and locked ones', async ({ page }) => {
-    await loginAs(page, 'child')
-    await expect(page.locator('[data-test="badge"]')).toHaveCount(5)
+  test('My Quests page shows the quest and finished sections', async ({ page }) => {
+    await expect(page.getByRole('heading', { name: /Quests to do/i })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /Finished/i })).toBeVisible()
+    // Ethan always has homework in some state regardless of prior test mutations
+    await expect(page.locator('[data-test="homework-card"]').first()).toBeVisible()
   })
 
-  test('answering the questions, then handing a quest in sends it to the Captain and does NOT pay the berries yet', async ({ page }) => {
-    await loginAs(page, 'child')
-    // The desktop and phone runs share one database: the second run finds the quest already handed in.
-    const title = page.locator('[data-test="quest-title"]', { hasText: 'Spelling list 3' })
-    // eslint-disable-next-line playwright/no-conditional-in-test -- needed because the two runs share data
-    if ((await page.locator('[data-test="quest-open"]').count()) === 0) return
+  // Mutates h_1 from 'assigned' -> 'submitted'; only run once on chromium so the
+  // mobile project (which runs after) is not left with zero assigned quests.
+  test('clicking I\'m done! submits the quest and shows waiting message', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'mobile', 'state-mutating test runs on chromium only')
 
-    const berriesBefore = await page.locator('[data-test="berries"]').innerText()
-    await title.click()
-    const quiz = page.locator('[data-test="quiz"]')
+    await expect(page.locator('[data-test="submit-quest-btn"]').first()).toBeVisible()
+    const todoBefore = await page.locator('[data-test="submit-quest-btn"]').count()
 
-    // DONE! is not there until every answer is right
-    await expect(quiz.locator('[data-test="quest-done"]')).toHaveCount(0)
-    const inputs = quiz.locator('input')
-    const wrong = ['apple', 'friend', 'wrong', 'train', 'school']
-    for (let i = 0; i < wrong.length; i++) await inputs.nth(i).fill(wrong[i])
-    await quiz.locator('[data-test="quiz-check"]').click()
-    await expect(quiz.locator('.wrong')).toHaveCount(1)
-    await expect(quiz.locator('[data-test="quest-done"]')).toHaveCount(0)
+    await page.locator('[data-test="submit-quest-btn"]').first().click()
 
-    // now every answer is right, so DONE! appears
-    await inputs.nth(2).fill('house')
-    await quiz.locator('[data-test="quiz-check"]').click()
-    await quiz.locator('[data-test="quest-done"]').click()
-
-    await expect(page.locator('[data-test="toast"]')).toContainText('Quest handed in')
-    await expect(page.locator('[data-test="berries"]')).toHaveText(berriesBefore)
+    await expect(page.locator('[data-test="submit-quest-btn"]')).toHaveCount(todoBefore - 1)
+    await expect(page.locator('[data-test="waiting-message"]').first()).toBeVisible()
   })
 
-  test('the Bounty Board shows first names and highlights me', async ({ page }) => {
+  test('badge shelf renders all expected badges', async ({ page }) => {
+    await expect(page.getByText('First Quest')).toBeVisible()
+    await expect(page.getByText('Century')).toBeVisible()
+  })
+})
+
+test.describe('Leaderboard', () => {
+  test.beforeEach(async ({ page }) => {
     await loginAs(page, 'child')
-    await page.getByRole('link', { name: 'Bounty Board' }).first().click()
-    await expect(page).toHaveURL(/\/child\/leaderboard$/)
-    await expect(page.locator('[data-test="bounty-row"]').first()).toBeVisible()
-    await expect(page.locator('[data-test="bounty-board"]')).toContainText('Luffytaro')
-    // privacy: children are shown by first name only, never "Luffytaro Wong"
-    await expect(page.locator('[data-test="bounty-board"]')).not.toContainText('Wong')
+    await page.goto('/child/leaderboard')
+  })
+
+  test('leaderboard page loads and shows entries', async ({ page }) => {
+    await expect(page.getByRole('heading', { name: /Leaderboard/i })).toBeVisible()
+    await expect(page.locator('[data-test="podium-1"]')).toBeVisible()
+  })
+
+  test('switching to Most improved tab activates it', async ({ page }) => {
+    await page.locator('[data-test="tab-improved"]').click()
+    await expect(page.locator('[data-test="tab-improved"]')).toHaveClass(/active/)
   })
 })

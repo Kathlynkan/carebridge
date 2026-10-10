@@ -1,23 +1,7 @@
 // =============================================================
 // /homework  - homework "quests"
 // Owners: Ning Xuan (volunteer assigns) [done]  +  Jachin (child hands in, berries, leaderboard)
-// =============================================================
-// How a quest travels (its "status" changes step by step):
-//
-//   'assigned'   the volunteer gave the quest to the child
-//        |  the child presses DONE!        -> PUT /homework/:id/submit
-//        v
-//   'submitted'  the child handed it in, now it waits for the volunteer (the "Captain")
-//        |  the volunteer checks it         -> PUT /homework/:id/verify
-//        v
-//   'verified'   checked! The child is paid the berries now.
-//
-// Berries (the pirate money) are saved on the child as child.points.
-// The ranks and badges are worked out in the browser: client/src/utils/gamification.js
-// =============================================================
-import { Router } from 'express'
-import { Homework, Child, Deck } from '../models/index.js'
-import { requireAuth, requireRole } from '../middleware/auth.js'
+// ======================================================import { requireAuth, requireRole } from '../middleware/auth.js'
 import { canAccessChild, visibleChildIds } from '../utils/access.js'
 
 const router = Router()
@@ -61,51 +45,49 @@ router.get('/', async (req, res) => {
   res.json(list)
 })
 
-// ---------------------------------------------------------------
-// GET /homework/leaderboard
-// The "Bounty Board": the 10 children with the most berries, and where "I" am.
-// PRIVACY: we only send the FIRST NAME, the avatar, the berries and the place.
-// We never send ids, surnames or schools.
-// (This route is written before any '/:id' route so the word "leaderboard" is not mistaken for an id.)
-// ---------------------------------------------------------------
+// GET /homework/leaderboard                     (Jachin)
+// ?period=week  -> stars earned this week (points from verified homework completed in the last 7 days)
+// default       -> all-time (total child points, top 10)
 router.get('/leaderboard', async (req, res) => {
-  // If the person asking is a child, remember which child they are, so we can highlight them.
-  let myChildId = null
-  if (req.user.role === 'child') {
-    myChildId = req.user.childId
+  if (req.query.period === 'week') {
+    // Use YYYY-MM-DD string comparison — works for both date-only and ISO strings
+    const sevenDaysAgoStr = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10)
+
+    const recentVerified = await Homework.find({
+      status: 'verified',
+      completedAt: { $gte: sevenDaysAgoStr },
+    })
+
+    // Sum points earned per child this week
+    const weekPoints = {}
+    for (const hw of recentVerified) {
+      weekPoints[hw.childId] = (weekPoints[hw.childId] || 0) + hw.points
+    }
+
+    if (Object.keys(weekPoints).length === 0) return res.json([])
+
+    const children = await Child.find({ _id: { $in: Object.keys(weekPoints) } }).select(
+      'name points avatar',
+    )
+    const entries = children
+      .map((c) => ({
+        childId: c.id,
+        name: c.name,
+        avatar: c.avatar,
+        points: weekPoints[c.id] || 0,
+      }))
+      .sort((a, b) => b.points - a.points)
+
+    return res.json(entries)
   }
 
-  // Get ALL the children, the one with the most berries first. (-1 means biggest first.)
-  const allChildren = await Child.find().sort({ points: -1, name: 1 })
-
-  // Go through the children one by one. Place number 1 is the first child in the list, 2 is the next, and so on.
-  const top = [] // the first 10 children
-  let me = null // my own row
-  for (let i = 0; i < allChildren.length; i++) {
-    const child = allChildren[i]
-
-    // Make the row we will send. Only first name, avatar, berries and place.
-    const row = {
-      rank: i + 1,
-      name: child.name.split(' ')[0], // "Luffy Wong" becomes "Luffy"
-      avatar: child.avatar,
-      photo: child.photo, // the path of the picture for the poster ('' if there is none)
-      points: child.points,
-      isMe: child.id === myChildId,
-    }
-
-    // Only the first 10 go on the board.
-    if (i < 10) {
-      top.push(row)
-    }
-
-    // Remember my own row, even if I am not in the first 10.
-    if (row.isMe) {
-      me = row
-    }
-  }
-
-  res.json({ top, me })
+  // Default: all-time by total points
+  const children = await Child.find({}).sort({ points: -1 }).limit(10).select('name points avatar')
+  res.json(
+    children.map((c) => ({ childId: c.id, name: c.name, avatar: c.avatar, points: c.points })),
+  )
 })
 
 // ---------------------------------------------------------------
@@ -246,72 +228,42 @@ router.post('/:id/answers', requireRole('child'), async (req, res) => {
   res.json({ results, allCorrect })
 })
 
-// ---------------------------------------------------------------
-// PUT /homework/:id/submit
-// The CHILD presses DONE!  The quest goes from 'assigned' to 'submitted'.
-// No berries yet: they are only paid when the volunteer checks the quest.
-// ---------------------------------------------------------------
+// PUT /homework/:id/submit  (Jachin) -> child marks homework as done
 router.put('/:id/submit', requireRole('child'), async (req, res) => {
-  // 1. Find the quest.
-  const quest = await Homework.findById(req.params.id)
-
-  // 2. It must exist, and it must belong to THIS child. (A child cannot hand in someone else's quest.)
-  if (!quest || quest.childId !== req.user.childId) {
-    return res.status(404).json({ message: 'Quest not found.' })
+  const hw = await Homework.findById(req.params.id)
+  if (!hw) return res.status(404).json({ message: 'Homework not found.' })
+  if (hw.childId !== req.user.childId) {
+    return res.status(403).json({ message: 'This is not your homework.' })
   }
-
-  // 3. It must still be waiting to be done. (If it was already handed in, pressing the button again does nothing.)
-  if (quest.status !== 'assigned') {
-    return res.status(409).json({ message: 'You already handed this quest in.' })
+  if (hw.status !== 'assigned') {
+    return res.status(400).json({ message: 'Homework is already submitted or verified.' })
   }
-
-  // 3b. A quest with questions can only be handed in after the child got every answer right.
-  if (quest.questions.length > 0 && !quest.answersCorrect) {
-    return res.status(400).json({ message: 'Answer all the questions correctly first.' })
-  }
-
-  // 4. Change the status, write down when, and save it in the database.
-  quest.status = 'submitted'
-  quest.completedAt = new Date().toISOString()
-  await quest.save()
-
-  res.json(hideAnswers(quest))
+  hw.status = 'submitted'
+  hw.completedAt = new Date().toISOString().slice(0, 10)
+  await hw.save()
+  res.json(hw)
 })
 
-// ---------------------------------------------------------------
-// PUT /homework/:id/verify
-// The VOLUNTEER (the Captain) checks a handed-in quest. The status goes to 'verified'
-// and the child is PAID the berries of the quest.
-// ---------------------------------------------------------------
+// PUT /homework/:id/verify  (Jachin) -> volunteer confirms, child earns points
+// findOneAndUpdate with status condition makes the submitted→verified transition atomic,
+// preventing double-award if two requests race on the same homework.
 router.put('/:id/verify', requireRole('volunteer', 'coordinator'), async (req, res) => {
-  // 1. Find the quest, and the child it belongs to.
-  const quest = await Homework.findById(req.params.id)
-  let child = null
-  if (quest) {
-    child = await Child.findById(quest.childId)
+  const hw = await Homework.findOneAndUpdate(
+    { _id: req.params.id, status: 'submitted' },
+    { $set: { status: 'verified' } },
+    { new: true },
+  )
+  if (!hw) {
+    const exists = await Homework.exists({ _id: req.params.id })
+    if (!exists) return res.status(404).json({ message: 'Homework not found.' })
+    return res.status(400).json({ message: 'Homework must be submitted before it can be verified.' })
   }
-
-  // 2. Only the child's own volunteers (or a coordinator) may check the quest.
-  //    Anyone else gets the same answer as for a quest that does not exist.
-  if (!quest || !canAccessChild(req.user, child)) {
-    return res.status(404).json({ message: 'Quest not found.' })
-  }
-
-  // 3. Only a quest that was handed in can be checked.
-  //    A quest that is already 'verified' is refused, so pressing the button again does not pay again.
-  if (quest.status !== 'submitted') {
-    return res.status(409).json({ message: 'This quest has not been handed in, or was already checked.' })
-  }
-
-  // 4. Mark the quest as checked.
-  quest.status = 'verified'
-  await quest.save()
-
-  // 5. Pay the child: add the quest's berries to the child's points, and save.
-  child.points = child.points + quest.points
-  await child.save()
-
-  res.json({ homework: quest, points: child.points })
+  const child = await Child.findByIdAndUpdate(
+    hw.childId,
+    { $inc: { points: hw.points } },
+    { new: true },
+  )
+  res.json({ homework: hw, points: child.points })
 })
 
 export default router

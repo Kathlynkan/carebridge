@@ -1,116 +1,188 @@
-// Unit tests for the pirate rules (Vitest). Run:  pnpm test:unit
 import { describe, it, expect } from 'vitest'
-import { RANKS, KING_AT, berries, rankFor, levelFor, earnedBadges, badgeStory, groupQuestsByMilestone } from '../gamification'
+import { earnedBadges, levelFor, BADGES } from '../gamification'
 
-// A handed-in quest. Unless a test says otherwise it was finished on its due date, so it was on time.
-function quest(changes = {}) {
-  const dueDate = changes.dueDate || '2026-10-10'
-  return { subject: 'Math', dueDate, status: 'verified', completedAt: dueDate + 'T10:00:00.000Z', ...changes }
-}
+const child0 = { points: 0 }
+const child100 = { points: 100 }
 
-describe('berries', () => {
-  it('puts the berry sign in front and never shows a negative or odd number', () => {
-    expect(berries(20)).toBe('฿20')
-    expect(berries(-5)).toBe('฿0')
-    expect(berries(undefined)).toBe('฿0')
-  })
+const verifiedHw = (overrides = {}) => ({
+  id: 'h_test',
+  status: 'verified',
+  subject: 'Math',
+  dueDate: '2026-10-10',
+  completedAt: '2026-10-08',
+  points: 10,
+  ...overrides,
 })
 
-describe('rankFor', () => {
-  it('starts as a Stowaway with nothing', () => {
-    const r = rankFor(0)
-    expect(r.rank.name).toBe('Stowaway')
-    expect(r.next.name).toBe('Cabin Boy')
-    expect(r.toNext).toBe(40)
+const session = (overrides = {}) => ({
+  topic: 'Fractions',
+  date: '2026-10-01',
+  attempted: 5,
+  correct: 4,
+  ...overrides,
+})
+
+describe('levelFor', () => {
+  it('starts at level 1 with 0 points', () => {
+    expect(levelFor(0)).toEqual({ level: 1, progress: 0 })
   })
 
-  it('moves up exactly when the berries reach the next rank', () => {
-    expect(rankFor(39).rank.name).toBe('Stowaway')
-    expect(rankFor(40).rank.name).toBe('Cabin Boy')
-    expect(rankFor(120).rank.name).toBe('Deckhand')
+  it('reaches level 2 at 100 points', () => {
+    expect(levelFor(100)).toEqual({ level: 2, progress: 0 })
   })
 
-  it('makes the child King of the Pirates at the top, with nothing left to chase', () => {
-    const r = rankFor(KING_AT)
-    expect(r.isKing).toBe(true)
-    expect(r.next).toBeNull()
-    expect(r.toNext).toBe(0)
-  })
-
-  it('gives every rank its own Bootstrap icon', () => {
-    const icons = RANKS.map((rank) => rank.icon)
-    expect(new Set(icons).size).toBe(RANKS.length)
+  it('tracks progress within a level', () => {
+    expect(levelFor(150)).toEqual({ level: 2, progress: 50 })
   })
 })
 
 describe('earnedBadges', () => {
-  it('earns nothing with no quests and no berries', () => {
-    expect(earnedBadges({ points: 0 }, [])).toEqual([])
+  it('returns no badges for a new child', () => {
+    expect(earnedBadges(child0, [], [])).toHaveLength(0)
   })
 
-  it('Set Sail: handing in a first quest', () => {
-    expect(earnedBadges({ points: 0 }, [quest({ status: 'submitted' })])).toEqual(['first-quest'])
-    expect(earnedBadges({ points: 0 }, [quest({ status: 'assigned', completedAt: null })])).toEqual([])
+  it('awards first-quest after one verified homework', () => {
+    const result = earnedBadges(child0, [verifiedHw()], [])
+    expect(result.map((b) => b.id)).toContain('first-quest')
   })
 
-  it('Navigator: three on-time quests in a row, and a late quest breaks the run', () => {
-    const three = [quest({ dueDate: '2026-10-01' }), quest({ dueDate: '2026-10-02' }), quest({ dueDate: '2026-10-03' })]
-    expect(earnedBadges({ points: 0 }, three)).toContain('streak-3')
-    const late = [three[0], quest({ dueDate: '2026-10-02', completedAt: '2026-10-04T09:00:00.000Z' }), three[2]]
-    expect(earnedBadges({ points: 0 }, late)).not.toContain('streak-3')
+  it('awards century at 100 points', () => {
+    const result = earnedBadges(child100, [], [])
+    expect(result.map((b) => b.id)).toContain('century')
   })
 
-  it('Poneglyph Reader: five English quests', () => {
-    const english = []
-    for (let i = 1; i <= 5; i++) {
-      english.push(quest({ subject: 'English', dueDate: '2026-10-0' + i }))
-    }
-    expect(earnedBadges({ points: 0 }, english)).toContain('bookworm')
-    expect(earnedBadges({ points: 0 }, english.slice(0, 4))).not.toContain('bookworm')
+  it('does not award century below 100 points', () => {
+    const result = earnedBadges({ points: 99 }, [], [])
+    expect(result.map((b) => b.id)).not.toContain('century')
   })
 
-  it('Treasure Hunter at 100 berries, Pirate King at the top', () => {
-    expect(earnedBadges({ points: 99 }, [])).not.toContain('century')
-    expect(earnedBadges({ points: 100 }, [])).toContain('century')
-    expect(earnedBadges({ points: KING_AT }, [])).toContain('pirate-king')
-  })
-})
-
-describe('groupQuestsByMilestone', () => {
-  it('gives one list for each rank', () => {
-    const groups = groupQuestsByMilestone(0, [])
-    expect(groups.length).toBe(RANKS.length)
-    expect(groups[0]).toEqual([])
+  it('awards fraction-hero when session has 80%+ on Fractions', () => {
+    const result = earnedBadges(child0, [], [session({ correct: 4, attempted: 5 })])
+    expect(result.map((b) => b.id)).toContain('fraction-hero')
   })
 
-  it('puts checked quests at the rank the child had when they were paid', () => {
-    // The child has 120 berries. The two checked quests (10 + 20) were paid at 90 (Cabin Boy) and at 100 (Deckhand).
-    const first = quest({ id: 'a', points: 10 })
-    const second = quest({ id: 'b', points: 20 })
-    const groups = groupQuestsByMilestone(120, [first, second])
-    expect(groups[1]).toEqual([first])
-    expect(groups[2]).toEqual([second])
+  it('does not award fraction-hero on a non-fraction topic', () => {
+    const result = earnedBadges(child0, [], [session({ topic: 'Spelling', correct: 5, attempted: 5 })])
+    expect(result.map((b) => b.id)).not.toContain('fraction-hero')
   })
 
-  it('puts quests that are not checked yet at the current rank', () => {
-    const todo = quest({ id: 'c', status: 'assigned', completedAt: null, points: 10 })
-    const waiting = quest({ id: 'd', status: 'submitted', points: 10 })
-    const groups = groupQuestsByMilestone(120, [todo, waiting])
-    expect(groups[2]).toEqual([todo, waiting])
+  // streak-3
+  it('awards streak-3 for 3 consecutive on-time submissions', () => {
+    const hw = [
+      verifiedHw({ id: 'h1', completedAt: '2026-10-01', dueDate: '2026-10-02' }),
+      verifiedHw({ id: 'h2', completedAt: '2026-10-03', dueDate: '2026-10-04' }),
+      verifiedHw({ id: 'h3', completedAt: '2026-10-05', dueDate: '2026-10-06' }),
+    ]
+    const result = earnedBadges(child0, hw, [])
+    expect(result.map((b) => b.id)).toContain('streak-3')
   })
-})
 
-describe('badgeStory', () => {
-  it('tells the child what they did to earn a badge', () => {
-    expect(badgeStory('century', { points: 120 }, [])).toBe('You collected ฿120.')
-    expect(badgeStory('bookworm', { points: 0 }, [quest({ subject: 'English' })])).toBe('You handed in 1 English quests.')
+  it('does not award streak-3 when a late submission breaks the chain', () => {
+    const hw = [
+      verifiedHw({ id: 'h1', completedAt: '2026-10-01', dueDate: '2026-10-02' }),
+      verifiedHw({ id: 'h2', completedAt: '2026-10-05', dueDate: '2026-10-03' }), // late
+      verifiedHw({ id: 'h3', completedAt: '2026-10-06', dueDate: '2026-10-07' }),
+    ]
+    const result = earnedBadges(child0, hw, [])
+    expect(result.map((b) => b.id)).not.toContain('streak-3')
   })
-})
 
-describe('levelFor', () => {
-  it('is the rank number starting at 1, with the progress to the next rank', () => {
-    expect(levelFor(0)).toEqual({ level: 1, progress: 0 })
-    expect(levelFor(140)).toEqual({ level: 3, progress: 50 }) // halfway between Deckhand (100) and Rookie Pirate (180)
-    expect(levelFor(KING_AT).progress).toBe(100)
+  it('awards streak-3 when completedAt uses a full ISO datetime on the due date', () => {
+    const hw = [
+      verifiedHw({ id: 'h1', completedAt: '2026-10-01T09:00:00.000Z', dueDate: '2026-10-01' }),
+      verifiedHw({ id: 'h2', completedAt: '2026-10-03T11:00:00.000Z', dueDate: '2026-10-04' }),
+      verifiedHw({ id: 'h3', completedAt: '2026-10-05T14:00:00.000Z', dueDate: '2026-10-06' }),
+    ]
+    const result = earnedBadges(child0, hw, [])
+    expect(result.map((b) => b.id)).toContain('streak-3')
+  })
+
+  it('does not award streak-3 with only 2 on-time verified homework', () => {
+    const hw = [
+      verifiedHw({ id: 'h1', completedAt: '2026-10-01', dueDate: '2026-10-02' }),
+      verifiedHw({ id: 'h2', completedAt: '2026-10-03', dueDate: '2026-10-04' }),
+    ]
+    const result = earnedBadges(child0, hw, [])
+    expect(result.map((b) => b.id)).not.toContain('streak-3')
+  })
+
+  // bookworm (threshold now 2)
+  it('awards bookworm after 2 verified English homework', () => {
+    const hw = Array.from({ length: 2 }, (_, i) => verifiedHw({ id: `h${i}`, subject: 'English' }))
+    const result = earnedBadges(child0, hw, [])
+    expect(result.map((b) => b.id)).toContain('bookworm')
+  })
+
+  it('does not award bookworm with 1 verified English homework', () => {
+    const result = earnedBadges(child0, [verifiedHw({ subject: 'English' })], [])
+    expect(result.map((b) => b.id)).not.toContain('bookworm')
+  })
+
+  // rising-star
+  it('awards rising-star when a topic improves by 15+ percentage points over 3 sessions', () => {
+    const sessions = [
+      session({ topic: 'Fractions', date: '2026-10-01', correct: 1, attempted: 5 }), // 20%
+      session({ topic: 'Fractions', date: '2026-10-03', correct: 3, attempted: 5 }), // 60%
+      session({ topic: 'Fractions', date: '2026-10-05', correct: 4, attempted: 5 }), // 80%
+    ]
+    const result = earnedBadges(child0, [], sessions)
+    expect(result.map((b) => b.id)).toContain('rising-star')
+  })
+
+  it('does not award rising-star when improvement is less than 15 percentage points', () => {
+    const sessions = [
+      session({ topic: 'Fractions', date: '2026-10-01', correct: 3, attempted: 5 }), // 60%
+      session({ topic: 'Fractions', date: '2026-10-03', correct: 3, attempted: 5 }), // 60%
+      session({ topic: 'Fractions', date: '2026-10-05', correct: 4, attempted: 6 }), // ~67% — only 7pp gain
+    ]
+    const result = earnedBadges(child0, [], sessions)
+    expect(result.map((b) => b.id)).not.toContain('rising-star')
+  })
+
+  it('does not award rising-star with only 2 sessions on a topic', () => {
+    const sessions = [
+      session({ topic: 'Fractions', date: '2026-10-01', correct: 1, attempted: 5 }), // 20%
+      session({ topic: 'Fractions', date: '2026-10-05', correct: 5, attempted: 5 }), // 100%
+    ]
+    const result = earnedBadges(child0, [], sessions)
+    expect(result.map((b) => b.id)).not.toContain('rising-star')
+  })
+
+  it('does not award rising-star when the first session has zero attempts', () => {
+    // 3 total sessions but only 2 have attempted > 0; the invalid one is excluded,
+    // leaving fewer than the required 3 valid sessions.
+    const sessions = [
+      session({ topic: 'Fractions', date: '2026-10-01', correct: 0, attempted: 0 }), // invalid
+      session({ topic: 'Fractions', date: '2026-10-03', correct: 3, attempted: 5 }), // 60%
+      session({ topic: 'Fractions', date: '2026-10-05', correct: 4, attempted: 5 }), // 80%
+    ]
+    const result = earnedBadges(child0, [], sessions)
+    expect(result.map((b) => b.id)).not.toContain('rising-star')
+  })
+
+  it('does not award rising-star when performance declines', () => {
+    const sessions = [
+      session({ topic: 'Fractions', date: '2026-10-01', correct: 4, attempted: 5 }), // 80%
+      session({ topic: 'Fractions', date: '2026-10-03', correct: 3, attempted: 5 }), // 60%
+      session({ topic: 'Fractions', date: '2026-10-05', correct: 1, attempted: 5 }), // 20%
+    ]
+    const result = earnedBadges(child0, [], sessions)
+    expect(result.map((b) => b.id)).not.toContain('rising-star')
+  })
+
+  it('still awards rising-star when all 3 sessions are valid and improvement exceeds 15pp', () => {
+    const sessions = [
+      session({ topic: 'Fractions', date: '2026-10-01', correct: 1, attempted: 5 }), // 20%
+      session({ topic: 'Fractions', date: '2026-10-03', correct: 3, attempted: 5 }), // 60%
+      session({ topic: 'Fractions', date: '2026-10-05', correct: 4, attempted: 5 }), // 80%
+    ]
+    const result = earnedBadges(child0, [], sessions)
+    expect(result.map((b) => b.id)).toContain('rising-star')
+  })
+
+  it('result contains only BADGE objects from the BADGES list', () => {
+    const result = earnedBadges(child100, [verifiedHw()], [session()])
+    const badgeIds = BADGES.map((b) => b.id)
+    result.forEach((b) => expect(badgeIds).toContain(b.id))
   })
 })
