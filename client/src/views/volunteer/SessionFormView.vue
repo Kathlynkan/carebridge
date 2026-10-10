@@ -84,6 +84,14 @@ async function handleSubmit() {
         `/sessions/${route.params.sessionId}`, 
         form.value
       )
+
+      // push /children/childId=c_1
+      // redirect to child profile page after successful submission
+      router.push({
+        name: 'child-profile',
+        params: {id: childId.value},
+        query: {success: 'Session updated successfully'}
+      })
     } else {
       // else, create new session
       await api.post('/sessions', {
@@ -99,16 +107,14 @@ async function handleSubmit() {
         mood: form.value.mood,
         notes: form.value.notes,
       })
+
+      router.push({
+        name: 'child-profile',
+        params: {id: childId.value},
+        query: {success: 'Session created successfully'}
+      })
     }
 
-    // push /children/childId=c_1
-    // redirect to child profile page after successful submission
-    router.push({
-      name: 'child-profile',
-      params: {
-        id: childId.value
-      }
-    })
   } catch (err) {
     // convert error message into readable text
     error.value = errorMessage(err)
