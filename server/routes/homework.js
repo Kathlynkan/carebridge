@@ -1,6 +1,6 @@
 // =============================================================
 // /homework  - homework "quests"
-// Owners: Ning Xuan (volunteer assigns) [done]  +  Jachin (child hands in, berries, leaderboard)
+// Owners: Ning Xuan (volunteer assigns) [done]  +  Jachin (child hands in, stars, leaderboard)
 // =============================================================
 // How a quest travels (its "status" changes step by step):
 //
@@ -10,10 +10,9 @@
 //   'submitted'  the child handed it in, now it waits for the volunteer (the "Captain")
 //        |  the volunteer checks it         -> PUT /homework/:id/verify
 //        v
-//   'verified'   checked! The child is paid the berries now.
+//   'verified'   checked! The child is paid the stars now.
 //
-// Berries (the pirate money) are saved on the child as child.points.
-// The ranks and badges are worked out in the browser: client/src/utils/gamification.js
+// Stars are saved on the child as child.points.
 // =============================================================
 import { Router } from 'express'
 import { Homework, Child, Deck } from '../models/index.js'

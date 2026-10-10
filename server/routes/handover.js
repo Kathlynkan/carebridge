@@ -11,7 +11,7 @@
 //   [x] Ask for JSON output and parse it safely (try/catch -> fallback)
 //   [ ] Improve the prompt in buildPrompt()
 //   [ ] Cache the summary per child until a new session is added (save API quota)
-//   [ ] audience = 'parent' -> friendly wording for Kat's parent page
+//   [x] audience = 'parent' -> friendly wording for Kat's parent page
 // =============================================================
 import { Router } from 'express'
 import axios from 'axios'
@@ -49,8 +49,20 @@ export function findRecurring(sessions) {
 
 // Backup summary: used when there is no API key or Gemini fails.
 // It just copies from the newest session.
-export function buildFallbackHandover(sessions) {
+// audience 'parent' = plain, friendly words (no "struggle", no "3/5 correct")
+export function buildFallbackHandover(sessions, audience = 'volunteer') {
   // child has no sessions yet
+  if (sessions.length === 0 && audience === 'parent') {
+    return {
+      continueTopic: 'No sessions yet',
+      struggle: '-',
+      whatWorked: '-',
+      lastResult: '-',
+      nextStep: 'The volunteer will meet your child soon and find out what they enjoy and need help with.',
+      recurring: [],
+      source: 'fallback',
+    }
+  }
   if (sessions.length === 0) {
     return {
       continueTopic: 'No sessions yet',
@@ -63,7 +75,32 @@ export function buildFallbackHandover(sessions) {
     }
   }
 
-  const last = sessions[0] 
+  const last = sessions[0]
+
+  // parents get a simple version: "6 out of 8 right", and nothing alarming
+  if (audience === 'parent') {
+    let tricky = 'Nothing in particular - it went smoothly.'
+    if (last.struggles.length > 0) {
+      tricky = last.struggles.join(', ')
+    }
+    let helped = 'The volunteer is still finding out what works best.'
+    if (last.whatWorked) {
+      helped = last.whatWorked
+    }
+    let comingUp = 'The volunteer will decide next time.'
+    if (last.nextStep) {
+      comingUp = last.nextStep
+    }
+    return {
+      continueTopic: `${last.subject}: ${last.topic}`,
+      struggle: tricky,
+      whatWorked: helped,
+      lastResult: `Got ${last.correct} out of ${last.attempted} right`,
+      nextStep: comingUp,
+      recurring: findRecurring(sessions),
+      source: 'fallback',
+    }
+  }
 
   let struggle = 'None noted'
   if (last.struggles.length > 0) {
@@ -104,8 +141,16 @@ function buildPrompt(child, sessions, audience) {
     notes = notes + `Next step: ${s.nextStep}\n`
   }
 
+  // for a parent: warm, short, simple words, no teaching jargon, and nothing that sounds like blame
+  let wording = ''
+  if (audience === 'parent') {
+    wording = `
+  The reader is the child's PARENT, not a teacher. Write short, warm, plain sentences. No jargon or abbreviations.
+  Say "got 6 out of 8 right" instead of "6/8 correct". Say "a bit tricky" instead of "struggled". Be kind and honest.`
+  }
+
   return `You are helping student-care volunteers hand over a child's learning between sessions.
-  Audience: ${audience}.
+  Audience: ${audience}.${wording}
   Child: ${child.name}, ${child.level}.
   Recent session notes (newest first):
   ${notes}
@@ -194,7 +239,7 @@ router.post('/:childId', async (req, res) => {
   }
 
   // if Gemini didn't work -> send the backup summary
-  const fallback = buildFallbackHandover(sessions)
+  const fallback = buildFallbackHandover(sessions, audience)
   res.json(fallback)
 })
 

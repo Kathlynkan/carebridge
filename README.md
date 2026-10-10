@@ -87,7 +87,7 @@ Open http://localhost:5173. The URL with `/__devtools__/` opens Vue DevTools.
 | Volunteer | `volunteer2@carebridge.sg` | Daniel — Ethan, Meera, Ryan |
 | Volunteer | `volunteer3@carebridge.sg` | Priya — Arjun |
 | Coordinator | `coordinator@carebridge.sg` | Sees the whole centre |
-| Parent | `parent@carebridge.sg` | Grace — parent of Ethan |
+| Parent | `parent@carebridge.sg` | Ms Grace — parent of Ethan **and** Mia |
 | Parent | `parent2@carebridge.sg` | Ravi — parent of Meera **and** Arjun |
 | Child | `child@carebridge.sg` | Ethan |
 | Child | `child2@carebridge.sg` | Meera |
@@ -179,4 +179,4 @@ All routes except `/auth/signup` and `/auth/login` need `Authorization: Bearer <
 
 ## Third-party code & credits
 
-Bootstrap, Bootstrap Icons, Vue, Vue Router, Pinia, Axios, Chart.js, vue-chartjs, Express, Mongoose, Playwright, Vitest (all free/open-source). Fonts: Nunito (Google Fonts); the child pages use Arial and Georgia. The child pages ("Road to Becoming King of the Pirates", berries, Bounty Board) are a fan-inspired nod to the One Piece series and use only emoji and our own CSS, no original artwork. The project skeleton was generated with AI assistance as boilerplate starter code, which the module allows. Each feature is implemented by its owner as listed in WORKLOAD.md.
+Bootstrap, Bootstrap Icons, Vue, Vue Router, Pinia, Axios, Chart.js, vue-chartjs, Express, Mongoose, Playwright, Vitest (all free/open-source). Fonts: Nunito (Google Fonts). The project skeleton was generated with AI assistance as boilerplate starter code, which the module allows. Each feature is implemented by its owner as listed in WORKLOAD.md.

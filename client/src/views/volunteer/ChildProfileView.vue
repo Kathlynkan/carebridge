@@ -74,7 +74,7 @@ function editSession(sessionId) {
   router.push({ name: 'session-edit', params: { sessionId } })
 }
 
-// The child handed a quest in; the volunteer checks it and the child is paid the berries (PUT /homework/:id/verify)
+// The child handed a quest in; the volunteer checks it and the child is paid the stars (PUT /homework/:id/verify)
 const checkingQuestId = ref(null)
 async function verifyQuest(homeworkId) {
   checkingQuestId.value = homeworkId
