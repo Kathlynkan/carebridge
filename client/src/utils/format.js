@@ -34,7 +34,7 @@ export function accuracy(session) {
   return Math.round((session.correct / session.attempted) * 100)
 }
 
-// "Luffy Wong" -> "Luffy"
+// "Ethan Wong" -> "Ethan"
 export function firstName(fullName = '') {
   return fullName.split(' ')[0]
 }

@@ -83,18 +83,18 @@ Open http://localhost:5173. The URL with `/__devtools__/` opens Vue DevTools.
 
 | Role | Email | Notes |
 |---|---|---|
-| Volunteer | `volunteer@carebridge.sg` | Aisha — assigned to Luffytaro, Arjun, Chloe |
-| Volunteer | `volunteer2@carebridge.sg` | Daniel — Luffytaro, Meera, Ryan |
+| Volunteer | `volunteer@carebridge.sg` | Aisha — assigned to Ethan, Arjun, Chloe |
+| Volunteer | `volunteer2@carebridge.sg` | Daniel — Ethan, Meera, Ryan |
 | Volunteer | `volunteer3@carebridge.sg` | Priya — Arjun |
 | Coordinator | `coordinator@carebridge.sg` | Sees the whole centre |
-| Parent | `parent@carebridge.sg` | Grace — parent of Luffytaro |
+| Parent | `parent@carebridge.sg` | Grace — parent of Ethan |
 | Parent | `parent2@carebridge.sg` | Ravi — parent of Meera **and** Arjun |
-| Child | `child@carebridge.sg` | Luffytaro |
+| Child | `child@carebridge.sg` | Ethan |
 | Child | `child2@carebridge.sg` | Meera |
 
 The demo data is built to trigger interesting cases:
 
-- Luffytaro's fractions improve from 1/5 to 4/5, but "common denominators" keeps coming back.
+- Ethan's fractions improve from 1/5 to 4/5, but "common denominators" keeps coming back.
 - Chloe has had no session for 11 days.
 - Sofia has no volunteer assigned.
 - Chloe also has overdue homework.

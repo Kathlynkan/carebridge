@@ -97,7 +97,7 @@
     },
     {
       "id": "u_kid1",
-      "name": "Luffytaro",
+      "name": "Ethan",
       "email": "child@carebridge.sg",
       "password": "password123",
       "role": "child",
@@ -117,7 +117,7 @@
   "children": [
     {
       "id": "c_1",
-      "name": "Luffytaro Wong",
+      "name": "Ethan Wong",
       "level": "P4",
       "school": "Riverside Primary",
       "parentId": "u_par1",
@@ -131,7 +131,6 @@
       ],
       "points": 120,
       "avatar": "🦊",
-      "photo": "/photos/Luffy_WAD2.jpg",
       "followUp": false
     },
     {
@@ -1130,7 +1129,7 @@
       "id": "m_1",
       "childId": "c_1",
       "fromId": "u_vol1",
-      "text": "Hi Mrs Wong! Luffytaro did really well with fractions today - 4/5 correct.",
+      "text": "Hi Mrs Wong! Ethan did really well with fractions today - 4/5 correct.",
       "sentAt": "2026-10-04T09:40:00.000Z",
       "readBy": [
         "u_vol1",

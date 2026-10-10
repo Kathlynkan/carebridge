@@ -210,40 +210,6 @@ router.post('/', requireRole('volunteer', 'coordinator'), async (req, res) => {
   }
 })
 
-// ---------------------------------------------------------------
-// POST /homework/:id/answers
-// The CHILD sends the answers to the questions of a quest, like { answers: ['21', '28'] }.
-// We answer with true or false for every question. We never send the right answers back.
-// If ALL answers are right (and the quest is still to do), we remember it, so the child may now hand the quest in.
-// ---------------------------------------------------------------
-router.post('/:id/answers', requireRole('child'), async (req, res) => {
-  const quest = await Homework.findById(req.params.id)
-  if (!quest || quest.childId !== req.user.childId) {
-    return res.status(404).json({ message: 'Quest not found.' })
-  }
-
-  const given = req.body.answers || [] // the answers the child typed
-  const results = [] // true or false for every question
-  let allCorrect = true
-  for (let i = 0; i < quest.questions.length; i++) {
-    // Compare without capital letters and without spaces at the ends, so "Apple " is the same as "apple".
-    const typed = String(given[i] || '').trim().toLowerCase()
-    const right = String(quest.questions[i].answer).trim().toLowerCase()
-    results.push(typed === right)
-    if (typed !== right) {
-      allCorrect = false
-    }
-  }
-
-  // Remember that the child got everything right (only for a quest that is still to do).
-  if (allCorrect && quest.status === 'assigned') {
-    quest.answersCorrect = true
-    await quest.save()
-  }
-
-  res.json({ results, allCorrect })
-})
-
 // PUT /homework/:id/submit  (Jachin) -> child marks homework as done
 router.put('/:id/submit', requireRole('child'), async (req, res) => {
   const hw = await Homework.findById(req.params.id)
