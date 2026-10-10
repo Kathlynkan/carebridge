@@ -3,8 +3,8 @@
   Props:  session (Object), canEdit (Boolean)
   Emits:  edit(sessionId), delete(sessionId)
   TODO (Ning Xuan):
-    [ ] confirm before delete (Bootstrap modal)
-    [ ] collapse long notes ("Show more")
+    [done] confirm before delete (Bootstrap modal)
+    [done] collapse long notes ("Show more")
 ============================================================= -->
 <script setup>
 import { ref } from 'vue'
@@ -19,19 +19,21 @@ const emit = defineEmits(['edit', 'delete'])
 
 const mood = MOODS.find((m) => m.value === props.session.mood)
 
+const showDeleteModal = ref(false)
 const showFullNotes = ref(false)
 
 function handleDelete() {
-  const confirmed = window.confirm(
-    'Are you sure you want to delete this session?'
-  )
+  showDeleteModal.value = true
+}
 
-  // stop if user clicks cancel
-  if (!confirmed) {
-    return
-  }
-
+function confirmDelete() {
   emit('delete', props.session.id)
+
+  showDeleteModal.value = false
+}
+
+function cancelDelete() {
+  showDeleteModal.value = false
 }
 </script>
 
@@ -58,15 +60,17 @@ function handleDelete() {
       <div><i class="bi bi-lightbulb me-1"></i>What worked: {{ session.whatWorked || '-' }}</div>
       <div><i class="bi bi-flag me-1"></i>Next step: {{ session.nextStep || '-' }}</div>
       
-      <div v-if="session.notes" class="mt-1 fst-italic">
+      <div v-if="session.notes" class="mt-1 fst-italic text-break">
         <template v-if="showFullNotes">
           "{{ session.notes }}"
         </template>
 
         <template v-else>
-          "{{ session.notes.slice(0, 100) }}"
-          <span v-if="session.notes.length > 100">...</span>
+          "{{ session.notes.slice(0, 100) }}
+          <span v-if="session.notes.length > 100">..."</span>
         </template>
+
+        <br>
 
         <button
           v-if="session.notes.length > 100"
@@ -86,4 +90,27 @@ function handleDelete() {
       </button>
     </div>
   </div>
+
+  <div v-if="showDeleteModal" class="modal fade show d-block" tabindex="1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            Delete Session
+          </h5>
+        </div>
+
+        <div class="modal-body">
+          <p>Are you sure you want to delete this session?</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="cancelDelete">Cancel</button>
+          <button type="button" class="btn btn-danger" @click="confirmDelete">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div v-if="showDeleteModal" class="modal-backdrop fade show"></div>
 </template>
