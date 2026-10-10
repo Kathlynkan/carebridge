@@ -11,8 +11,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
-// import api, { errorMessage } from '@/services/api'
+import api from '@/services/api' // the shared axios: it knows the server address (works on the live site too) and sends the login token by itself
 import { useAuthStore } from '@/stores/auth' // get auth sotre from Pinia
 import PageHeader from '@/components/PageHeader.vue'
 import ChildCard from '@/components/ChildCard.vue'
@@ -32,9 +31,6 @@ const searchText = ref('')
 const selectedLevel = ref('') // '' means "All levels"
 const sortBy = ref('longest') // 'longest' or 'name'
 
-// Address of our Express server (change to the deployed URL when we deploy)
-const API_URL = 'http://localhost:8000'
-
 // show the child's session history
 const lastSessionByChild = computed(() => {
   const map = {}
@@ -50,18 +46,13 @@ async function loadData() {
   loading.value = true
   error.value = ''
 
-  // send the login token so the server knows who is asking (Week 5: request headers)
-  const config = {
-    headers: { Authorization: `Bearer ${auth.token}` },
-  }
-
   try {
     // get the children assigned to this volunteer
-    const childResponse = await axios.get(`${API_URL}/children`, config)
+    const childResponse = await api.get('/children')
     children.value = childResponse.data
 
     // get the sessions of those children
-    const sessionResponse = await axios.get(`${API_URL}/sessions`, config)
+    const sessionResponse = await api.get('/sessions')
     sessions.value = sessionResponse.data
   } catch (err) {
     error.value = err.response?.data?.message || err.message
