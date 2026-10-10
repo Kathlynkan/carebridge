@@ -35,6 +35,7 @@ const homework = ref([])
 const handover = ref(null)
 const handoverLoading = ref(false)
 const loading = ref(true)
+const success = ref('')
 const error = ref('')
 
 const pendingHomework = computed(() => homework.value.filter((h) => h.status !== 'verified'))
@@ -83,15 +84,29 @@ async function deleteSession(sessionId) {
   }
 }
 
-onMounted(loadData)
+onMounted(() => {
+  success.value = route.query.success || ''
+
+  // remove success message from URL after reading it
+  if (route.query.success) {
+    router.replace({
+      name: 'child-profile',
+      params: {id: childId}
+    })
+  }
+
+  loadData()
+})
 </script>
 
 <template>
   <div class="container py-4">
     <StateMessage v-if="loading" type="loading" />
-    <StateMessage v-else-if="error" type="error" :message="error" />
 
     <template v-else>
+      <div v-if="success" class="alert alert-success">{{ success }}</div>
+      <StateMessage v-else-if="error" type="error" :message="error" />
+
       <PageHeader :title="child.name" :subtitle="`${child.level} · ${child.school}`">
         <RouterLink
           v-if="auth.role === 'volunteer'"
