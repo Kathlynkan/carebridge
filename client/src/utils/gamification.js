@@ -6,8 +6,9 @@ export const BADGES = [
   { id: 'first-quest', icon: '🌱', name: 'First Quest', rule: 'Complete your first homework' },
   { id: 'streak-3', icon: '🔥', name: 'On Fire', rule: 'Complete 3 homework in a row on time' },
   { id: 'fraction-hero', icon: '🍕', name: 'Fraction Hero', rule: 'Score 4/5 or more on Fractions' },
-  { id: 'bookworm', icon: '📚', name: 'Bookworm', rule: 'Complete 5 English homework' },
+  { id: 'bookworm', icon: '📚', name: 'Bookworm', rule: 'Complete 2 English homework' },
   { id: 'century', icon: '💯', name: 'Century', rule: 'Earn 100 points' },
+  { id: 'rising-star', icon: '📈', name: 'Rising Star', rule: 'Improve by 15% on any topic (3+ sessions)' },
 ]
 
 export function earnedBadges(child, homework, sessions) {
@@ -24,7 +25,7 @@ export function earnedBadges(child, homework, sessions) {
           .sort((a, b) => a.completedAt.localeCompare(b.completedAt))
         let streak = 0
         for (const h of sorted) {
-          if (h.completedAt <= h.dueDate) {
+          if (h.completedAt.slice(0, 10) <= h.dueDate) {
             streak++
             if (streak >= 3) return true
           } else {
@@ -43,10 +44,26 @@ export function earnedBadges(child, homework, sessions) {
         )
 
       case 'bookworm':
-        return verified.filter((h) => h.subject === 'English').length >= 5
+        return verified.filter((h) => h.subject === 'English').length >= 2
 
       case 'century':
         return (child.points || 0) >= 100
+
+      case 'rising-star': {
+        const byTopic = {}
+        for (const s of sessions) {
+          if (!s.attempted) continue
+          byTopic[s.topic] = byTopic[s.topic] || []
+          byTopic[s.topic].push(s)
+        }
+        return Object.values(byTopic).some((list) => {
+          if (list.length < 3) return false
+          const sorted = [...list].sort((a, b) => a.date.localeCompare(b.date))
+          const first = sorted[0].correct / sorted[0].attempted
+          const last = sorted[sorted.length - 1].correct / sorted[sorted.length - 1].attempted
+          return last - first >= 0.15
+        })
+      }
 
       default:
         return false

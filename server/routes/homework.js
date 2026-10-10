@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 })
 
 // GET /homework/leaderboard                     (Jachin)
-// ?period=week  -> most improved (points from verified homework completed in the last 7 days)
+// ?period=week  -> stars earned this week (points from verified homework completed in the last 7 days)
 // default       -> all-time (total child points, top 10)
 router.get('/leaderboard', async (req, res) => {
   if (req.query.period === 'week') {
@@ -89,14 +89,19 @@ router.put('/:id/submit', requireRole('child'), async (req, res) => {
 })
 
 // PUT /homework/:id/verify  (Jachin) -> volunteer confirms, child earns points
+// findOneAndUpdate with status condition makes the submitted→verified transition atomic,
+// preventing double-award if two requests race on the same homework.
 router.put('/:id/verify', requireRole('volunteer', 'coordinator'), async (req, res) => {
-  const hw = await Homework.findById(req.params.id)
-  if (!hw) return res.status(404).json({ message: 'Homework not found.' })
-  if (hw.status !== 'submitted') {
+  const hw = await Homework.findOneAndUpdate(
+    { _id: req.params.id, status: 'submitted' },
+    { $set: { status: 'verified' } },
+    { new: true },
+  )
+  if (!hw) {
+    const exists = await Homework.exists({ _id: req.params.id })
+    if (!exists) return res.status(404).json({ message: 'Homework not found.' })
     return res.status(400).json({ message: 'Homework must be submitted before it can be verified.' })
   }
-  hw.status = 'verified'
-  await hw.save()
   const child = await Child.findByIdAndUpdate(
     hw.childId,
     { $inc: { points: hw.points } },

@@ -12,19 +12,22 @@ const allTime = ref([])
 const improved = ref([])
 const loading = ref(true)
 const loadingImproved = ref(false)
+const improvedLoaded = ref(false)
 const error = ref('')
 const activeTab = ref('alltime')
 
 const current = computed(() => (activeTab.value === 'alltime' ? allTime.value : improved.value))
 const podium = computed(() => current.value.slice(0, 3))
 const rest = computed(() => current.value.slice(3))
+const isInList = computed(() => current.value.some((e) => e.childId === auth.user?.childId))
 
 async function loadImproved() {
-  if (improved.value.length) return
+  if (improvedLoaded.value) return
   loadingImproved.value = true
   try {
     const res = await api.get('/homework/leaderboard', { params: { period: 'week' } })
     improved.value = res.data
+    improvedLoaded.value = true
   } catch (err) {
     error.value = errorMessage(err)
   } finally {
@@ -76,7 +79,7 @@ onMounted(async () => {
             data-test="tab-improved"
             @click="switchTab('week')"
           >
-            🔥 Most improved this week
+            🔥 Stars earned this week
           </button>
         </li>
       </ul>
@@ -103,7 +106,10 @@ onMounted(async () => {
                 :data-test="'podium-' + (i + 1)"
               >
                 <div class="fs-1 mb-1">{{ entry.avatar }}</div>
-                <div class="fw-heavy">{{ firstName(entry.name) }}</div>
+                <div class="fw-heavy">
+                  {{ firstName(entry.name) }}
+                  <span v-if="entry.childId === auth.user?.childId" class="badge bg-primary ms-1" style="font-size:0.6rem">You</span>
+                </div>
                 <div class="small text-muted-cb mb-1">⭐ {{ entry.points }}</div>
                 <div
                   class="podium-bar d-flex align-items-center justify-content-center fw-heavy"
@@ -133,7 +139,7 @@ onMounted(async () => {
             </table>
           </div>
 
-          <p v-if="auth.user?.childId" class="small text-muted-cb text-center mt-3">
+          <p v-if="isInList" class="small text-muted-cb text-center mt-3">
             Your row is highlighted above.
           </p>
         </template>

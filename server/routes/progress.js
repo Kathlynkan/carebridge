@@ -65,7 +65,7 @@ function trend(sorted) {
   if (sorted.length < 2) return 'steady'
   const earlier = sorted.slice(0, -3)
   const last3 = sorted.slice(-3)
-  if (earlier.length === 0) return 'steady'
+  if (earlier.length === 0) return 'not enough data yet'
   const avg = (list) => list.reduce((s, x) => s + (x.attempted ? x.correct / x.attempted : 0), 0) / list.length
   const diff = avg(last3) - avg(earlier)
   if (diff > 0.1) return 'improving'
