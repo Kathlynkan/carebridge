@@ -20,7 +20,9 @@
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.5.1",
+    "dev": "^0.1.5",
     "pinia": "^3.0.3",
+    "seed": "^0.4.4",
     "vue": "^3.5.22",
     "vue-chartjs": "^5.3.2",
     "vue-router": "^4.6.3"
