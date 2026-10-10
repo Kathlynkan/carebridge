@@ -74,15 +74,6 @@ function editSession(sessionId) {
 }
 
 async function deleteSession(sessionId) {
-  const confirmed = window.confirm(
-    'Are you sure you want to delete this session?'
-  )
-
-  // stop if user clicks cancel
-  if (!confirmed) {
-    return
-  }
-
   try {
     await api.delete(`/sessions/${sessionId}`)
 
