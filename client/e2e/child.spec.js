@@ -18,20 +18,32 @@ test.describe('Child: Road to Becoming King of the Pirates', () => {
     await expect(page.locator('[data-test="badge"]')).toHaveCount(5)
   })
 
-  test('handing a quest in sends it to the Captain and does NOT pay the berries yet', async ({ page }) => {
+  test('answering the questions, then handing a quest in sends it to the Captain and does NOT pay the berries yet', async ({ page }) => {
     await loginAs(page, 'child')
-    const button = page.locator('[data-test="quest-done"]').first()
-    // The desktop and phone runs share one database: the second run finds every quest already handed in.
+    // The desktop and phone runs share one database: the second run finds the quest already handed in.
+    const title = page.locator('[data-test="quest-title"]', { hasText: 'Spelling list 3' })
     // eslint-disable-next-line playwright/no-conditional-in-test -- needed because the two runs share data
-    if ((await button.count()) === 0) return
+    if ((await page.locator('[data-test="quest-open"]').count()) === 0) return
 
     const berriesBefore = await page.locator('[data-test="berries"]').innerText()
-    const waitingBefore = await page.locator('[data-test="quest-waiting"]').count()
-    await button.click()
+    await title.click()
+    const quiz = page.locator('[data-test="quiz"]')
+
+    // DONE! is not there until every answer is right
+    await expect(quiz.locator('[data-test="quest-done"]')).toHaveCount(0)
+    const inputs = quiz.locator('input')
+    const wrong = ['apple', 'friend', 'wrong', 'train', 'school']
+    for (let i = 0; i < wrong.length; i++) await inputs.nth(i).fill(wrong[i])
+    await quiz.locator('[data-test="quiz-check"]').click()
+    await expect(quiz.locator('.wrong')).toHaveCount(1)
+    await expect(quiz.locator('[data-test="quest-done"]')).toHaveCount(0)
+
+    // now every answer is right, so DONE! appears
+    await inputs.nth(2).fill('house')
+    await quiz.locator('[data-test="quiz-check"]').click()
+    await quiz.locator('[data-test="quest-done"]').click()
 
     await expect(page.locator('[data-test="toast"]')).toContainText('Quest handed in')
-
-    await expect(page.locator('[data-test="quest-waiting"]')).toHaveCount(waitingBefore + 1)
     await expect(page.locator('[data-test="berries"]')).toHaveText(berriesBefore)
   })
 

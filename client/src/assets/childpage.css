@@ -323,9 +323,32 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+/* the title of a quest is a button that looks like a link: tap it to answer the questions */
+.childpage .quest-title {
+    padding: 0;
+    text-align: left;
+    font: inherit;
+    color: #1a1209;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* a green tick message and a red cross message in the quiz */
+.childpage .correct {
+    color: #1f7a3a;
+}
+
+.childpage .wrong {
+    color: #d8322a;
+}
+
 .childpage .popup-box { /* box that stores pop up message */
     width: 100%;
     max-width: 420px;
+    max-height: 90vh; /* never taller than the screen */
+    overflow-y: auto; /* if the quiz is long, scroll inside the box */
 }
 
 /* Child on the bounty board */

@@ -17,6 +17,7 @@ import userRoutes from './routes/users.js'
 import childRoutes from './routes/children.js'
 import sessionRoutes from './routes/sessions.js'
 import homeworkRoutes from './routes/homework.js'
+import deckRoutes from './routes/decks.js'
 import messageRoutes from './routes/messages.js'
 import handoverRoutes from './routes/handover.js'
 import dashboardRoutes from './routes/dashboard.js'
@@ -41,6 +42,7 @@ app.use('/matchmaking', matchmakingRoutes)
 app.use('/dashboard', dashboardRoutes)
 app.use('/sessions', sessionRoutes)
 app.use('/homework', homeworkRoutes)
+app.use('/decks', deckRoutes)
 app.use('/handover', handoverRoutes)
 app.use('/messages', messageRoutes)
 app.use('/progress', progressRoutes)

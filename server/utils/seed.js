@@ -9,7 +9,7 @@
 // =============================================================
 import { readFile } from 'node:fs/promises'
 import { connectDb, disconnectDb } from './db.js'
-import { User, Child, Session, Homework, Message } from '../models/index.js'
+import { User, Child, Session, Homework, Message, Deck } from '../models/index.js'
 
 const DATE_FIELDS = ['date', 'dueDate', 'sentAt', 'createdAt', 'completedAt']
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -41,6 +41,7 @@ const collections = [
   [User, seed.users],
   [Child, seed.children],
   [Session, seed.sessions],
+  [Deck, seed.decks],
   [Homework, seed.homework],
   [Message, seed.messages],
 ]

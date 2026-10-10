@@ -23,7 +23,10 @@ A quest earns berries in two steps, so a child can't just click "done" to get ri
 | Pirate badges | 5 medals. Locked ones show a lock and `???` |
 | Bounty Board | The leaderboard: top 10 by berries, first names only |
 | Tap a milestone | The quests are inside the road. Tapping a milestone shows the quests of that rank (the child's own rank is open from the start). Tapping the open milestone again closes the quests. Tapping a milestone not reached yet shows "not unlocked yet, complete your current quests to unlock it" |
-| DONE! | A pop-up says the quest was handed in and how many berries are on the way. A paid quest has PRACTICE AGAIN (it shows the exercise again, no new berries) |
+| Answer the questions | Tap the title of a quest to open its quiz. Type the answers and press CHECK MY ANSWERS (a tick or a cross shows for each one). DONE! only appears when every answer is right. The server checks the answers and never sends the right answers to the child. A paid quest has PRACTICE AGAIN (the same quiz, no new berries) |
+| DONE! | After DONE! a pop-up says the quest was handed in and how many berries are on the way. The quest then shows WAITING until the Captain checks it, then PAID |
+| Where the questions come from | A volunteer gives homework from a **deck of questions**. On the "Give homework" page the volunteer picks a deck (they can see its questions and answers), a due date and the berries. The server then makes the quest with a copy of the deck's questions (POST /homework). The decks live in the database (server/models/Deck.js, 12 demo decks in server/data/seed.json) and the volunteer lists them with GET /decks |
+| Demo box | Add ?demo to the address (for example /child?demo=1) to pretend the child has the berries of any rank and try every scenario. Nothing is saved. Reload the page to go back |
 
 ## The 8 ranks
 

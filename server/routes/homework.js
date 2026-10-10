@@ -16,11 +16,20 @@
 // The ranks and badges are worked out in the browser: client/src/utils/gamification.js
 // =============================================================
 import { Router } from 'express'
-import { Homework, Child } from '../models/index.js'
+import { Homework, Child, Deck } from '../models/index.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
 import { canAccessChild, visibleChildIds } from '../utils/access.js'
 
 const router = Router()
+
+// A child must not see the right answers, so we take them out of the quest before we send it.
+function hideAnswers(quest) {
+  const data = quest.toJSON()
+  for (const question of data.questions || []) {
+    delete question.answer
+  }
+  return data
+}
 
 // Everything in this file needs a logged-in user.
 router.use(requireAuth)
@@ -40,6 +49,15 @@ router.get('/', async (req, res) => {
 
   const filter = { childId: childId || { $in: visible } }
   const list = await Homework.find(filter).sort({ dueDate: 1 }) // earliest due date first
+
+  // A child gets the questions without the answers. Volunteers and coordinators get everything.
+  if (req.user.role === 'child') {
+    const hidden = []
+    for (const quest of list) {
+      hidden.push(hideAnswers(quest))
+    }
+    return res.json(hidden)
+  }
   res.json(list)
 })
 
@@ -91,12 +109,91 @@ router.get('/leaderboard', async (req, res) => {
 })
 
 // ---------------------------------------------------------------
-// POST /homework      (Ning Xuan)
-// A volunteer gives a new quest to a child. Not built yet.
+// POST /homework      (volunteer or coordinator)
+// A volunteer gives a quest to a child. The questions come from a DECK:
+//   body = { childId, deckId, dueDate, points, title (optional), details (optional) }
+// The quest gets its own copy of the questions of the deck.
 // ---------------------------------------------------------------
 router.post('/', requireRole('volunteer', 'coordinator'), async (req, res) => {
-  // TODO (Ning Xuan): check the data, then Homework.create({ ...fields, volunteerId: req.user.id })
-  res.status(501).json({ message: 'TODO (Ning Xuan): assign homework' })
+  const { childId, deckId, dueDate, points, title, details } = req.body
+
+  // 1. The child, the deck and the due date are needed.
+  if (!childId || !deckId || !dueDate) {
+    return res.status(400).json({ message: 'Pick a child, a deck of questions and a due date.' })
+  }
+
+  // 2. The volunteer may only give homework to their own children. (Anyone else gets the same answer as for a child that does not exist.)
+  const child = await Child.findById(childId)
+  if (!canAccessChild(req.user, child)) {
+    return res.status(404).json({ message: 'Child not found.' })
+  }
+
+  // 3. The deck must exist.
+  const deck = await Deck.findById(deckId)
+  if (!deck) {
+    return res.status(404).json({ message: 'Deck not found.' })
+  }
+
+  // 4. The due date must not be in the past. Both are text like "2026-10-12", so we can compare them as text.
+  const today = new Date().toISOString().slice(0, 10)
+  if (dueDate < today) {
+    return res.status(400).json({ message: 'The due date cannot be in the past.' })
+  }
+
+  // 5. Copy the questions of the deck into the quest, one by one.
+  const questions = []
+  for (const question of deck.questions) {
+    questions.push({ text: question.text, answer: question.answer })
+  }
+
+  // 6. Make the quest. If the volunteer did not type a title or details, use the ones of the deck.
+  const quest = await Homework.create({
+    childId,
+    volunteerId: req.user.id,
+    deckId,
+    title: (title || '').trim() || deck.title,
+    subject: deck.subject,
+    details: (details || '').trim() || deck.description,
+    dueDate,
+    points: Number(points) || 10,
+    questions,
+  })
+
+  res.status(201).json(quest)
+})
+
+// ---------------------------------------------------------------
+// POST /homework/:id/answers
+// The CHILD sends the answers to the questions of a quest, like { answers: ['21', '28'] }.
+// We answer with true or false for every question. We never send the right answers back.
+// If ALL answers are right (and the quest is still to do), we remember it, so the child may now hand the quest in.
+// ---------------------------------------------------------------
+router.post('/:id/answers', requireRole('child'), async (req, res) => {
+  const quest = await Homework.findById(req.params.id)
+  if (!quest || quest.childId !== req.user.childId) {
+    return res.status(404).json({ message: 'Quest not found.' })
+  }
+
+  const given = req.body.answers || [] // the answers the child typed
+  const results = [] // true or false for every question
+  let allCorrect = true
+  for (let i = 0; i < quest.questions.length; i++) {
+    // Compare without capital letters and without spaces at the ends, so "Apple " is the same as "apple".
+    const typed = String(given[i] || '').trim().toLowerCase()
+    const right = String(quest.questions[i].answer).trim().toLowerCase()
+    results.push(typed === right)
+    if (typed !== right) {
+      allCorrect = false
+    }
+  }
+
+  // Remember that the child got everything right (only for a quest that is still to do).
+  if (allCorrect && quest.status === 'assigned') {
+    quest.answersCorrect = true
+    await quest.save()
+  }
+
+  res.json({ results, allCorrect })
 })
 
 // ---------------------------------------------------------------
@@ -118,12 +215,17 @@ router.put('/:id/submit', requireRole('child'), async (req, res) => {
     return res.status(409).json({ message: 'You already handed this quest in.' })
   }
 
+  // 3b. A quest with questions can only be handed in after the child got every answer right.
+  if (quest.questions.length > 0 && !quest.answersCorrect) {
+    return res.status(400).json({ message: 'Answer all the questions correctly first.' })
+  }
+
   // 4. Change the status, write down when, and save it in the database.
   quest.status = 'submitted'
   quest.completedAt = new Date().toISOString()
   await quest.save()
 
-  res.json(quest)
+  res.json(hideAnswers(quest))
 })
 
 // ---------------------------------------------------------------
