@@ -78,6 +78,8 @@ async function deleteSession(sessionId) {
   try {
     await api.delete(`/sessions/${sessionId}`)
 
+    success.value = 'Session deleted successfully'
+
     await loadData() // reload data after successful deletion
   } catch (err) {
     error.value = errorMessage(err)
