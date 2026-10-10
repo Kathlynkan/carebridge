@@ -6,7 +6,7 @@ test.describe('Child: Road to Becoming King of the Pirates', () => {
   test('sees the wanted poster, berries, rank and the road', async ({ page }) => {
     await loginAs(page, 'child')
     await expect(page.locator('[data-test="wanted-poster"]')).toContainText('WANTED')
-    await expect(page.locator('[data-test="wanted-poster"]')).toContainText('Luffy')
+    await expect(page.locator('[data-test="wanted-poster"]')).toContainText('Luffytaro')
     await expect(page.locator('[data-test="berries"]')).toContainText(/฿\d+/)
     await expect(page.locator('[data-test="rank"]')).toBeVisible()
     await expect(page.locator('[data-test="road"]')).toBeVisible()
@@ -30,6 +30,7 @@ test.describe('Child: Road to Becoming King of the Pirates', () => {
     await button.click()
 
     await expect(page.locator('[data-test="toast"]')).toContainText('Quest handed in')
+
     await expect(page.locator('[data-test="quest-waiting"]')).toHaveCount(waitingBefore + 1)
     await expect(page.locator('[data-test="berries"]')).toHaveText(berriesBefore)
   })
@@ -39,8 +40,8 @@ test.describe('Child: Road to Becoming King of the Pirates', () => {
     await page.getByRole('link', { name: 'Bounty Board' }).first().click()
     await expect(page).toHaveURL(/\/child\/leaderboard$/)
     await expect(page.locator('[data-test="bounty-row"]').first()).toBeVisible()
-    await expect(page.locator('[data-test="bounty-board"]')).toContainText(/you/i)
-    // privacy: children are shown by first name only, never "Luffy Wong"
+    await expect(page.locator('[data-test="bounty-board"]')).toContainText('Luffytaro')
+    // privacy: children are shown by first name only, never "Luffytaro Wong"
     await expect(page.locator('[data-test="bounty-board"]')).not.toContainText('Wong')
   })
 })

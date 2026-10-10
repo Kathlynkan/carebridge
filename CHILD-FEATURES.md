@@ -20,10 +20,10 @@ A quest earns berries in two steps, so a child can't just click "done" to get ri
 | WANTED poster | The child's avatar, name and berries, like a pirate bounty poster |
 | Rank and goal | The current rank, and "collect ฿600 to become King of the Pirates" |
 | The road to becoming King of the Pirates | The 8 ranks in a row. Each circle has an icon that says what the rank does (a crate for the Stowaway, a bucket for the Cabin Boy, tools for the Deckhand, a flag, a compass, binoculars, a medal, and a gem for the King), with the berries needed under the name. The stops the child has reached are bright, and a "YOU" label shows where they are |
-| Quests | One card per quest. Each shows DONE!, WAITING (for the Captain) or PAID |
 | Pirate badges | 5 medals. Locked ones show a lock and `???` |
 | Bounty Board | The leaderboard: top 10 by berries, first names only |
-| DONE! message | A speech panel at the top says the quest was handed in and how many berries are on the way |
+| Tap a milestone | The quests are inside the road. Tapping a milestone shows the quests of that rank (the child's own rank is open from the start). Tapping the open milestone again closes the quests. Tapping a milestone not reached yet shows "not unlocked yet, complete your current quests to unlock it" |
+| DONE! | A pop-up says the quest was handed in and how many berries are on the way. A paid quest has PRACTICE AGAIN (it shows the exercise again, no new berries) |
 
 ## The 8 ranks
 
@@ -88,7 +88,7 @@ Only Vue, CSS and basic JavaScript (the same things we learned in class):
 - **Berries can't be paid twice.** The server only checks a quest if its status is still "handed in", so pressing the button again does nothing.
 - **Children's privacy.** The Bounty Board only sends first names, avatars and numbers, never ids or surnames.
 - **Only the right people can act.** A child can only hand in their own quests. Only the child's own volunteer (or a coordinator) can check a quest.
-- **Works on a phone.** The road shrinks to fit, and the lettering on the wanted poster scales with the poster, so nothing spills out or scrolls sideways.
+- **Works on a phone.** The 8 stops of the road wrap onto a second line when the screen is narrow, and the title shrinks by itself (Bootstrap `display-4`), so nothing scrolls sideways.
 - **Kind to people who dislike motion.** If a device asks for reduced motion, the animations stop.
 
 ## Questions the teachers might ask
@@ -112,11 +112,11 @@ Demo logins (password `password123`): `child@carebridge.sg` is the child, and `v
 
 ## Adding a picture to a wanted poster
 
-A child can have an optional picture on their poster (the demo child **Luffy** uses `/photos/luffy.png`).
+A child can have an optional picture on their poster (the demo child **Luffytaro** uses `/photos/Luffy_WAD2.jpg`).
 
-1. Save the picture as `client/public/photos/luffy.png`.
-2. That's all. The poster and the Bounty Board show it automatically. If the file is missing, they show the child's emoji instead, so nothing breaks.
+1. Save the picture as `client/public/photos/Luffy_WAD2.jpg`.
+2. That's all. The poster shows it automatically. If the file is missing, it shows the child's emoji instead, so nothing breaks.
 
-How it works: each child has an optional `photo` field (a path like `/photos/luffy.png`, set in `server/data/seed.json`). The pages show an `<img>` when there is a photo, and the emoji otherwise.
+How it works: each child has an optional `photo` field (a path like `/photos/Luffy_WAD2.jpg`, set in `server/data/seed.json`). The pages show an `<img>` when there is a photo, and the emoji otherwise.
 
-Please only use pictures of **made-up characters**. The app is designed to keep photos of real children out (see the privacy rules in the README). Picture files in `client/public/photos/` are git-ignored on purpose, so they are never pushed to the public repo.
+Please only use pictures of **made-up characters**. The app is designed to keep photos of real children out (see the privacy rules in the README). Picture files in `client/public/photos/` are git-ignored on purpose, except the demo picture `Luffy_WAD2.jpg` (a made-up character), which is allowed in the repo.

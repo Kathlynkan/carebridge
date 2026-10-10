@@ -121,7 +121,7 @@ Every page in the running app shows a yellow **"Owner / to build"** panel (`<Tod
 | Priority | Task |
 |---|---|
 | Must | `GET /dashboard/alerts`: **no session in 7 days** (Chloe in the demo data) and **unassigned child** (Sofia). Show them in a "Needs attention" table. |
-| Should | More alert rules: the same struggle in 3+ of the last 5 sessions (Luffy: common denominators), overdue homework. Severity colours + filter by type. Click a row to open the child. |
+| Should | More alert rules: the same struggle in 3+ of the last 5 sessions (Luffytaro: common denominators), overdue homework. Severity colours + filter by type. Click a row to open the child. |
 | Should | "Flag for follow-up" toggle per child (`child.followUp`). |
 | Should | Matchmaking: `GET /matchmaking/:childId` → volunteers ranked by score (+2 per matched skill, +1 per shared day, −1 per child already assigned). Show *why* each one matches. `PUT …/assign` to assign or unassign. |
 | Should | Volunteers page: edit skills/days with checkboxes → `PUT /users/:id`. Show each volunteer's workload. |

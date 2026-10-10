@@ -23,7 +23,7 @@ test.describe('Authentication', () => {
   test('parent lands on the parent page', async ({ page }) => {
     await loginAs(page, 'parent')
     await expect(page).toHaveURL(/\/parent$/)
-    await expect(page.getByText('Luffy Wong')).toBeVisible()
+    await expect(page.getByText('Luffytaro Wong')).toBeVisible()
   })
 
   test('child lands on My Quests', async ({ page }) => {

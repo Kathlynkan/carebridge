@@ -1,33 +1,21 @@
 // =============================================================
 // THE PIRATE RULES                                   Owner: Jachin
 // =============================================================
-// What is this file?
-//   It holds the "rules of the game" for the child's pirate adventure.
-//   There is NO Vue in this file, only plain JavaScript functions.
-//   That makes the rules easy to read, easy to change, and easy to test
-//   (see utils/__tests__/gamification.spec.js).
+// This file holds the "rules of the game": the ranks, the berries and the badges.
+// It has NO Vue in it, only plain JavaScript.
 //
-// The story:
-//   Every child wants to become the KING OF THE PIRATES.
-//   A child earns BERRIES (the pirate money, written ฿) by finishing quests (homework).
-//   More berries = a higher pirate rank. The top rank is King of the Pirates.
-//   The berries are saved in the database as child.points.
+// The story: a child earns BERRIES (pirate money, written ฿) by finishing quests (homework).
+// More berries = a higher rank. The top rank is King of the Pirates.
+// The berries are saved in the database as child.points.
 // =============================================================
 
-// The berry sign. We put it in front of every amount, like ฿20.
-export const BERRY = '฿'
-
 // ---------- RANKS ----------
-// RANKS is a list (an array). Each rank is an object with 5 things:
-//   id    - a short name we use inside the code
-//   icon  - which Bootstrap Icon to show (the same icon library the nav bar uses), for example 'bi-flag-fill'
+// A list of 8 ranks. Each rank has:
+//   id    - a short name used inside the code
+//   icon  - a Bootstrap Icon
 //   name  - the name the child sees
-//   at    - how many berries the child needs to reach this rank
+//   at    - how many berries are needed to reach this rank
 //   motto - a sentence shown under the rank
-// Each icon says something about the job of the rank:
-//   Stowaway = a crate to hide in,  Cabin Boy = a bucket to scrub the deck,  Deckhand = tools to fix the ship,
-//   Rookie Pirate = a pirate flag,  Navigator = a compass,  First Mate = binoculars (the lookout),
-//   Captain = the captain's medal,  King of the Pirates = the treasure gem.
 export const RANKS = [
   { id: 'stowaway', icon: 'bi-box-seam', name: 'Stowaway', at: 0, motto: 'You snuck aboard. Time to prove yourself!' },
   { id: 'cabin-boy', icon: 'bi-bucket', name: 'Cabin Boy', at: 40, motto: 'You have a job on the ship now.' },
@@ -39,194 +27,180 @@ export const RANKS = [
   { id: 'pirate-king', icon: 'bi-gem', name: 'King of the Pirates', at: 600, motto: 'You found the One Piece! You are KING!' },
 ]
 
-// The last rank in the list is the goal. KING_AT is the number of berries it needs (600).
+// The berries needed for the last rank (600).
 export const KING_AT = RANKS[RANKS.length - 1].at
 
 // ---------- berries() ----------
-// Turns a number into text with the berry sign: berries(20) gives "฿20".
-// If the number is missing or negative we show ฿0 instead.
+// Puts the berry sign in front of a number: berries(20) gives "฿20".
+// If the number is missing or negative we show ฿0.
 export function berries(amount) {
   let total = Number(amount)
   if (isNaN(total) || total < 0) {
     total = 0
   }
-  return BERRY + Math.round(total)
+  return '฿' + Math.round(total)
 }
 
 // ---------- rankFor() ----------
-// Works out where a child is on the Road to Becoming King of the Pirates.
-// Give it the child's berries, and it gives back an object with:
-//   index         - the rank number, starting at 0 (0 = Stowaway)
-//   rank          - the whole rank object (name, icon, motto...)
-//   next          - the next rank to reach (or null if the child is already King)
-//   isKing        - true when the child has reached the top
-//   berries       - the berries (cleaned up into a number)
-//   toNext        - how many berries are still needed for the next rank
-//   percentToNext - how far (0 to 100) the child is between this rank and the next
-//   fractionToNext - the same as percentToNext but from 0 to 1 (the map uses this one)
-//   percentToKing - how far (0 to 100) the child is along the whole road
+// Works out where a child is on the road. Give it the child's berries, and it gives back:
+//   index  - the rank number, starting at 0 (0 = Stowaway)
+//   rank   - the whole rank object (name, icon, motto...)
+//   next   - the next rank (or null if the child is already King)
+//   isKing - true at the top
+//   toNext - berries still needed for the next rank
 export function rankFor(amount) {
-  // 1. Clean up the number.
-  let total = Number(amount)
-  if (isNaN(total) || total < 0) {
-    total = 0
-  }
-  total = Math.round(total)
-
-  // 2. Find the highest rank whose berries number we have reached.
-  //    We look at every rank from the bottom up. Each time we have enough berries, we remember it.
+  // Look at every rank. Each time the child has enough berries, remember that rank.
   let index = 0
   for (let i = 0; i < RANKS.length; i++) {
-    if (total >= RANKS[i].at) {
+    if (amount >= RANKS[i].at) {
       index = i
     }
   }
-  const rank = RANKS[index]
 
-  // 3. Find the next rank. If we are already at the last one, there is no next rank.
+  // The next rank is the one after this one. The King has no next rank.
   let next = null
+  let toNext = 0
   if (index < RANKS.length - 1) {
     next = RANKS[index + 1]
+    toNext = next.at - amount
   }
 
-  // 4. Work out the distance to the next rank.
-  let toNext = 0
-  let percentToNext = 100
-  if (next !== null) {
-    toNext = next.at - total
-    percentToNext = Math.round(((total - rank.at) / (next.at - rank.at)) * 100)
-  }
-
-  // 5. Work out how far along the whole road the child is (never more than 100).
-  let percentToKing = Math.round((total / KING_AT) * 100)
-  if (percentToKing > 100) {
-    percentToKing = 100
-  }
-
-  return {
-    index,
-    rank,
-    next,
-    isKing: next === null,
-    berries: total,
-    toNext,
-    percentToNext,
-    fractionToNext: percentToNext / 100,
-    percentToKing,
-  }
+  return { index, rank: RANKS[index], next, isKing: next === null, toNext }
 }
 
 // ---------- levelFor() ----------
-// Kept from the original starter code, in case an older page still asks for a "level".
-// The level is simply the rank number (starting at 1).
+// The child's level is the rank number starting at 1 (Stowaway = level 1, Cabin Boy = level 2...).
+//   level    - the level number
+//   progress - how far the child is towards the next rank, from 0 to 100 (the King is always 100)
 export function levelFor(points) {
   const road = rankFor(points)
-  return { level: road.index + 1, progress: road.percentToNext }
+  let progress = 100
+  if (road.next !== null) {
+    progress = Math.round(((points - road.rank.at) / (road.next.at - road.rank.at)) * 100)
+  }
+  return { level: road.index + 1, progress }
 }
 
 // ---------- BADGES ----------
-// Badges are small rewards for special things. Each badge has an id, an icon, a name, and a rule written in words.
-// The code that checks the rules is further down, in earnedBadges().
+// Each badge has an id, an icon, a name, and its rule written in words.
 export const BADGES = [
   { id: 'first-quest', icon: 'bi-flag-fill', name: 'Set Sail', rule: 'Hand in your first quest' },
-  { id: 'streak-3', icon: 'bi-wind', name: 'Tailwind', rule: 'Hand in 3 quests in a row on time' },
+  { id: 'streak-3', icon: 'bi-compass', name: 'Navigator', rule: 'Hand in 3 quests in a row on time' },
   { id: 'bookworm', icon: 'bi-journal-text', name: 'Poneglyph Reader', rule: 'Hand in 5 English quests' },
   { id: 'century', icon: 'bi-coin', name: 'Treasure Hunter', rule: 'Collect 100 berries' },
   { id: 'pirate-king', icon: 'bi-gem', name: 'Pirate King', rule: 'Reach the top of the Road: 600 berries' },
 ]
 
-// ---------- small helper functions used by the badge rules ----------
-
-// A quest is "handed in" when its status is not 'assigned' any more.
-// (The statuses are: 'assigned' = still to do, 'submitted' = handed in, 'verified' = checked by the volunteer.)
-// This returns a new list with only the handed-in quests.
-function handedInQuests(homework) {
-  const result = []
+// ---------- countProgress() ----------
+// Goes through the quests once and counts the things the badges need.
+//   handedIn   - quests handed in (the status is not 'assigned')
+//   english    - handed-in English quests
+//   longestRun - the longest run of quests handed in on time
+function countProgress(homework) {
+  let handedIn = 0
+  let english = 0
+  let run = 0 // the current run of quests handed in on time
+  let longestRun = 0 // the longest run so far
   for (const quest of homework) {
     if (quest.status !== 'assigned') {
-      result.push(quest)
+      handedIn = handedIn + 1
+      if (quest.subject === 'English') {
+        english = english + 1
+      }
+      // On time means done on or before the due date. Both are text like "2026-10-05".
+      if (quest.completedAt && quest.completedAt.slice(0, 10) <= quest.dueDate) {
+        run = run + 1
+      } else {
+        run = 0
+      }
+      if (run > longestRun) {
+        longestRun = run
+      }
     }
   }
-  return result
-}
-
-// Cuts the time off a full date: "2026-10-05T11:00:00.000Z" becomes "2026-10-05".
-function dayOf(text) {
-  return String(text || '').slice(0, 10)
-}
-
-// A quest was handed in "on time" if it was done on or before its due date.
-// Both dates are text like "2026-10-05", and comparing that kind of text works like comparing dates.
-function isOnTime(quest) {
-  if (!quest.completedAt) {
-    return false
-  }
-  return dayOf(quest.completedAt) <= quest.dueDate
-}
-
-// Looks at the handed-in quests and finds the longest run of on-time ones.
-// The list must be in the order the quests were due. (The server already sends them like that.)
-// Example: on time, on time, LATE, on time  ->  the longest run is 2.
-export function longestOnTimeStreak(homework) {
-  const quests = handedInQuests(homework)
-
-  let longest = 0
-  let current = 0
-  for (const quest of quests) {
-    if (isOnTime(quest)) {
-      current = current + 1 // the run keeps going
-    } else {
-      current = 0 // a late quest breaks the run
-    }
-    if (current > longest) {
-      longest = current
-    }
-  }
-  return longest
-}
-
-// Counts the handed-in quests that are about a subject, for example 'English'.
-function countBySubject(homework, subject) {
-  let count = 0
-  for (const quest of handedInQuests(homework)) {
-    if (quest.subject === subject) {
-      count = count + 1
-    }
-  }
-  return count
+  return { handedIn, english, longestRun }
 }
 
 // ---------- earnedBadges() ----------
-// Checks every badge and returns a list of the ones this child has earned.
+// Gives back a list with the ids of the badges the child has earned.
 //   child    - the child (we only need child.points)
-//   homework - the child's quests
+//   homework - the child's quests, in the order they are due
 export function earnedBadges(child, homework) {
-  const quests = homework || []
-  let points = 0
-  if (child) {
-    points = Number(child.points) || 0
-  }
+  const { handedIn, english, longestRun } = countProgress(homework)
 
+  // Check the rule of each badge.
   const earned = []
-  for (const badge of BADGES) {
-    let hasIt = false
+  if (handedIn >= 1) earned.push('first-quest')
+  if (longestRun >= 3) earned.push('streak-3')
+  if (english >= 5) earned.push('bookworm')
+  if (child.points >= 100) earned.push('century')
+  if (child.points >= KING_AT) earned.push('pirate-king')
+  return earned
+}
 
-    // One rule per badge:
-    if (badge.id === 'first-quest') {
-      hasIt = handedInQuests(quests).length >= 1
-    } else if (badge.id === 'streak-3') {
-      hasIt = longestOnTimeStreak(quests) >= 3
-    } else if (badge.id === 'bookworm') {
-      hasIt = countBySubject(quests, 'English') >= 5
-    } else if (badge.id === 'century') {
-      hasIt = points >= 100
-    } else if (badge.id === 'pirate-king') {
-      hasIt = points >= KING_AT
-    }
+// ---------- badgeStory() ----------
+// A sentence that tells the child what they did to earn a badge.
+// The page only shows it for a badge the child has earned. A locked badge shows no story, so the child finds out when they earn it.
+export function badgeStory(badgeId, child, homework) {
+  const { handedIn, english, longestRun } = countProgress(homework)
 
-    if (hasIt) {
-      earned.push(badge)
+  if (badgeId === 'first-quest') {
+    return 'You handed in ' + handedIn + ' quest(s). The first one set you sailing!'
+  }
+  if (badgeId === 'streak-3') {
+    return 'Your longest run is ' + longestRun + ' quests in a row, all handed in on time.'
+  }
+  if (badgeId === 'bookworm') {
+    return 'You handed in ' + english + ' English quests.'
+  }
+  if (badgeId === 'century') {
+    return 'You collected ' + berries(child.points) + '.'
+  }
+  // the last badge: pirate-king
+  return 'You collected ' + berries(child.points) + '. You are the King of the Pirates!'
+}
+
+// ---------- groupQuestsByMilestone() ----------
+// Puts every quest at the milestone (rank) it belongs to, so the road can show the tasks of each milestone.
+//   points   - the child's berries
+//   homework - the child's quests, in the order they are due
+// Gives back a list of 8 lists, one for each rank.
+//   A quest that was checked (verified) belongs to the rank the child had when it was paid.
+//   A quest that is not checked yet belongs to the child's current rank.
+export function groupQuestsByMilestone(points, homework) {
+  // 8 empty lists, one for each rank.
+  const groups = []
+  for (let i = 0; i < RANKS.length; i++) {
+    groups.push([])
+  }
+
+  // Add up the berries of the checked quests.
+  let paid = 0
+  for (const quest of homework) {
+    if (quest.status === 'verified') {
+      paid = paid + quest.points
     }
   }
-  return earned
+
+  // The berries the child had before the first checked quest. (They came from somewhere else, like the demo data.)
+  let total = points - paid
+  if (total < 0) {
+    total = 0
+  }
+
+  const current = rankFor(points).index
+  for (const quest of homework) {
+    if (quest.status === 'verified') {
+      // This quest was paid when the child had "total" berries, so it belongs to that rank.
+      let index = rankFor(total).index
+      if (index > current) {
+        index = current
+      }
+      groups[index].push(quest)
+      total = total + quest.points
+    } else {
+      groups[current].push(quest)
+    }
+  }
+  return groups
 }
