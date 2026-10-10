@@ -4,16 +4,16 @@
   The homework then appears on the child's quest page (Jachin)
   and on the parent page (Kat).
   TODO (Ning Xuan):
-    [ ] POST /homework with { childId, title, subject, details, dueDate, points }
-    [ ] validation: title required, due date not in the past
-    [ ] "suggest from next step": pre-fill title from the latest session's nextStep
+    [done] POST /homework with { childId, title, subject, details, dueDate, points }
+    [done] validation: title required, due date not in the past
+    [done] "suggest from next step": pre-fill title from the latest session's nextStep
 ============================================================= -->
 <script setup>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PageHeader from '@/components/PageHeader.vue'
-import TodoPanel from '@/components/TodoPanel.vue'
 import { SUBJECTS } from '@/utils/constants'
+import api, { errorMessage } from '@/services/api'
 
 const route = useRoute()
 const router = useRouter()
@@ -29,15 +29,62 @@ const form = ref({
 const error = ref('')
 
 async function handleSubmit() {
-  // TODO (Ning Xuan)
-  error.value = 'Not built yet (TODO Ning Xuan).'
+  try {
+    error.value = ''
+
+    const today = new Date().toISOString().slice(0, 10)
+
+    // check due date exists
+    if (!form.value.dueDate) {
+      error.value = 'Due date is required'
+      return
+    }
+
+    // validate due date
+    if (form.value.dueDate < today) {
+      error.value = 'Due date cannot be in the past'
+      return
+    }
+    
+    // check title exists
+    if (!form.value.title) {
+      error.value = 'Title is required'
+      return
+    }
+
+    // validate points
+    if (form.value.points < 0) {
+      error.value = 'Points cannot be negative'
+      return
+    }
+
+    await api.post('/homework', {
+      childId: form.value.childId,
+      title: form.value.title,
+      subject: form.value.subject,
+      details: form.value.details,
+      dueDate: form.value.dueDate,
+      points: form.value.points,
+    })
+
+    // push /children/childId=c_1
+    // redirect to child profile page after successful submission
+    router.push({
+      name: 'child-profile',
+      params: {
+        id: route.params.id
+      }
+    })
+  } catch (err) {
+    // convert error message into readable text
+    error.value = errorMessage(err)
+  }
 }
 </script>
 
 <template>
   <div class="container py-4">
     <PageHeader title="Give homework" subtitle="Small tasks from the question book work best." />
-    <TodoPanel owner="Ning Xuan" :items="['POST /homework', 'Validation', 'Pre-fill from last next step']" />
 
     <div class="row justify-content-center">
       <div class="col-lg-7">
