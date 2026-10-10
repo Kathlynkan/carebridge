@@ -9,20 +9,36 @@
     [ ] show "recurring" struggles as warning badges
 ============================================================= -->
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   handover: { type: Object, default: null },
   loading: { type: Boolean, default: false },
   title: { type: String, default: "Today's Handover" },
+  audience: { type: String, default: 'volunteer' }, // 'parent' = friendlier words on the labels
 })
 const emit = defineEmits(['refresh'])
 
-const ROWS = [
+// the labels for volunteers
+const VOLUNTEER_ROWS = [
   { key: 'continueTopic', label: 'Continue', icon: 'bi-arrow-right-circle' },
   { key: 'struggle', label: 'Last Struggle', icon: 'bi-exclamation-circle' },
   { key: 'whatWorked', label: 'What worked', icon: 'bi-lightbulb' },
   { key: 'lastResult', label: 'Last session', icon: 'bi-check2-square' },
   { key: 'nextStep', label: 'Next step', icon: 'bi-flag' },
 ]
+
+// the same rows, with simple words for parents (the labels Yuqi chose)
+const PARENT_ROWS = [
+  { key: 'continueTopic', label: 'Working on', icon: 'bi-arrow-right-circle' },
+  { key: 'struggle', label: 'Finding tricky', icon: 'bi-exclamation-circle' },
+  { key: 'whatWorked', label: 'What helped', icon: 'bi-lightbulb' },
+  { key: 'lastResult', label: 'Latest score', icon: 'bi-check2-square' },
+  { key: 'nextStep', label: 'Coming up next', icon: 'bi-flag' },
+]
+
+const ROWS = computed(() => (props.audience === 'parent' ? PARENT_ROWS : VOLUNTEER_ROWS))
+const recurringLabel = computed(() => (props.audience === 'parent' ? 'Keep practising' : 'Recurring Struggles'))
 </script>
 
 <template>
@@ -40,7 +56,7 @@ const ROWS = [
     </div>
 
     <div v-if="loading" class="text-muted-cb small">
-      <span class="spinner-border spinner-border-sm me-2"></span>Preparing handover...
+      <span class="spinner-border spinner-border-sm me-2"></span>{{ audience === 'parent' ? 'Getting the update...' : 'Preparing handover...' }}
     </div>
     <dl v-else-if="handover" class="row mb-0">
       <template v-for="row in ROWS" :key="row.key">
@@ -52,7 +68,7 @@ const ROWS = [
 
       <template v-if="handover.recurring && handover.recurring.length > 0">
         <dt class="col-5 col-sm-4 small text-muted-cb">
-          <i class="bi bi-arrow-repeat me-1"></i>Recurring Struggles
+          <i class="bi bi-arrow-repeat me-1"></i>{{ recurringLabel }}
         </dt>
         <dd class="col-7 col-sm-8">
           <span
