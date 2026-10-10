@@ -9,7 +9,7 @@ import NavBar from './components/NavBar.vue'
     <RouterView />
   </main>
   <footer class="app-footer text-center small py-4">
-    // displays footer at the bottom of every page
+    <!--displays footer at the bottom of every page-->
     CareBridge &middot; IS216 WAD2 Group Project
   </footer>
 </template>
