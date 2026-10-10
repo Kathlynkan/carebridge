@@ -1,6 +1,6 @@
 // =============================================================
 // /homework  - homework "quests"
-// Owners: Ning Xuan (volunteer assigns)  +  Jachin (child hands in, berries, leaderboard)
+// Owners: Ning Xuan (volunteer assigns) [done]  +  Jachin (child hands in, berries, leaderboard)
 // =============================================================
 // How a quest travels (its "status" changes step by step):
 //
@@ -109,57 +109,107 @@ router.get('/leaderboard', async (req, res) => {
 })
 
 // ---------------------------------------------------------------
-// POST /homework      (volunteer or coordinator)
-// A volunteer gives a quest to a child. The questions come from a DECK:
-//   body = { childId, deckId, dueDate, points, title (optional), details (optional) }
-// The quest gets its own copy of the questions of the deck.
+// POST /homework      (Ning Xuan: assign homework, done  +  Jachin: the questions come from a deck)
+//   body = { childId, dueDate, points, title, subject, details, deckId (optional) }
+// With a deckId, the quest gets a COPY of the questions of the deck. The title, subject and details of the deck are used
+// when the volunteer did not type their own. Without a deckId the quest has no questions.
 // ---------------------------------------------------------------
 router.post('/', requireRole('volunteer', 'coordinator'), async (req, res) => {
-  const { childId, deckId, dueDate, points, title, details } = req.body
+  // only volunteers and coordinators can assign homework
+  try {
+    const child = await Child.findById(req.body.childId)
 
-  // 1. The child, the deck and the due date are needed.
-  if (!childId || !deckId || !dueDate) {
-    return res.status(400).json({ message: 'Pick a child, a deck of questions and a due date.' })
+    // check if child exists
+    if (!child) {
+      return res.status(404).json({
+        message: 'Child not found'
+      })
+    }
+
+    // check user access
+    const allowedChildren = await visibleChildIds(req.user)
+
+    if (!allowedChildren.includes(req.body.childId)) {
+      return res.status(403).json({
+        message: 'No access'
+      })
+    }
+
+    const today = new Date().toISOString().slice(0, 10)
+
+    // check due date exists
+    if (!req.body.dueDate) {
+      return res.status(400).json({
+        message: 'Due date is required'
+      })
+    }
+
+    // validate due date
+    if (req.body.dueDate < today) {
+      return res.status(400).json({
+        message: 'Due date cannot be in the past'
+      })
+    }
+
+    // find the deck, if the volunteer picked one
+    let deck = null
+    if (req.body.deckId) {
+      deck = await Deck.findById(req.body.deckId)
+      if (!deck) {
+        return res.status(404).json({
+          message: 'Deck not found'
+        })
+      }
+    }
+
+    // validate title (a deck gives a title when the volunteer typed none)
+    let title = (req.body.title || '').trim()
+    if (!title && deck) {
+      title = deck.title
+    }
+    if (!title) {
+      return res.status(400).json({
+        message: 'Title is required'
+      })
+    }
+
+    // validate points
+    if (req.body.points < 0) {
+      return res.status(400).json({
+        message: 'Points cannot be negative'
+      })
+    }
+
+    // copy the questions of the deck into the quest, one by one
+    const questions = []
+    if (deck) {
+      for (const question of deck.questions) {
+        questions.push({ text: question.text, answer: question.answer })
+      }
+    }
+
+    // create homework
+    const homework = await Homework.create({
+      childId: req.body.childId,
+      title,
+      subject: req.body.subject || (deck ? deck.subject : undefined),
+      details: (req.body.details || '').trim() || (deck ? deck.description : ''),
+      dueDate: req.body.dueDate,
+      points: Number(req.body.points) || 10,
+      volunteerId: req.user.id,
+      deckId: deck ? deck.id : undefined,
+      questions
+    })
+
+    // return new homework
+    return res.status(201).json(homework)
+    // status 201: request succeeded and created new homework
+    // default status 200: request succeeded
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Failed to assign homework'
+    })
   }
-
-  // 2. The volunteer may only give homework to their own children. (Anyone else gets the same answer as for a child that does not exist.)
-  const child = await Child.findById(childId)
-  if (!canAccessChild(req.user, child)) {
-    return res.status(404).json({ message: 'Child not found.' })
-  }
-
-  // 3. The deck must exist.
-  const deck = await Deck.findById(deckId)
-  if (!deck) {
-    return res.status(404).json({ message: 'Deck not found.' })
-  }
-
-  // 4. The due date must not be in the past. Both are text like "2026-10-12", so we can compare them as text.
-  const today = new Date().toISOString().slice(0, 10)
-  if (dueDate < today) {
-    return res.status(400).json({ message: 'The due date cannot be in the past.' })
-  }
-
-  // 5. Copy the questions of the deck into the quest, one by one.
-  const questions = []
-  for (const question of deck.questions) {
-    questions.push({ text: question.text, answer: question.answer })
-  }
-
-  // 6. Make the quest. If the volunteer did not type a title or details, use the ones of the deck.
-  const quest = await Homework.create({
-    childId,
-    volunteerId: req.user.id,
-    deckId,
-    title: (title || '').trim() || deck.title,
-    subject: deck.subject,
-    details: (details || '').trim() || deck.description,
-    dueDate,
-    points: Number(points) || 10,
-    questions,
-  })
-
-  res.status(201).json(quest)
 })
 
 // ---------------------------------------------------------------

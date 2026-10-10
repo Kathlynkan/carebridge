@@ -63,16 +63,6 @@ onMounted(async () => {
       subtitle="Here's what's been happening at student care."
     />
 
-    <TodoPanel
-      owner="Kat"
-      :items="[
-        'Child switcher for parents with 2+ children',
-        'Today at student care card (parent-friendly AI summary)',
-        'Recent sessions timeline',
-        'Message the volunteer button',
-      ]"
-    />
-
     <StateMessage v-if="loading" type="loading" />
     <StateMessage v-else-if="error" type="error" :message="error" />
     <StateMessage v-else-if="!selectedChild" message="No child is linked to your account yet." />

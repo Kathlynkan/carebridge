@@ -18,7 +18,7 @@ const emit = defineEmits(['refresh'])
 
 const ROWS = [
   { key: 'continueTopic', label: 'Continue', icon: 'bi-arrow-right-circle' },
-  { key: 'struggle', label: 'Struggle', icon: 'bi-exclamation-circle' },
+  { key: 'struggle', label: 'Last Struggle', icon: 'bi-exclamation-circle' },
   { key: 'whatWorked', label: 'What worked', icon: 'bi-lightbulb' },
   { key: 'lastResult', label: 'Last session', icon: 'bi-check2-square' },
   { key: 'nextStep', label: 'Next step', icon: 'bi-flag' },
@@ -49,7 +49,24 @@ const ROWS = [
         </dt>
         <dd class="col-7 col-sm-8 fw-semibold">{{ handover[row.key] }}</dd>
       </template>
+
+      <template v-if="handover.recurring && handover.recurring.length > 0">
+        <dt class="col-5 col-sm-4 small text-muted-cb">
+          <i class="bi bi-arrow-repeat me-1"></i>Recurring Struggles
+        </dt>
+        <dd class="col-7 col-sm-8">
+          <span
+            v-for="item in handover.recurring"
+            :key="item"
+            class="badge text-bg-warning me-1"
+            data-test="recurring-badge"
+          >
+            {{ item }}
+          </span>
+        </dd>
+      </template>
     </dl>
+    
   </div>
 </template>
 
