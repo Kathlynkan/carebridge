@@ -34,7 +34,7 @@ test.describe('Authentication', () => {
 
   test('wrong password shows an error', async ({ page }) => {
     await page.goto('/login')
-    await page.getByLabel('Email').fill('volunteer@carebridge.sg')
+    await page.getByLabel('Email').fill('volunteer@kidslapis.sg')
     await page.getByLabel('Password').fill('wrong-password')
     await page.getByRole('button', { name: 'Log in', exact: true }).click()
     await expect(page.locator('[data-test="login-error"]')).toContainText('Incorrect')

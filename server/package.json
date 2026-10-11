@@ -1,9 +1,9 @@
 {
-  "name": "carebridge-server",
+  "name": "kids-lapis-server",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "CareBridge backend - Express REST API with MongoDB (Mongoose)",
+  "description": "Kids Lapis backend - Express REST API with MongoDB (Mongoose)",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",

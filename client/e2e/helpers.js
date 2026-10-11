@@ -2,10 +2,10 @@
 import { expect } from '@playwright/test'
 
 export const ACCOUNTS = {
-  volunteer: 'volunteer@carebridge.sg',
-  coordinator: 'coordinator@carebridge.sg',
-  parent: 'parent@carebridge.sg',
-  child: 'child@carebridge.sg',
+  volunteer: 'volunteer@kidslapis.sg',
+  coordinator: 'coordinator@kidslapis.sg',
+  parent: 'parent@kidslapis.sg',
+  child: 'child@kidslapis.sg',
 }
 
 export async function loginAs(page, role) {

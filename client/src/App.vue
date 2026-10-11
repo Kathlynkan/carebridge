@@ -10,6 +10,6 @@ import NavBar from './components/NavBar.vue'
   </main>
   <!-- displays footer at the bottom of every page -->
   <footer class="app-footer text-center small py-4">
-    CareBridge &middot; IS216 WAD2 Group Project
+    Kids Lapis &middot; IS216 WAD2 Group Project
   </footer>
 </template>

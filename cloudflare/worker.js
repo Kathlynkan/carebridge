@@ -1,8 +1,8 @@
 // =============================================================
-// CareBridge API as a Cloudflare Worker (Express + Mongoose, the same routes as server/server.js)
+// Kids Lapis API as a Cloudflare Worker (Express + Mongoose, the same routes as server/server.js)
 // -------------------------------------------------------------
 // Differences from running on your own computer:
-//   - the database string comes from a Worker secret (named DB; set once with: npx wrangler secret put DB --name carebridge-api)
+//   - the database string comes from a Worker secret (named DB; set once with: npx wrangler secret put DB --name kids-lapis-api)
 //   - every request opens its own database connection and closes it afterwards (per-request-db.js)
 //   - logins use signed tokens (see auth.stateless.js) because memory does not last
 // =============================================================
@@ -31,7 +31,7 @@ app.use(express.json())
 app.use(connectForRequest(dbString))
 
 app.get('/', (req, res) => {
-  res.json({ status: 'ok', app: 'CareBridge API' })
+  res.json({ status: 'ok', app: 'Kids Lapis API' })
 })
 
 app.use('/auth', authRoutes)

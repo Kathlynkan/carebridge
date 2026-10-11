@@ -46,7 +46,7 @@ async function logout() {
     <div class="container">
       <RouterLink class="navbar-brand fw-heavy d-flex align-items-center gap-2" :to="auth.homePath">
         <img src="/favicon.svg" alt="" width="30" height="30" />
-        CareBridge
+        Kids Lapis
       </RouterLink>
 
       <button

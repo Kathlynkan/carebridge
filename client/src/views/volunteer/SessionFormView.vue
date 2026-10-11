@@ -29,7 +29,7 @@ const isEdit = computed(() => {
   }
 })
 
-const childId = ref(route.params.id) // get childID from URL
+const childId = ref(route.params.id) // get childId from URL
 
 const today = new Date()
 const dateString = today.toISOString() // convert to string
@@ -175,17 +175,27 @@ onMounted(() => { // autofill form if edit form
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <form class="cb-card p-4" data-test="session-form" @submit.prevent="handleSubmit">
+          <!-- 
+          cb-card: custom class
+          @submit: when form is submitted, call handleSubmit()
+          .prevent: stop browser's default form behavior, else will interfere with Vue app 
+          without .prevent: click submit > browser submit form > page reloads
+          with .prevent: click submit > page does NOT reload > hangleSubmit() runs > call api.push(), api.put(), etc
+          -->
           <div v-if="error" class="alert alert-warning small">{{ error }}</div>
-          
+          <!-- alert: bootstrap alert box, alert-warning: set alert colour to yellow/orange-->
 
           <div class="row g-3">
             <div class="col-sm-4">
               <label class="form-label" for="date">Date</label>
+              <!-- form-label: bootstrap form label styling-->
               <input id="date" v-model="form.date" type="date" class="form-control"/>
+              <!-- form-control: bootstrap-styled input -->
             </div>
             <div class="col-sm-4">
               <label class="form-label" for="subject">Subject</label>
               <select id="subject" v-model="form.subject" class="form-select">
+                <!-- form-select: bootstrap-styled dropdown -->
                 <option v-for="s in SUBJECTS" :key="s">{{ s }}</option>
               </select>
             </div>
@@ -204,10 +214,20 @@ onMounted(() => { // autofill form if edit form
             </div>
             <div class="col-sm-6">
               <span class="form-label d-block">How was the child feeling?</span>
+              <!-- d-block: display label on its own line, label takes up entire row -->
               <div class="btn-group flex-wrap" role="group">
+                <!-- 
+                btn-group: group mood buttons together
+                flex-wrap: allow buttons to wrap onto next line on smaller screens
+                 -->
                 <template v-for="m in MOODS" :key="m.value">
                   <input :id="'mood-' + m.value" v-model="form.mood" type="radio" class="btn-check" :value="m.value" />
+                  <!-- btn-check: hidden radio button for bootstrap button toggle-->
                   <label class="btn btn-outline-secondary btn-sm" :for="'mood-' + m.value">
+                    <!--
+                    btn-outline-secondary: gray outlined button style
+                    btn-sm: small button size
+                    -->
                     {{ m.emoji }} {{ m.label }}
                   </label>
                 </template>
@@ -225,8 +245,17 @@ onMounted(() => { // autofill form if edit form
               />
               <div class="mt-2">
                 <span v-for="s in form.struggles" :key="s" class="badge badge-danger-soft me-1">
+                  <!--
+                  badge: bootstrap badge/tag styling
+                  badge-danger-soft: custom soft-red badge colour
+                  me-1: (margin-end) small right margin between badges
+                  -->
                   {{ s }}
                   <button type="button" class="border-0 bg-transparent ms-1" @click="removeStruggle(s)">x</button>
+                  <!--
+                  border-0: remove button border
+                  ms-1: (margin-start) small spacing before remove button
+                  -->
                 </span>
               </div>
             </div>
@@ -246,6 +275,7 @@ onMounted(() => { // autofill form if edit form
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
+            <!-- right-aligned buttons with gap in between and top margin -->
             <button type="button" class="btn btn-outline-secondary" @click="cancel">Cancel</button>
             <button type="submit" class="btn btn-primary" :disabled="saving">
               {{ isEdit ? 'Save changes' : 'Save session' }}

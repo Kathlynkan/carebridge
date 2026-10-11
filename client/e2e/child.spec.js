@@ -1,6 +1,6 @@
 // Child journey: quests and leaderboard.              Owner: Jachin
 // Seed data used:
-//   child@carebridge.sg = Ethan (c_1)
+//   child@kidslapis.sg = Ethan (c_1)
 //   h_1 "Fraction addition worksheet" is status='assigned' at the start of each run
 //   h_2 is status='verified' (Ethan has 120 points in seed)
 //

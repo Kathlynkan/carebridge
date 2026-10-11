@@ -7,7 +7,7 @@
     {
       "id": "u_coord",
       "name": "Tan Mei Ling",
-      "email": "coordinator@carebridge.sg",
+      "email": "coordinator@kidslapis.sg",
       "password": "password123",
       "role": "coordinator",
       "createdAt": "2026-08-07T01:00:00.000Z"
@@ -15,7 +15,7 @@
     {
       "id": "u_vol1",
       "name": "Aisha Rahman",
-      "email": "volunteer@carebridge.sg",
+      "email": "volunteer@kidslapis.sg",
       "password": "password123",
       "role": "volunteer",
       "skills": [
@@ -32,7 +32,7 @@
     {
       "id": "u_vol2",
       "name": "Daniel Lim",
-      "email": "volunteer2@carebridge.sg",
+      "email": "volunteer2@kidslapis.sg",
       "password": "password123",
       "role": "volunteer",
       "skills": [
@@ -49,7 +49,7 @@
     {
       "id": "u_vol3",
       "name": "Priya Nair",
-      "email": "volunteer3@carebridge.sg",
+      "email": "volunteer3@kidslapis.sg",
       "password": "password123",
       "role": "volunteer",
       "skills": [
@@ -66,7 +66,7 @@
     {
       "id": "u_par1",
       "name": "Ms Grace Wong",
-      "email": "parent@carebridge.sg",
+      "email": "parent@kidslapis.sg",
       "password": "password123",
       "role": "parent",
       "createdAt": "2026-08-07T01:00:00.000Z"
@@ -74,7 +74,7 @@
     {
       "id": "u_par2",
       "name": "Ravi Kumar",
-      "email": "parent2@carebridge.sg",
+      "email": "parent2@kidslapis.sg",
       "password": "password123",
       "role": "parent",
       "createdAt": "2026-08-07T01:00:00.000Z"
@@ -82,7 +82,7 @@
     {
       "id": "u_par3",
       "name": "Linda Lee",
-      "email": "parent3@carebridge.sg",
+      "email": "parent3@kidslapis.sg",
       "password": "password123",
       "role": "parent",
       "createdAt": "2026-08-07T01:00:00.000Z"
@@ -90,7 +90,7 @@
     {
       "id": "u_par4",
       "name": "Marcus Ong",
-      "email": "parent4@carebridge.sg",
+      "email": "parent4@kidslapis.sg",
       "password": "password123",
       "role": "parent",
       "createdAt": "2026-08-07T01:00:00.000Z"
@@ -98,7 +98,7 @@
     {
       "id": "u_kid1",
       "name": "Ethan",
-      "email": "child@carebridge.sg",
+      "email": "child@kidslapis.sg",
       "password": "password123",
       "role": "child",
       "childId": "c_1",
@@ -107,7 +107,7 @@
     {
       "id": "u_kid2",
       "name": "Meera",
-      "email": "child2@carebridge.sg",
+      "email": "child2@kidslapis.sg",
       "password": "password123",
       "role": "child",
       "childId": "c_2",
