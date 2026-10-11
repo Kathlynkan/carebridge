@@ -3,10 +3,6 @@
   -------------------------------------------------------------
   WORKING reference for "load data from the API and show it":
     onMounted -> axios (api.get) -> ref -> computed -> v-for + component
-  TODO (Yuqi):
-    [ ] search box (v-model) + filter by level / subject (computed)
-    [ ] sort: "longest since last session" first
-    [ ] "Today" strip: children whose session is today (needs availability days)
 ============================================================= -->
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -83,6 +79,31 @@ const todaysChildren = computed(() => {
     return children.value
   }
   return []
+})
+
+// which children have the same struggle 2+ times in their last 5 sessions?
+// e.g. { c_1: true, c_3: true, c_4: false }   (same rule as findRecurring on the server)
+const needsAttentionByChild = computed(() => {
+  const result = {}
+  for (const child of children.value) {
+    // get latest 5 sessions of today's child 
+    const childSessions = sessions.value.filter((s) => s.childId === child.id).slice(0, 5)
+
+    const counts = {}
+    let repeated = false
+    for (const s of childSessions) {
+      for (const struggle of s.struggles) { //each struggle in sessions.struggles
+        if (counts[struggle]) {
+          counts[struggle] = counts[struggle] + 1 
+          repeated = true // seen before -> this struggle keeps coming back
+        } else {
+          counts[struggle] = 1
+        }
+      }
+    }
+    result[child.id] = repeated
+  }
+  return result
 })
 
 // ---------- All my children tab ----------
@@ -182,7 +203,11 @@ onMounted(loadData)
         <!-- today's children -->
         <div v-else class="row g-3">
           <div v-for="child in todaysChildren" :key="child.id" class="col-sm-6 col-lg-4">
-            <ChildCard :child="child" :last-session="lastSessionByChild[child.id]" @open="openChild" />
+            <ChildCard 
+            :child="child" 
+            :last-session="lastSessionByChild[child.id]" 
+            :needs-attention="needsAttentionByChild[child.id]" 
+            @open="openChild" />
           </div>
         </div>
       </div>
@@ -229,7 +254,11 @@ onMounted(loadData)
 
           <div v-else class="row g-3">
             <div v-for="child in filteredChildren" :key="child.id" class="col-sm-6 col-lg-4">
-              <ChildCard :child="child" :last-session="lastSessionByChild[child.id]" @open="openChild" />
+              <ChildCard 
+              :child="child" 
+              :last-session="lastSessionByChild[child.id]" 
+              :needs-attention="needsAttentionByChild[child.id]" 
+              @open="openChild" />
             </div>
           </div>
         </template>

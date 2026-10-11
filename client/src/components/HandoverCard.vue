@@ -4,9 +4,6 @@
           loading   Boolean
   Emits:  refresh   (ask the server to regenerate the AI summary)
   Re-used by Kat on the parent page (audience = 'parent').
-  TODO (Yuqi):
-    [ ] nicer loading skeleton while the AI is thinking
-    [ ] show "recurring" struggles as warning badges
 ============================================================= -->
 <script setup>
 import { computed } from 'vue'
@@ -69,7 +66,7 @@ const recurringLabel = computed(() => {
     </div>
 
     <div v-if="loading" class="text-muted-cb small">
-      <span class="spinner-border spinner-border-sm me-2"></span>Preparing handover...
+      <span class="spinner-border spinner-border-sm me-2"></span>{{ audience === 'parent' ? 'Getting the update...' : 'Preparing handover...' }}
     </div>
     <dl v-else-if="handover" class="row mb-0">
       <template v-for="row in rows" :key="row.key">

@@ -2,9 +2,8 @@
   ChildCard - one child in a list.                 Owner: Yuqi
   Props:  child (Object), lastSession (Object | null)
   Emits:  open(childId)
-  TODO (Yuqi):
-    [ ] show a "needs attention" badge for recurring struggles
-    [ ] show pending homework count
+
+  "needs attention" badge when a struggle repeats in the last 5 sessions
 ============================================================= -->
 <script setup>
 import { computed } from 'vue'
@@ -13,6 +12,7 @@ import { relativeDay, accuracy } from '@/utils/format'
 const props = defineProps({
   child: { type: Object, required: true },
   lastSession: { type: Object, default: null },
+  needsAttention: { type: Boolean, default: false }, // true if a struggle keeps coming back
 })
 const emit = defineEmits(['open'])
 
@@ -32,6 +32,9 @@ const lastSeen = computed(() => (props.lastSession ? relativeDay(props.lastSessi
         <h2 class="h5 mb-0">{{ child.name }}</h2>
         <div class="small text-muted-cb">{{ child.level }} &middot; {{ child.school }}</div>
       </div>
+      <span v-if="needsAttention" class="badge text-bg-warning ms-auto" data-test="needs-attention">
+        <i class="bi bi-exclamation-triangle me-1"></i>Needs attention
+      </span>
     </div>
 
     <div v-if="lastSession" class="small mb-3">

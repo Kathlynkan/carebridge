@@ -3,11 +3,9 @@
   (Session history list + homework section: Ning Xuan's components)
   (Charts: Jachin's components)
   -------------------------------------------------------------
-  Already loads: child, sessions, homework, handover (fallback summary).
+  Already loads: child, sessions, homework, handover (AI summary, cached, with fallback)
   TODO (Yuqi):
-    [ ] "At a glance" cards: recent topics, recurring struggles, best methods
-    [ ] HandoverCard refresh -> POST /handover/:id again (after Gemini is wired up)
-    [ ] tabs (Overview / History / Homework) on mobile so the page isn't too long
+   [x] HandoverCard refresh -> POST /handover/:id with refresh: true
   TODO (Ning Xuan):
     [done] wire SessionCard @edit / @delete (DELETE /sessions/:id, then reload)
 ============================================================= -->
@@ -35,6 +33,7 @@ const homework = ref([])
 const handover = ref(null)
 const handoverLoading = ref(false)
 const loading = ref(true)
+const success = ref('')
 const error = ref('')
 
 const pendingHomework = computed(() => homework.value.filter((h) => h.status !== 'verified'))
@@ -80,21 +79,37 @@ async function deleteSession(sessionId) {
   try {
     await api.delete(`/sessions/${sessionId}`)
 
+    success.value = 'Session deleted successfully'
+
     await loadData() // reload data after successful deletion
   } catch (err) {
     error.value = errorMessage(err)
   }
 }
 
-onMounted(loadData)
+onMounted(() => {
+  success.value = route.query.success || ''
+
+  // remove success message from URL after reading it
+  if (route.query.success) {
+    router.replace({
+      name: 'child-profile',
+      params: {id: childId}
+    })
+  }
+
+  loadData()
+})
 </script>
 
 <template>
   <div class="container py-4">
     <StateMessage v-if="loading" type="loading" />
-    <StateMessage v-else-if="error" type="error" :message="error" />
 
     <template v-else>
+      <div v-if="success" class="alert alert-success">{{ success }}</div>
+      <StateMessage v-else-if="error" type="error" :message="error" />
+
       <PageHeader :title="child.name" :subtitle="`${child.level} · ${child.school}`">
         <RouterLink
           v-if="auth.role === 'volunteer'"

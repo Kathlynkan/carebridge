@@ -1,17 +1,10 @@
 // =============================================================
-// /handover  - AI handover summary (EXTERNAL API requirement)   Owner: Yuqi
+// /handover  - AI handover summary (EXTERNAL API)   Owner: Yuqi
 // -------------------------------------------------------------
 // The Vue page calls OUR server, and our server calls Gemini.
 // This keeps the API key secret (never put API keys in Vue code!).
 //
-//   Vue (axios) --POST /handover/:childId--> Express --axios--> Gemini API
-//
-// TODO (Yuqi):
-//   [x] Call Gemini in callLLM() with axios
-//   [x] Ask for JSON output and parse it safely (try/catch -> fallback)
-//   [ ] Improve the prompt in buildPrompt()
-//   [ ] Cache the summary per child until a new session is added (save API quota)
-//   [ ] audience = 'parent' -> friendly wording for Kat's parent page
+// Vue (axios) --POST /handover/:childId--> Express --axios--> Gemini API
 // =============================================================
 import { Router } from 'express'
 import axios from 'axios'
@@ -25,14 +18,15 @@ router.use(requireAuth) // must be logged in for every route in this file
 // Find struggles that appear 2 or more times in the last 5 sessions
 export function findRecurring(sessions) {
   const counts = {} // e.g. { 'Mixed numbers': 1, 'Finding common denominators': 2 }
-  const lastFive = sessions.slice(0, 5)
 
+  // only look at the newest 5 sessions
+  const lastFive = sessions.slice(0, 5)
   for (const session of lastFive) {
     for (const struggle of session.struggles) {
       if (counts[struggle]) {
-        counts[struggle] = counts[struggle] + 1 
+        counts[struggle] = counts[struggle] + 1 // seen before -> add 1
       } else {
-        counts[struggle] = 1 
+        counts[struggle] = 1 // first time -> start at 1
       }
     }
   }
@@ -47,9 +41,21 @@ export function findRecurring(sessions) {
 }
 
 // Backup summary: used when there is no API key or Gemini fails.
-// It just copies from the latest session
-export function buildFallbackHandover(sessions) {
-  // child has no sessions yet
+// It just copies from the newest session.
+export function buildFallbackHandover(sessions, audience = 'volunteer') {
+  // child has no sessions yet (friendlier message for parents)
+  if (sessions.length === 0 && audience === 'parent') {
+    return {
+      continueTopic: 'No sessions yet',
+      struggle: '-',
+      whatWorked: '-',
+      lastResult: '-',
+      nextStep: 'The volunteer will meet your child soon and find out what they enjoy and need help with.',
+      recurring: [],
+      source: 'fallback',
+    }
+  }
+  // child has no sessions yet (for volunteer)
   if (sessions.length === 0) {
     return {
       continueTopic: 'No sessions yet',
@@ -61,16 +67,43 @@ export function buildFallbackHandover(sessions) {
       source: 'fallback',
     }
   }
-  const last = sessions[0] //lastest session in DB
+  const last = sessions[0] // newest session (sessions are sorted newest first)
+
+  // parents get a simple version: "6 out of 8 right", and nothing alarming   (Kat)
+  if (audience === 'parent') {
+    let tricky = 'Nothing in particular - it went smoothly.'
+    if (last.struggles.length > 0) {
+      tricky = last.struggles.join(', ')
+    }
+    let helped = 'The volunteer is still finding out what works best.'
+    if (last.whatWorked) {
+      helped = last.whatWorked
+    }
+    let comingUp = 'The volunteer will decide next time.'
+    if (last.nextStep) {
+      comingUp = last.nextStep
+    }
+    return {
+      continueTopic: `${last.subject}: ${last.topic}`,
+      struggle: tricky,
+      whatWorked: helped,
+      lastResult: `Got ${last.correct} out of ${last.attempted} right`,
+      nextStep: comingUp,
+      recurring: findRecurring(sessions),
+      source: 'fallback',
+    }
+  }
 
   let struggle = 'None noted'
   if (last.struggles.length > 0) {
     struggle = last.struggles.join(', ') 
   }
+
   let whatWorked = 'Not recorded'
   if (last.whatWorked) {
     whatWorked = last.whatWorked
   }
+
   let nextStep = 'Not recorded'
   if (last.nextStep) {
     nextStep = last.nextStep
@@ -87,27 +120,29 @@ export function buildFallbackHandover(sessions) {
   }
 }
 
-
-// Write the prompt to send to Gemini
+// Write the message (prompt) we send to Gemini
 function buildPrompt(child, sessions, audience) {
-  // turn the newest 5 sessions into simple lines of text
+  // 1. turn the newest 5 sessions into simple lines of text
   let notes = ''
   const lastFive = sessions.slice(0, 5)
   for (const s of lastFive) {
-    const date = new Date(s.date).toDateString() // e.g.'Fri Sep 25 2026'
+    const date = new Date(s.date).toDateString() // e.g. 'Fri Sep 25 2026'
 
     let struggles = 'none'
     if (s.struggles.length > 0) {
       struggles = s.struggles.join(', ')
     }
+
     let whatWorked = 'not recorded'
     if (s.whatWorked) {
       whatWorked = s.whatWorked
     }
+
     let nextStep = 'not recorded'
     if (s.nextStep) {
       nextStep = s.nextStep
     }
+
     notes = notes + `- ${date}: ${s.subject} - ${s.topic}. `
     notes = notes + `Score ${s.correct}/${s.attempted}. `
     notes = notes + `Struggled with: ${struggles}. `
@@ -115,47 +150,49 @@ function buildPrompt(child, sessions, audience) {
     notes = notes + `Next step planned: ${nextStep}.\n`
   }
 
-  // get the recurring struggles 
+  // 2. struggles that keep coming back 
   let recurringText = 'none'
   const recurring = findRecurring(sessions)
   if (recurring.length > 0) {
-    recurringText = recurring.join(', ') // all recurring struggles
+    recurringText = recurring.join(', ')
   }
 
-  // how to write prompt: volunteer (teaching notes) or parent (friendly update)
+  // 3. how to write prompt: volunteer (teaching notes) or parent (friendly update)
   let style = ''
   if (audience === 'parent') {
-    style = `You are writing for the child's PARENT. 
-    Use simple, warm, everyday words. No teaching jargon.
-    Be honest but encouraging. Mention one thing the child did well.`
+    style = `You are writing for the child's PARENT, not a teacher.
+Write short, warm, plain sentences. No jargon or abbreviations.
+Say "got 6 out of 8 right" instead of "6/8 correct". Say "a bit tricky" instead of "struggled".
+Be kind and honest. Mention one thing the child did well.`
   } else {
     style = `You are writing for the NEXT VOLUNTEER, who has never met this child.
-    Be practical and specific, like a short note from one tutor to another.`
+Be practical and specific, like a short note from one tutor to another.`
   }
 
-  // the whole prompt to be sent
+  // 4. put it all together (whole prompt)
   return `You help student-care volunteers hand over a child's learning between sessions.
-  ${style}
+${style}
 
-  Child: ${child.name}, ${child.level}.
+Child: ${child.name}, ${child.level}.
 
-  Recent session notes (newest first):
-  ${notes}
-  Struggles that came up more than once: ${recurringText}.
+Recent session notes (newest first):
+${notes}
+Struggles that came up more than once: ${recurringText}.
 
-  Rules:
-  - Look at ALL the sessions above, not just the newest one.
-  - "continueTopic": the topic to work on next session.
-  - "struggle": the main difficulty. If it happened before, say so and whether it is getting better or worse.
-  - "whatWorked": the teaching method that helped most. Say if it worked more than once.
-  - "lastResult": the latest score. If there is an earlier score on the same topic, compare them (e.g. "4/6, up from 3/6").
-  - "nextStep": one concrete thing to do next session, using what worked before.
-  - Each field: one sentence, under 25 words.
-  - Only use facts from the notes. Do not make anything up.
+Rules:
+- Look at ALL the sessions above, not just the newest one.
+- "continueTopic": the topic to work on next session.
+- "struggle": the main difficulty. If it happened before, say so and whether it is getting better or worse.
+- "whatWorked": the teaching method that helped most. Say if it worked more than once.
+- "lastResult": the latest score. If there is an earlier score on the same topic, compare them (e.g. "4/6, up from 3/6").
+- "nextStep": one concrete thing to do next session, using what worked before.
+- Each field: one sentence, under 25 words.
+- Only use facts from the notes. Do not make anything up.
 
-  Reply ONLY with JSON in exactly this shape:
-  {"continueTopic":"","struggle":"","whatWorked":"","lastResult":"","nextStep":""}`
+Reply ONLY with JSON in exactly this shape:
+{"continueTopic":"","struggle":"","whatWorked":"","lastResult":"","nextStep":""}`
 }
+
 
 // Send the prompt to Gemini and get the answer back as an object.
 // Returns null if there is no key or the answer is not valid JSON.
@@ -184,7 +221,7 @@ async function callLLM(prompt) {
 
   const response = await axios.post(url, body, config)
 
-  // get Gemini's answer text in the response
+  // Gemini's answer text is deep inside the response
   let text = response.data.candidates[0].content.parts[0].text
 
   // sometimes the AI wraps the JSON in ```json ... ``` -> remove it
@@ -202,16 +239,18 @@ async function callLLM(prompt) {
   }
 }
 
-
+// -------------------------------------------------------------
 // POST /handover/:childId
-//   body: { audience: 'volunteer' or 'parent', refresh: true or false }
+// body: { audience: 'volunteer' or 'parent', refresh: true or false }
+// -------------------------------------------------------------
 router.post('/:childId', async (req, res) => {
+  // get the child from MongoDB
   const child = await Child.findById(req.params.childId)
 
-  // check if this user is allowed to see this child
   if (!canAccessChild(req.user, child)) {
     return res.status(403).json({ message: 'You do not have access to this child.' })
   }
+
   // get the child's sessions, newest first, at most 10
   const sessions = await Session.find({ childId: child.id }).sort({ date: -1 }).limit(10)
 
@@ -221,7 +260,7 @@ router.post('/:childId', async (req, res) => {
     audience = req.body.audience
   }
 
-  // if user clicks refresh button in summary (then always ask Gemini again)
+  // did the user click the refresh button? (then always ask Gemini again)
   let refresh = false
   if (req.body && req.body.refresh === true) {
     refresh = true
@@ -243,6 +282,7 @@ router.post('/:childId', async (req, res) => {
       return res.json(result)
     }
   }
+
   // 2. otherwise ask Gemini
   try {
     const prompt = buildPrompt(child, sessions, audience)
@@ -266,7 +306,7 @@ router.post('/:childId', async (req, res) => {
   }
 
   // 3. Gemini didn't work -> send the backup summary (not saved, so we try Gemini again next time)
-  const fallback = buildFallbackHandover(sessions)
+  const fallback = buildFallbackHandover(sessions, audience)
   res.json(fallback)
 })
 
