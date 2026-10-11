@@ -1,21 +1,30 @@
-<!-- =============================================================
-  TopicSummaryChart - average accuracy per topic (bar chart)  Owner: Jachin
-  Used on: Child profile (Yuqi), Coordinator dashboard (Yu Xuan, centre-wide)
-  Props:  sessions (Array), title (String)
-  TODO (Jachin):
-    [ ] Chart.js horizontal bar chart (indexAxis: 'y')
-    [ ] colour bars by status: < 50% needs help, 50-75% steady, > 75% strong
-    [ ] (stretch) a "recurring struggles" chart: how often each skill appears
-============================================================= -->
+<!-- TopicSummaryChart - average accuracy per topic (bar chart)  Owner: Jachin
+     Used on: Child profile (Yuqi), Coordinator dashboard (Yu Xuan)
+     Props: sessions (Array), title (String) -->
 <script setup>
 import { computed } from 'vue'
+import { Bar } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+} from 'chart.js'
+
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip)
 
 const props = defineProps({
   sessions: { type: Array, default: () => [] },
   title: { type: String, default: 'Accuracy by topic' },
 })
 
-// Placeholder aggregation so the data is visible already
+function barColor(acc) {
+  if (acc < 50) return '#e05c3a'
+  if (acc < 75) return '#f2b63d'
+  return '#2f6f62'
+}
+
 const byTopic = computed(() => {
   const groups = {}
   for (const s of props.sessions) {
@@ -28,27 +37,49 @@ const byTopic = computed(() => {
     accuracy: g.attempted ? Math.round((g.correct / g.attempted) * 100) : 0,
   }))
 })
+
+const chartData = computed(() => ({
+  labels: byTopic.value.map((t) => t.topic),
+  datasets: [
+    {
+      label: 'Accuracy %',
+      data: byTopic.value.map((t) => t.accuracy),
+      backgroundColor: byTopic.value.map((t) => barColor(t.accuracy)),
+      borderRadius: 6,
+    },
+  ],
+}))
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  indexAxis: 'y',
+  scales: {
+    x: { min: 0, max: 100, ticks: { callback: (v) => v + '%' } },
+  },
+  plugins: {
+    legend: { display: false },
+    tooltip: { callbacks: { label: (ctx) => `${ctx.raw}%` } },
+  },
+}
 </script>
 
 <template>
   <div class="cb-card p-3" data-test="topic-summary-chart">
     <h2 class="h6 mb-3"><i class="bi bi-bar-chart me-2"></i>{{ title }}</h2>
-    <!-- TODO (Jachin): replace with the real chart -->
-    <table class="table table-sm small mb-0">
-      <thead>
-        <tr>
-          <th>Topic</th>
-          <th class="text-end">Correct</th>
-          <th class="text-end">Accuracy</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="t in byTopic" :key="t.topic">
-          <td>{{ t.topic }}</td>
-          <td class="text-end">{{ t.correct }}/{{ t.attempted }}</td>
-          <td class="text-end">{{ t.accuracy }}%</td>
-        </tr>
-      </tbody>
-    </table>
+    <p v-if="sessions.length === 0" class="small text-muted-cb mb-0">No data yet.</p>
+    <template v-else>
+      <div
+        style="position: relative"
+        :style="{ height: Math.max(120, byTopic.length * 44) + 'px' }"
+      >
+        <Bar :data="chartData" :options="chartOptions" />
+      </div>
+      <div class="d-flex flex-wrap gap-3 mt-2 small text-muted-cb">
+        <span><span style="color: #2f6f62; font-size: 1.1em">●</span> Strong (≥75%)</span>
+        <span><span style="color: #f2b63d; font-size: 1.1em">●</span> Steady (50–74%)</span>
+        <span><span style="color: #e05c3a; font-size: 1.1em">●</span> Needs help (&lt;50%)</span>
+      </div>
+    </template>
   </div>
 </template>

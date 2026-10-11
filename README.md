@@ -87,7 +87,7 @@ Open http://localhost:5173. The URL with `/__devtools__/` opens Vue DevTools.
 | Volunteer | `volunteer2@carebridge.sg` | Daniel — Ethan, Meera, Ryan |
 | Volunteer | `volunteer3@carebridge.sg` | Priya — Arjun |
 | Coordinator | `coordinator@carebridge.sg` | Sees the whole centre |
-| Parent | `parent@carebridge.sg` | Grace — parent of Ethan |
+| Parent | `parent@carebridge.sg` | Ms Grace — parent of Ethan **and** Mia |
 | Parent | `parent2@carebridge.sg` | Ravi — parent of Meera **and** Arjun |
 | Child | `child@carebridge.sg` | Ethan |
 | Child | `child2@carebridge.sg` | Meera |
@@ -117,7 +117,7 @@ The E2E tests run on two projects: **Desktop Chrome** and **iPhone 6** (responsi
 |---|---|---|
 | `e2e/auth.spec.js` | Landing page, login for all 4 roles, wrong password, route guards | Kai Sen |
 | `e2e/volunteer.spec.js` | Assigned children only, handover + history on profile, open session form | Yuqi / Ning Xuan |
-| _add yours_ | | |
+| `e2e/child.spec.js` | Child quests (submit, waiting message, badge shelf), leaderboard (loads, tab switch) | Jachin |
 
 ---
 
@@ -166,14 +166,14 @@ All routes except `/auth/signup` and `/auth/login` need `Authorization: Bearer <
 | `POST / PUT / DELETE /sessions` | Record / edit / delete | ⏳ TODO | Ning Xuan |
 | `GET /homework?childId=` | Homework list | ✅ done | Ning Xuan |
 | `POST /homework` | Assign homework | ⏳ TODO | Ning Xuan |
-| `PUT /homework/:id/submit`, `PUT /homework/:id/verify`, `GET /homework/leaderboard` | Gamification | ⏳ TODO | Jachin |
+| `PUT /homework/:id/submit`, `PUT /homework/:id/verify`, `GET /homework/leaderboard` | Gamification | ✅ done | Jachin |
 | `POST /handover/:childId` | Handover summary (Gemini + fallback) | 🟡 fallback done, AI TODO | Yuqi |
 | `GET /messages?childId=` | Conversation | ✅ done | Kat |
 | `POST /messages`, `PUT /messages/read`, `GET /messages/unread` | Chat | ⏳ TODO | Kat |
 | `GET /dashboard/summary` | KPI numbers | ✅ done | Yu Xuan |
 | `GET /dashboard/alerts` | Needs-attention list | ⏳ TODO | Yu Xuan |
 | `GET /matchmaking/:childId`, `PUT /matchmaking/:childId/assign` | Skills-based matching | ⏳ TODO | Yu Xuan |
-| `GET /progress/:childId` | Chart data | ⏳ TODO | Jachin |
+| `GET /progress/:childId`, `GET /progress/overview` | Chart data | ✅ done | Jachin |
 
 ---
 
