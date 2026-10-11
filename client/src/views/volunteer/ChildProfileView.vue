@@ -3,13 +3,11 @@
   (Session history list + homework section: Ning Xuan's components)
   (Charts: Jachin's components)
   -------------------------------------------------------------
-  Already loads: child, sessions, homework, handover (fallback summary).
+  Already loads: child, sessions, homework, handover (AI summary, cached, with fallback)
   TODO (Yuqi):
-    [ ] "At a glance" cards: recent topics, recurring struggles, best methods
-    [ ] HandoverCard refresh -> POST /handover/:id again (after Gemini is wired up)
-    [ ] tabs (Overview / History / Homework) on mobile so the page isn't too long
+   [x] HandoverCard refresh -> POST /handover/:id with refresh: true
   TODO (Ning Xuan):
-    [ ] wire SessionCard @edit / @delete (DELETE /sessions/:id, then reload)
+    [done] wire SessionCard @edit / @delete (DELETE /sessions/:id, then reload)
 ============================================================= -->
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -18,7 +16,6 @@ import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 import PageHeader from '@/components/PageHeader.vue'
 import StateMessage from '@/components/StateMessage.vue'
-import TodoPanel from '@/components/TodoPanel.vue'
 import HandoverCard from '@/components/HandoverCard.vue'
 import SessionCard from '@/components/SessionCard.vue'
 import HomeworkQuestCard from '@/components/HomeworkQuestCard.vue'
@@ -36,14 +33,18 @@ const homework = ref([])
 const handover = ref(null)
 const handoverLoading = ref(false)
 const loading = ref(true)
+const success = ref('')
 const error = ref('')
 
 const pendingHomework = computed(() => homework.value.filter((h) => h.status !== 'verified'))
 
-async function loadHandover() {
+async function loadHandover(refresh) {
   handoverLoading.value = true
   try {
-    const res = await api.post(`/handover/${childId}`, { audience: 'volunteer' })
+    const res = await api.post(`/handover/${childId}`, {
+      audience: 'volunteer',
+      refresh: refresh === true, // true only when the refresh button is clicked
+    })
     handover.value = res.data
   } catch (err) {
     console.error(errorMessage(err))
@@ -74,20 +75,41 @@ function editSession(sessionId) {
   router.push({ name: 'session-edit', params: { sessionId } })
 }
 
-// eslint-disable-next-line no-unused-vars
 async function deleteSession(sessionId) {
-  // TODO (Ning Xuan): confirm, await api.delete(`/sessions/${sessionId}`), then reload
+  try {
+    await api.delete(`/sessions/${sessionId}`)
+
+    success.value = 'Session deleted successfully'
+
+    await loadData() // reload data after successful deletion
+  } catch (err) {
+    error.value = errorMessage(err)
+  }
 }
 
-onMounted(loadData)
+onMounted(() => {
+  success.value = route.query.success || ''
+
+  // remove success message from URL after reading it
+  if (route.query.success) {
+    router.replace({
+      name: 'child-profile',
+      params: {id: childId}
+    })
+  }
+
+  loadData()
+})
 </script>
 
 <template>
   <div class="container py-4">
     <StateMessage v-if="loading" type="loading" />
-    <StateMessage v-else-if="error" type="error" :message="error" />
 
     <template v-else>
+      <div v-if="success" class="alert alert-success">{{ success }}</div>
+      <StateMessage v-else-if="error" type="error" :message="error" />
+
       <PageHeader :title="child.name" :subtitle="`${child.level} · ${child.school}`">
         <RouterLink
           v-if="auth.role === 'volunteer'"
@@ -109,19 +131,9 @@ onMounted(loadData)
         </RouterLink>
       </PageHeader>
 
-      <!-- <TodoPanel 
-        owner="Yuqi (page) · Ning Xuan (history) · Jachin (charts)"
-        :items="[
-          'Yuqi: At-a-glance cards (recent topics, recurring struggles, what worked)',
-          'Yuqi: AI handover via Gemini + refresh button',
-          'Ning Xuan: edit / delete session buttons',
-          'Jachin: real Chart.js charts inside the two chart components',
-        ]"
-      />-->
-
       <div class="row g-4">
         <div class="col-lg-7">
-          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" @refresh="loadHandover" />
+          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" @refresh="loadHandover(true)" />
 
           <h2 class="h5 mb-3">Session history</h2>
           <StateMessage v-if="sessions.length === 0" message="No sessions recorded yet." />

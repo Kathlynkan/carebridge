@@ -30,4 +30,8 @@ describe('firstName', () => {
   it('keeps only the first name (child privacy on leaderboards)', () => {
     expect(firstName('Ethan Wong')).toBe('Ethan')
   })
+
+  it('keeps a title with the first name', () => {
+    expect(firstName('Ms Grace Wong')).toBe('Ms Grace')
+  })
 })

@@ -65,7 +65,7 @@
     },
     {
       "id": "u_par1",
-      "name": "Grace Wong",
+      "name": "Ms Grace Wong",
       "email": "parent@carebridge.sg",
       "password": "password123",
       "role": "parent",
@@ -214,6 +214,23 @@
       ],
       "points": 0,
       "avatar": "🐨",
+      "followUp": false
+    },
+    {
+      "id": "c_7",
+      "name": "Mia Wong",
+      "level": "P2",
+      "school": "Riverside Primary",
+      "parentId": "u_par1",
+      "volunteerIds": [
+        "u_vol1"
+      ],
+      "needs": [
+        "Spelling",
+        "Primary Math"
+      ],
+      "points": 30,
+      "avatar": "🐰",
       "followUp": false
     }
   ],
@@ -542,6 +559,55 @@
       "nextStep": "Percentage word problems",
       "mood": "okay",
       "notes": ""
+    },
+    {
+      "id": "s_20",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "date": "2026-09-25",
+      "subject": "English",
+      "topic": "Spelling",
+      "attempted": 8,
+      "correct": 4,
+      "struggles": [
+        "Mixing up b and d"
+      ],
+      "whatWorked": "Saying each word out loud",
+      "nextStep": "Practise school words",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_21",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "date": "2026-10-02",
+      "subject": "Math",
+      "topic": "Counting and adding",
+      "attempted": 10,
+      "correct": 7,
+      "struggles": [
+        "Adding past 20"
+      ],
+      "whatWorked": "Using counters",
+      "nextStep": "Add numbers up to 30",
+      "mood": "happy",
+      "notes": ""
+    },
+    {
+      "id": "s_22",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "date": "2026-10-08",
+      "subject": "English",
+      "topic": "Spelling",
+      "attempted": 8,
+      "correct": 6,
+      "struggles": [],
+      "whatWorked": "Look, cover, write, check",
+      "nextStep": "Words that rhyme",
+      "mood": "happy",
+      "notes": ""
     }
   ],
   "homework": [
@@ -628,6 +694,42 @@
       "points": 20,
       "status": "assigned",
       "completedAt": null
+    },
+    {
+      "id": "h_11",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "title": "Unscramble the words: school things",
+      "subject": "English",
+      "details": "Put the letters in the right order to make a word.",
+      "dueDate": "2026-10-14",
+      "points": 10,
+      "status": "assigned",
+      "completedAt": null
+    },
+    {
+      "id": "h_12",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "title": "Words that rhyme",
+      "subject": "English",
+      "details": "Write a word that rhymes. Use the word in brackets to help.",
+      "dueDate": "2026-10-09",
+      "points": 10,
+      "status": "submitted",
+      "completedAt": "2026-10-08T15:20:00.000Z"
+    },
+    {
+      "id": "h_13",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "title": "3 and 4 times tables",
+      "subject": "Math",
+      "details": "Answer the questions about the 3 and 4 times tables.",
+      "dueDate": "2026-10-05",
+      "points": 10,
+      "status": "verified",
+      "completedAt": "2026-10-04T16:00:00.000Z"
     }
   ],
   "messages": [
@@ -671,6 +773,16 @@
       "sentAt": "2026-10-05T10:00:00.000Z",
       "readBy": [
         "u_vol3"
+      ]
+    },
+    {
+      "id": "m_5",
+      "childId": "c_7",
+      "fromId": "u_vol1",
+      "text": "Hi Mrs Wong! Mia is getting better at her spelling - 6 out of 8 today.",
+      "sentAt": "2026-10-08T09:30:00.000Z",
+      "readBy": [
+        "u_vol1"
       ]
     }
   ]

@@ -4,29 +4,39 @@
            /sessions/:sessionId/edit      (edit - same form)
   -------------------------------------------------------------
   The form fields are already bound with v-model. TODO (Ning Xuan):
-    [ ] submit: POST /sessions (create) or PUT /sessions/:id (edit)
+    [done] submit: POST /sessions (create) or PUT /sessions/:id (edit)
         then router.push to the child profile
-    [ ] edit mode: load the session with GET /sessions/:sessionId and fill the form
-    [ ] validation: topic required, correct <= attempted (computed + .is-invalid)
-    [ ] "struggles" as tags: type + Enter to add, x to remove (Week 5 list exercise)
+    [done] edit mode: load the session with GET /sessions/:sessionId and fill the form
+    [done] validation: topic required, correct <= attempted (computed + .is-invalid)
+    [done] "struggles" as tags: type + Enter to add, x to remove (Week 5 list exercise)
     [ ] quick-pick chips from the child's previous struggles
 ============================================================= -->
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PageHeader from '@/components/PageHeader.vue'
-import TodoPanel from '@/components/TodoPanel.vue'
 import { SUBJECTS, MOODS } from '@/utils/constants'
+import api, { errorMessage } from '@/services/api'
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute() // read information
+const router = useRouter() // navigate to another page
 
-const isEdit = computed(() => !!route.params.sessionId)
-// eslint-disable-next-line no-unused-vars
-const childId = route.params.id // needed for POST /sessions (create mode)
+const isEdit = computed(() => {
+  if (route.params.sessionId) {
+    return true
+  } else {
+    return false
+  }
+})
+
+const childId = ref(route.params.id) // get childID from URL
+
+const today = new Date()
+const dateString = today.toISOString() // convert to string
+const date = dateString.slice(0, 10) // format to yyyy-mm-dd
 
 const form = ref({
-  date: new Date().toISOString().slice(0, 10),
+  date: date,
   subject: 'Math',
   topic: '',
   attempted: 0,
@@ -38,17 +48,121 @@ const form = ref({
   notes: '',
 })
 const newStruggle = ref('')
-const saving = ref(false)
+const saving = ref(false) // track whether the form is currently saving
 const error = ref('')
 
+async function loadSession() {
+  try {
+    const res = await api.get(`/sessions/${route.params.sessionId}`)
+    const session = res.data
+
+    form.value.date = session.date
+    form.value.subject = session.subject
+    form.value.topic = session.topic
+    form.value.attempted = session.attempted
+    form.value.correct = session.correct
+    form.value.struggles = session.struggles
+    form.value.whatWorked = session.whatWorked
+    form.value.nextStep = session.nextStep
+    form.value.mood = session.mood
+    form.value.notes = session.notes
+
+    childId.value = session.childId // retrieve childId
+  } catch (err) {
+    error.value = errorMessage(err)
+  }
+}
+
 async function handleSubmit() {
-  // TODO (Ning Xuan): send the form to the API (see LoginView.vue for the pattern)
-  error.value = 'Saving is not built yet (TODO Ning Xuan).'
+  try {
+    saving.value = true
+    error.value = ''
+
+    // if edit form, update existing session
+    if (isEdit.value) {
+      await api.put(
+        `/sessions/${route.params.sessionId}`, 
+        form.value
+      )
+
+      // push /children/childId=c_1
+      // redirect to child profile page after successful submission
+      router.push({
+        name: 'child-profile',
+        params: {id: childId.value},
+        query: {success: 'Session updated successfully'}
+      })
+    } else {
+      // else, create new session
+      await api.post('/sessions', {
+        childId: childId.value,
+        date: form.value.date,
+        subject: form.value.subject,
+        topic: form.value.topic,
+        attempted: form.value.attempted,
+        correct: form.value.correct,
+        struggles: form.value.struggles,
+        whatWorked: form.value.whatWorked,
+        nextStep: form.value.nextStep,
+        mood: form.value.mood,
+        notes: form.value.notes,
+      })
+
+      router.push({
+        name: 'child-profile',
+        params: {id: childId.value},
+        query: {success: 'Session created successfully'}
+      })
+    }
+
+  } catch (err) {
+    // convert error message into readable text
+    error.value = errorMessage(err)
+
+    window.scrollTo({ // scroll to top of the form
+      top: 0,
+    })
+  } finally {
+    saving.value = false // after submission
+  }
+}
+
+function addStruggle() {
+  if (!newStruggle.value) {
+    return
+  } else if (form.value.struggles.includes(newStruggle.value)) {
+    // avoid duplicates
+    return
+  }
+
+  // add new struggle
+  form.value.struggles.push(newStruggle.value)
+
+  newStruggle.value = ''
+}
+
+function removeStruggle(struggle) {
+  const updatedStruggles = []
+
+  for (const s of form.value.struggles) {
+    if (s !== struggle) {
+      updatedStruggles.push(s)
+    }
+  }
+
+  form.value.struggles = updatedStruggles
 }
 
 function cancel() {
-  router.back()
+  router.back() // return user to wherever they came from
 }
+
+onMounted(() => { // autofill form if edit form
+  if (isEdit.value) {
+    loadSession()
+  }
+})
+
 </script>
 
 <template>
@@ -58,25 +172,16 @@ function cancel() {
       subtitle="Takes about a minute. The next volunteer will thank you!"
     />
 
-    <TodoPanel
-      owner="Ning Xuan"
-      :items="[
-        'Submit to POST /sessions (and PUT for edit)',
-        'Load existing session in edit mode',
-        'Validation (correct <= attempted, topic required)',
-        'Struggles as add/remove tags',
-      ]"
-    />
-
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <form class="cb-card p-4" data-test="session-form" @submit.prevent="handleSubmit">
           <div v-if="error" class="alert alert-warning small">{{ error }}</div>
+          
 
           <div class="row g-3">
             <div class="col-sm-4">
               <label class="form-label" for="date">Date</label>
-              <input id="date" v-model="form.date" type="date" class="form-control" required />
+              <input id="date" v-model="form.date" type="date" class="form-control"/>
             </div>
             <div class="col-sm-4">
               <label class="form-label" for="subject">Subject</label>
@@ -86,7 +191,7 @@ function cancel() {
             </div>
             <div class="col-sm-4">
               <label class="form-label" for="topic">Topic covered</label>
-              <input id="topic" v-model.trim="form.topic" class="form-control" placeholder="e.g. Fractions" />
+              <input id="topic" v-model.trim="form.topic" class="form-control" placeholder="e.g. Fractions"/>
             </div>
 
             <div class="col-6 col-sm-3">
@@ -115,10 +220,14 @@ function cancel() {
                 id="struggle"
                 v-model.trim="newStruggle"
                 class="form-control"
-                placeholder="Type a skill and press Enter (TODO)"
+                placeholder="Type a skill and press Enter"
+                @keydown.enter.prevent="addStruggle"
               />
               <div class="mt-2">
-                <span v-for="s in form.struggles" :key="s" class="badge badge-danger-soft me-1">{{ s }}</span>
+                <span v-for="s in form.struggles" :key="s" class="badge badge-danger-soft me-1">
+                  {{ s }}
+                  <button type="button" class="border-0 bg-transparent ms-1" @click="removeStruggle(s)">x</button>
+                </span>
               </div>
             </div>
 

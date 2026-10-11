@@ -74,10 +74,6 @@ onMounted(async () => {
 <template>
   <div class="container py-4">
     <PageHeader title="Messages" subtitle="Keep parents and volunteers on the same page." />
-    <TodoPanel
-      owner="Kat"
-      :items="['Send messages', 'Mark as read + unread badges', 'Polling for new messages', 'Mobile layout']"
-    />
 
     <StateMessage v-if="loading" type="loading" />
     <StateMessage v-else-if="error" type="error" :message="error" />
