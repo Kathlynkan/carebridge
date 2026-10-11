@@ -116,7 +116,7 @@ onMounted(async () => {
       class="form-select form-select-sm w-auto"
       data-test="skill-filter">
         <option value="">All skills</option>
-        <option v-for="skill in allSkills" :key="skill" :value="s">{{ skill }}</option>
+        <option v-for="skill in allSkills" :key="skill" :value="skill">{{ skill }}</option>
       </select>
       <span class="small text-muted-cb">
         Showing {{ filtered_Volunteers.length }} of {{ volunteers.length }}
@@ -129,9 +129,6 @@ onMounted(async () => {
         <div class="cb-card p-3 h-100" data-test="volunteer-card">
           <h2 class="h6 mb-1"><i class="bi bi-person-circle me-1"></i>{{ v.name }}</h2>
           <div class="small text-muted-cb mb-2">{{ v.email }}</div>
-          <div class="mb-2">
-            <span v-for="s in v.skills" :key="s" class="badge badge-soft me-1 mb-1">{{ s }}</span>
-          </div>
           <button v-if="editing_ID !== v.id" class="btn btn-sm btn-outline-secondary" :disabled="editing_ID !== null"
           data-test="edit-volunteer" @click="startEdit(v)">
           <i class="bi bi-pencil me-1"></i>Edit
@@ -140,7 +137,7 @@ onMounted(async () => {
           <i class="bi bi-people me-1"></i>
           <template v-if="workloadOf(v).length">
             <strong>{{ workloadOf(v).length }}</strong>
-            {{ workloadOf(v).length === 1 ? 'child' : 'children' }}
+            {{ workloadOf(v).length === 1 ? 'child' : 'children' }}:
             {{ workloadOf(v).map((c) => c.name.split(' ')[0]).join(', ') }}
           </template>
           <span v-else class="text-muted-cb">No assigned children</span>
@@ -165,7 +162,7 @@ onMounted(async () => {
             <fieldset class="mb-2">
               <legend class="small fw-semibold mb-1">Available days</legend>
               <div class="d-flex flex-wrap gap-2">
-                <label v-for="d in Days" :key="d" class="form-check-inline small mb-0 me-0">
+                <label v-for="d in Days" :key="d" class="form-check form-check-inline small mb-0 me-0">
                   <input v-model="draft.availability" class="form-check-input" type="checkbox" :value="d">
                   <span class="form-check-label">{{ d }}</span>
                 </label>
