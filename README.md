@@ -87,7 +87,7 @@ Open http://localhost:5173. The URL with `/__devtools__/` opens Vue DevTools.
 | Volunteer | `volunteer2@carebridge.sg` | Daniel — Ethan, Meera, Ryan |
 | Volunteer | `volunteer3@carebridge.sg` | Priya — Arjun |
 | Coordinator | `coordinator@carebridge.sg` | Sees the whole centre |
-| Parent | `parent@carebridge.sg` | Grace — parent of Ethan |
+| Parent | `parent@carebridge.sg` | Ms Grace — parent of Ethan **and** Mia |
 | Parent | `parent2@carebridge.sg` | Ravi — parent of Meera **and** Arjun |
 | Child | `child@carebridge.sg` | Ethan |
 | Child | `child2@carebridge.sg` | Meera |

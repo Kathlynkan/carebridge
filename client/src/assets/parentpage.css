@@ -1,0 +1,31 @@
+/* Styles for the parent home page (ParentHomeView.vue).
+   Every rule starts with .parentpage so it only affects that page. */
+
+/* the timeline: a line down the left with a dot for each session */
+.parentpage .timeline {
+  border-left: 2px solid #f2b63d;
+  margin-left: 6px;
+}
+
+/* one session in the timeline: space on the left for the dot */
+.parentpage .timeline-item {
+  position: relative;
+  padding: 0 0 16px 20px;
+}
+
+/* the last session needs no space below it */
+.parentpage .timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+/* the dot */
+.parentpage .timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background: #f2b63d;
+}

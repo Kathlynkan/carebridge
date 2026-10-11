@@ -34,7 +34,11 @@ export function accuracy(session) {
   return Math.round((session.correct / session.attempted) * 100)
 }
 
-// "Ethan Wong" -> "Ethan"
+// "Ethan Wong" -> "Ethan"   (a title stays with the name: "Ms Grace Wong" -> "Ms Grace")
 export function firstName(fullName = '') {
-  return fullName.split(' ')[0]
+  const words = fullName.split(' ')
+  if (['Ms', 'Mrs', 'Mr', 'Dr'].includes(words[0]) && words.length > 1) {
+    return words[0] + ' ' + words[1]
+  }
+  return words[0]
 }
