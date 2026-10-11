@@ -1,2 +1,2 @@
 allowBuilds:
-  inotify: true
+  inotify: false

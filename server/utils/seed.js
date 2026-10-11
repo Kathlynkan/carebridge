@@ -9,7 +9,7 @@
 // =============================================================
 import { readFile } from 'node:fs/promises'
 import { connectDb, disconnectDb } from './db.js'
-import { User, Child, Session, Homework, Message } from '../models/index.js'
+import { User, Child, Session, Homework, Message, Handover } from '../models/index.js'
 
 const DATE_FIELDS = ['date', 'dueDate', 'sentAt', 'createdAt', 'completedAt']
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -49,5 +49,10 @@ for (const [Model, rows] of collections) {
   await Model.insertMany(toDocs(rows))
   console.log(`  ${Model.modelName}: ${rows.length}`)
 }
+
+// clear saved AI summaries so they are made again from the fresh demo sessions
+await Handover.deleteMany({})
+console.log('  Handover: cleared')
+
 await disconnectDb()
 console.log('Database reset with demo data ✅')

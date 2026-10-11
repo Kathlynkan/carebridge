@@ -73,12 +73,23 @@ const workingToday = computed(() => {
   return myDays.value.includes(today)
 })
 
-// children I'm seeing today
+// children scheduled with ME on TODAY's day
 const todaysChildren = computed(() => {
-  if (workingToday.value) {
-    return children.value
+  const result = []
+  for (const child of children.value) {
+    let schedule = []
+    if (child.schedule) {
+      schedule = child.schedule // [{ volunteerId: 'u_vol1', day: 'Mon' }]
+    }
+    for (const slot of schedule) {
+      // if the schedule slot if this volunteer and the slot day is today
+      if (slot.volunteerId === auth.user.id && slot.day === today) {
+        result.push(child) // to show the child under today tab ltr
+        break // found a match for this child, check the next child
+      }
+    }
   }
-  return []
+  return result
 })
 
 // which children have the same struggle 2+ times in their last 5 sessions?
@@ -150,19 +161,21 @@ onMounted(loadData)
     <StateMessage v-else-if="error" type="error" :message="error" />
 
     <template v-else>
-      <!-- Tabs -->
+      <!-- Toggle Tabs -->
       <ul class="nav nav-tabs mb-3">
         <!-- today's children -->
         <li class="nav-item">
           <button
             type="button"
             class="nav-link"
-            :class="{ active: activeTab === 'today' }"
+            :class="activeTab === 'today' ? 'active bg-primary text-white' : ''"
             data-test="tab-today"
             @click="activeTab = 'today'"
           >
             <i class="bi bi-calendar-check me-1"></i>Today ({{ today }})
-            <span class="badge text-bg-primary ms-1">{{ todaysChildren.length }}</span>
+            <span class="badge ms-1" :class="activeTab === 'today' ? 'text-bg-light' : 'text-bg-secondary'">
+              {{ todaysChildren.length }}
+            </span>
           </button>
         </li>
         <!-- all children -->
@@ -170,12 +183,14 @@ onMounted(loadData)
           <button
             type="button"
             class="nav-link"
-            :class="{ active: activeTab === 'all' }"
+            :class="activeTab === 'all' ? 'active bg-primary text-white' : ''"
             data-test="tab-all"
             @click="activeTab = 'all'"
           >
             <i class="bi bi-people me-1"></i>All my children
-            <span class="badge text-bg-secondary ms-1">{{ children.length }}</span>
+            <span class="badge ms-1" :class="activeTab === 'all' ? 'text-bg-light' : 'text-bg-secondary'">
+              {{ children.length }}
+            </span>
           </button>
         </li>
       </ul>
@@ -188,10 +203,13 @@ onMounted(loadData)
           <p class="mb-5 mt-2">No children assigned to you yet. Your coordinator will assign them.</p>
         </div>
 
-        <!-- not my day -->
-        <div v-else-if="!workingToday" class="cb-card p-4 text-center" data-test="not-today">
+        <!-- nobody scheduled with me today -->
+        <div v-else-if="todaysChildren.length === 0" class="cb-card p-4 text-center" data-test="not-today">
           <i class="bi bi-calendar-x fs-2 text-muted-cb"></i>
-          <p class="mb-1 mt-2"><strong>You're not volunteering today.</strong></p>
+          <p class="mb-1 mt-2">
+            <strong v-if="workingToday">No children scheduled with you today.</strong>
+            <strong v-else>You're not volunteering today.</strong>
+          </p>
           <p class="small text-muted-cb">
             Your days: {{ myDays.length > 0 ? myDays.join(', ') : 'not set' }}
           </p>
