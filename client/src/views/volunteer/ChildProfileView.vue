@@ -39,10 +39,13 @@ const error = ref('')
 
 const pendingHomework = computed(() => homework.value.filter((h) => h.status !== 'verified'))
 
-async function loadHandover() {
+async function loadHandover(refresh) {
   handoverLoading.value = true
   try {
-    const res = await api.post(`/handover/${childId}`, { audience: 'volunteer' })
+    const res = await api.post(`/handover/${childId}`, {
+      audience: 'volunteer',
+      refresh: refresh === true, // true only when the refresh button is clicked
+    })
     handover.value = res.data
   } catch (err) {
     console.error(errorMessage(err))
@@ -115,7 +118,7 @@ onMounted(loadData)
 
       <div class="row g-4">
         <div class="col-lg-7">
-          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" @refresh="loadHandover" />
+          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" @refresh="loadHandover(true)" />
 
           <h2 class="h5 mb-3">Session history</h2>
           <StateMessage v-if="sessions.length === 0" message="No sessions recorded yet." />
