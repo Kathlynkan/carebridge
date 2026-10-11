@@ -125,6 +125,16 @@
         "u_vol1",
         "u_vol2"
       ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol1",
+          "day": "Mon"
+        },
+        {
+          "volunteerId": "u_vol2",
+          "day": "Tue"
+        }
+      ],
       "needs": [
         "Primary Math",
         "Fractions"
@@ -141,6 +151,12 @@
       "parentId": "u_par2",
       "volunteerIds": [
         "u_vol2"
+      ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol2",
+          "day": "Thu"
+        }
       ],
       "needs": [
         "Problem Sums",
@@ -160,6 +176,16 @@
         "u_vol1",
         "u_vol3"
       ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol1",
+          "day": "Wed"
+        },
+        {
+          "volunteerId": "u_vol3",
+          "day": "Fri"
+        }
+      ],
       "needs": [
         "English Comprehension",
         "Spelling"
@@ -176,6 +202,12 @@
       "parentId": "u_par3",
       "volunteerIds": [
         "u_vol1"
+      ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol1",
+          "day": "Mon"
+        }
       ],
       "needs": [
         "Primary Math",
@@ -194,6 +226,12 @@
       "volunteerIds": [
         "u_vol2"
       ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol2",
+          "day": "Tue"
+        }
+      ],
       "needs": [
         "Problem Sums"
       ],
@@ -208,6 +246,7 @@
       "school": "Hillview Primary",
       "parentId": "u_par4",
       "volunteerIds": [],
+      "schedule": [],
       "needs": [
         "Spelling",
         "Primary Math"
@@ -224,6 +263,12 @@
       "parentId": "u_par1",
       "volunteerIds": [
         "u_vol1"
+      ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol1",
+          "day": "Wed"
+        }
       ],
       "needs": [
         "Spelling",

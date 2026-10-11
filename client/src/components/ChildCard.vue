@@ -28,13 +28,14 @@ const lastSeen = computed(() => (props.lastSession ? relativeDay(props.lastSessi
   >
     <div class="d-flex align-items-center gap-3 mb-3">
       <span class="avatar">{{ child.avatar }}</span>
-      <div>
+      <!-- min-width: 0 lets this column shrink instead of pushing out of the card -->
+      <div style="min-width: 0">
         <h2 class="h5 mb-0">{{ child.name }}</h2>
         <div class="small text-muted-cb">{{ child.level }} &middot; {{ child.school }}</div>
+        <span v-if="needsAttention" class="badge text-bg-warning mt-1" data-test="needs-attention">
+          <i class="bi bi-exclamation-triangle me-1"></i>Needs attention
+        </span>
       </div>
-      <span v-if="needsAttention" class="badge text-bg-warning ms-auto" data-test="needs-attention">
-        <i class="bi bi-exclamation-triangle me-1"></i>Needs attention
-      </span>
     </div>
 
     <div v-if="lastSession" class="small mb-3">

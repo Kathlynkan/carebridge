@@ -239,10 +239,9 @@ async function callLLM(prompt) {
   }
 }
 
-// -------------------------------------------------------------
+
 // POST /handover/:childId
 // body: { audience: 'volunteer' or 'parent', refresh: true or false }
-// -------------------------------------------------------------
 router.post('/:childId', async (req, res) => {
   // get the child from MongoDB
   const child = await Child.findById(req.params.childId)
