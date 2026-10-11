@@ -24,17 +24,17 @@ const successMessage = ref('')
 
 onMounted(async () => {
   try {
-    // Load both lists at the same time
-    const [childRes, parentRes] = await Promise.all([
-      api.get('/children'),
-      api.get('/users', { params: { role: 'parent' } }),
-    ])
+    // 1. the children for the table
+    const childRes = await api.get('/children')
     children.value = childRes.data
+
+    // 2. the parent accounts for the "Parent" dropdown in the form
+    const parentRes = await api.get('/users', { params: { role: 'parent' } })
     parents.value = parentRes.data
+    loading.value = false // stop the spinner (success)
   } catch (err) {
     error.value = errorMessage(err)
-  } finally {
-    loading.value = false
+    loading.value = false // stop the spinner (error)
   }
 })
 
@@ -73,11 +73,11 @@ async function addChild() {
     // Show the new child right away, kept in A-Z order like the server's list
     children.value = [...children.value, res.data].sort((a, b) => a.name.localeCompare(b.name))
     successMessage.value = `${res.data.name} was added.`
+    saving.value = false // turn the Save button back on (success)
     showModal.value = false
   } catch (err) {
     saveError.value = errorMessage(err) // e.g. "Level must be P1 to P6." from the server
-  } finally {
-    saving.value = false
+    saving.value = false // turn the Save button back on (error)
   }
 }
 </script>
