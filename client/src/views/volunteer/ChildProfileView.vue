@@ -3,11 +3,9 @@
   (Session history list + homework section: Ning Xuan's components)
   (Charts: Jachin's components)
   -------------------------------------------------------------
-  Already loads: child, sessions, homework, handover (fallback summary).
+  Already loads: child, sessions, homework, handover (AI summary, cached, with fallback)
   TODO (Yuqi):
-    [ ] "At a glance" cards: recent topics, recurring struggles, best methods
-    [ ] HandoverCard refresh -> POST /handover/:id again (after Gemini is wired up)
-    [ ] tabs (Overview / History / Homework) on mobile so the page isn't too long
+   [x] HandoverCard refresh -> POST /handover/:id with refresh: true
   TODO (Ning Xuan):
     [done] wire SessionCard @edit / @delete (DELETE /sessions/:id, then reload)
 ============================================================= -->
@@ -40,10 +38,13 @@ const error = ref('')
 
 const pendingHomework = computed(() => homework.value.filter((h) => h.status !== 'verified'))
 
-async function loadHandover() {
+async function loadHandover(refresh) {
   handoverLoading.value = true
   try {
-    const res = await api.post(`/handover/${childId}`, { audience: 'volunteer' })
+    const res = await api.post(`/handover/${childId}`, {
+      audience: 'volunteer',
+      refresh: refresh === true, // true only when the refresh button is clicked
+    })
     handover.value = res.data
   } catch (err) {
     console.error(errorMessage(err))
@@ -132,7 +133,7 @@ onMounted(() => {
 
       <div class="row g-4">
         <div class="col-lg-7">
-          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" @refresh="loadHandover" />
+          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" @refresh="loadHandover(true)" />
 
           <h2 class="h5 mb-3">Session history</h2>
           <StateMessage v-if="sessions.length === 0" message="No sessions recorded yet." />

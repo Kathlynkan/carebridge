@@ -4,9 +4,6 @@
           loading   Boolean
   Emits:  refresh   (ask the server to regenerate the AI summary)
   Re-used by Kat on the parent page (audience = 'parent').
-  TODO (Yuqi):
-    [ ] nicer loading skeleton while the AI is thinking
-    [ ] show "recurring" struggles as warning badges
 ============================================================= -->
 <script setup>
 import { computed } from 'vue'
@@ -15,11 +12,11 @@ const props = defineProps({
   handover: { type: Object, default: null },
   loading: { type: Boolean, default: false },
   title: { type: String, default: "Today's Handover" },
-  audience: { type: String, default: 'volunteer' }, // 'parent' = friendlier words on the labels
+  audience: { type: String, default: 'volunteer' }, // 'volunteer' or 'parent'
 })
 const emit = defineEmits(['refresh'])
 
-// the labels for volunteers
+// labels for volunteers (summary handover)
 const VOLUNTEER_ROWS = [
   { key: 'continueTopic', label: 'Continue', icon: 'bi-arrow-right-circle' },
   { key: 'struggle', label: 'Last Struggle', icon: 'bi-exclamation-circle' },
@@ -28,17 +25,30 @@ const VOLUNTEER_ROWS = [
   { key: 'nextStep', label: 'Next step', icon: 'bi-flag' },
 ]
 
-// the same rows, with simple words for parents (the labels Yuqi chose)
+// labels for parents (summary of child's progress)
 const PARENT_ROWS = [
-  { key: 'continueTopic', label: 'Working on', icon: 'bi-arrow-right-circle' },
-  { key: 'struggle', label: 'Finding tricky', icon: 'bi-exclamation-circle' },
+  { key: 'continueTopic', label: 'Working on', icon: 'bi-book' },
+  { key: 'struggle', label: 'Finding tricky', icon: 'bi-emoji-neutral' },
   { key: 'whatWorked', label: 'What helped', icon: 'bi-lightbulb' },
-  { key: 'lastResult', label: 'Latest score', icon: 'bi-check2-square' },
+  { key: 'lastResult', label: 'Latest score', icon: 'bi-star' },
   { key: 'nextStep', label: 'Coming up next', icon: 'bi-flag' },
 ]
 
-const ROWS = computed(() => (props.audience === 'parent' ? PARENT_ROWS : VOLUNTEER_ROWS))
-const recurringLabel = computed(() => (props.audience === 'parent' ? 'Keep practising' : 'Recurring Struggles'))
+// choose the corret labels based on volunteer/parent
+const rows = computed(() => {
+  if (props.audience === 'parent') {
+    return PARENT_ROWS
+  }
+  return VOLUNTEER_ROWS
+})
+
+// label for the recurring row
+const recurringLabel = computed(() => {
+  if (props.audience === 'parent') {
+    return 'Keep practising' 
+  }
+  return 'Recurring Struggles'
+})
 </script>
 
 <template>
@@ -59,7 +69,7 @@ const recurringLabel = computed(() => (props.audience === 'parent' ? 'Keep pract
       <span class="spinner-border spinner-border-sm me-2"></span>{{ audience === 'parent' ? 'Getting the update...' : 'Preparing handover...' }}
     </div>
     <dl v-else-if="handover" class="row mb-0">
-      <template v-for="row in ROWS" :key="row.key">
+      <template v-for="row in rows" :key="row.key">
         <dt class="col-5 col-sm-4 small text-muted-cb">
           <i class="bi me-1" :class="row.icon"></i>{{ row.label }}
         </dt>

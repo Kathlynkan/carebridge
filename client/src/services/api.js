@@ -1,5 +1,5 @@
 // =============================================================
-// ONE axios instance for the whole app (Week 5: Axios)
+// ONE axios instance for the whole app 
 // -------------------------------------------------------------
 // Always import this instead of plain axios, so that:
 //   - the API base URL is set in one place

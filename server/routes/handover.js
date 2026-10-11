@@ -1,21 +1,14 @@
 // =============================================================
-// /handover  - AI handover summary (EXTERNAL API requirement)   Owner: Yuqi
+// /handover  - AI handover summary (EXTERNAL API)   Owner: Yuqi
 // -------------------------------------------------------------
 // The Vue page calls OUR server, and our server calls Gemini.
 // This keeps the API key secret (never put API keys in Vue code!).
 //
-//   Vue (axios) --POST /handover/:childId--> Express --axios--> Gemini API
-//
-// TODO (Yuqi):
-//   [x] Call Gemini in callLLM() with axios
-//   [x] Ask for JSON output and parse it safely (try/catch -> fallback)
-//   [ ] Improve the prompt in buildPrompt()
-//   [ ] Cache the summary per child until a new session is added (save API quota)
-//   [x] audience = 'parent' -> friendly wording for Kat's parent page
+// Vue (axios) --POST /handover/:childId--> Express --axios--> Gemini API
 // =============================================================
 import { Router } from 'express'
 import axios from 'axios'
-import { Child, Session } from '../models/index.js'
+import { Child, Session, Handover } from '../models/index.js'
 import { requireAuth } from '../middleware/auth.js'
 import { canAccessChild } from '../utils/access.js'
 
@@ -25,18 +18,18 @@ router.use(requireAuth) // must be logged in for every route in this file
 // Find struggles that appear 2 or more times in the last 5 sessions
 export function findRecurring(sessions) {
   const counts = {} // e.g. { 'Mixed numbers': 1, 'Finding common denominators': 2 }
-  const lastFive = sessions.slice(0, 5)
 
+  // only look at the newest 5 sessions
+  const lastFive = sessions.slice(0, 5)
   for (const session of lastFive) {
     for (const struggle of session.struggles) {
       if (counts[struggle]) {
-        counts[struggle] = counts[struggle] + 1 
+        counts[struggle] = counts[struggle] + 1 // seen before -> add 1
       } else {
-        counts[struggle] = 1 
+        counts[struggle] = 1 // first time -> start at 1
       }
     }
   }
-
   // keep the ones that appeared more than once
   const recurring = []
   for (const struggle in counts) {
@@ -49,9 +42,8 @@ export function findRecurring(sessions) {
 
 // Backup summary: used when there is no API key or Gemini fails.
 // It just copies from the newest session.
-// audience 'parent' = plain, friendly words (no "struggle", no "3/5 correct")
 export function buildFallbackHandover(sessions, audience = 'volunteer') {
-  // child has no sessions yet
+  // child has no sessions yet (friendlier message for parents)
   if (sessions.length === 0 && audience === 'parent') {
     return {
       continueTopic: 'No sessions yet',
@@ -63,6 +55,7 @@ export function buildFallbackHandover(sessions, audience = 'volunteer') {
       source: 'fallback',
     }
   }
+  // child has no sessions yet (for volunteer)
   if (sessions.length === 0) {
     return {
       continueTopic: 'No sessions yet',
@@ -74,10 +67,9 @@ export function buildFallbackHandover(sessions, audience = 'volunteer') {
       source: 'fallback',
     }
   }
+  const last = sessions[0] // newest session (sessions are sorted newest first)
 
-  const last = sessions[0]
-
-  // parents get a simple version: "6 out of 8 right", and nothing alarming
+  // parents get a simple version: "6 out of 8 right", and nothing alarming   (Kat)
   if (audience === 'parent') {
     let tricky = 'Nothing in particular - it went smoothly.'
     if (last.struggles.length > 0) {
@@ -128,40 +120,84 @@ export function buildFallbackHandover(sessions, audience = 'volunteer') {
   }
 }
 
-// Write the message (prompt) to send to Gemini
+// Write the message (prompt) we send to Gemini
 function buildPrompt(child, sessions, audience) {
-  // turn the newest 5 sessions into simple lines of text
+  // 1. turn the newest 5 sessions into simple lines of text
   let notes = ''
   const lastFive = sessions.slice(0, 5)
   for (const s of lastFive) {
-    notes = notes + `- ${s.date}: ${s.subject} - ${s.topic}. `
+    const date = new Date(s.date).toDateString() // e.g. 'Fri Sep 25 2026'
+
+    let struggles = 'none'
+    if (s.struggles.length > 0) {
+      struggles = s.struggles.join(', ')
+    }
+
+    let whatWorked = 'not recorded'
+    if (s.whatWorked) {
+      whatWorked = s.whatWorked
+    }
+
+    let nextStep = 'not recorded'
+    if (s.nextStep) {
+      nextStep = s.nextStep
+    }
+
+    notes = notes + `- ${date}: ${s.subject} - ${s.topic}. `
     notes = notes + `Score ${s.correct}/${s.attempted}. `
-    notes = notes + `Struggled with: ${s.struggles.join(', ')}. `
-    notes = notes + `What worked: ${s.whatWorked}. `
-    notes = notes + `Next step: ${s.nextStep}\n`
+    notes = notes + `Struggled with: ${struggles}. `
+    notes = notes + `What worked: ${whatWorked}. `
+    notes = notes + `Next step planned: ${nextStep}.\n`
   }
 
-  // for a parent: warm, short, simple words, no teaching jargon, and nothing that sounds like blame
-  let wording = ''
+  // 2. struggles that keep coming back 
+  let recurringText = 'none'
+  const recurring = findRecurring(sessions)
+  if (recurring.length > 0) {
+    recurringText = recurring.join(', ')
+  }
+
+  // 3. how to write prompt: volunteer (teaching notes) or parent (friendly update)
+  let style = ''
   if (audience === 'parent') {
-    wording = `
-  The reader is the child's PARENT, not a teacher. Write short, warm, plain sentences. No jargon or abbreviations.
-  Say "got 6 out of 8 right" instead of "6/8 correct". Say "a bit tricky" instead of "struggled". Be kind and honest.`
+    style = `You are writing for the child's PARENT, not a teacher.
+Write short, warm, plain sentences. No jargon or abbreviations.
+Say "got 6 out of 8 right" instead of "6/8 correct". Say "a bit tricky" instead of "struggled".
+Be kind and honest. Mention one thing the child did well.`
+  } else {
+    style = `You are writing for the NEXT VOLUNTEER, who has never met this child.
+Be practical and specific, like a short note from one tutor to another.`
   }
 
-  return `You are helping student-care volunteers hand over a child's learning between sessions.
-  Audience: ${audience}.${wording}
-  Child: ${child.name}, ${child.level}.
-  Recent session notes (newest first):
-  ${notes}
-  Reply ONLY with JSON: {"continueTopic":"","struggle":"","whatWorked":"","lastResult":"","nextStep":""}`
+  // 4. put it all together (whole prompt)
+  return `You help student-care volunteers hand over a child's learning between sessions.
+${style}
+
+Child: ${child.name}, ${child.level}.
+
+Recent session notes (newest first):
+${notes}
+Struggles that came up more than once: ${recurringText}.
+
+Rules:
+- Look at ALL the sessions above, not just the newest one.
+- "continueTopic": the topic to work on next session.
+- "struggle": the main difficulty. If it happened before, say so and whether it is getting better or worse.
+- "whatWorked": the teaching method that helped most. Say if it worked more than once.
+- "lastResult": the latest score. If there is an earlier score on the same topic, compare them (e.g. "4/6, up from 3/6").
+- "nextStep": one concrete thing to do next session, using what worked before.
+- Each field: one sentence, under 25 words.
+- Only use facts from the notes. Do not make anything up.
+
+Reply ONLY with JSON in exactly this shape:
+{"continueTopic":"","struggle":"","whatWorked":"","lastResult":"","nextStep":""}`
 }
+
 
 // Send the prompt to Gemini and get the answer back as an object.
 // Returns null if there is no key or the answer is not valid JSON.
 async function callLLM(prompt) {
-  // read the key from config.env
-  const key = process.env.GEMINI_API_KEY
+  const key = process.env.GEMINI_API_KEY // read the key from config.env
   if (!key) {
     return null // no key -> router uses the fallback
   }
@@ -185,7 +221,7 @@ async function callLLM(prompt) {
 
   const response = await axios.post(url, body, config)
 
-  // get Gemini's answer text in the response
+  // Gemini's answer text is deep inside the response
   let text = response.data.candidates[0].content.parts[0].text
 
   // sometimes the AI wraps the JSON in ```json ... ``` -> remove it
@@ -203,18 +239,19 @@ async function callLLM(prompt) {
   }
 }
 
-
-// POST /handover/:childId     body: { audience: 'volunteer' or 'parent' }
+// -------------------------------------------------------------
+// POST /handover/:childId
+// body: { audience: 'volunteer' or 'parent', refresh: true or false }
+// -------------------------------------------------------------
 router.post('/:childId', async (req, res) => {
   // get the child from MongoDB
   const child = await Child.findById(req.params.childId)
 
-  // check if this user allowed to see this child
   if (!canAccessChild(req.user, child)) {
     return res.status(403).json({ message: 'You do not have access to this child.' })
   }
 
-  // else get the child's sessions, newest first, at most 10
+  // get the child's sessions, newest first, at most 10
   const sessions = await Session.find({ childId: child.id }).sort({ date: -1 }).limit(10)
 
   // who is the summary for? (default: volunteer)
@@ -223,7 +260,30 @@ router.post('/:childId', async (req, res) => {
     audience = req.body.audience
   }
 
-  // 5. try Gemini first
+  // did the user click the refresh button? (then always ask Gemini again)
+  let refresh = false
+  if (req.body && req.body.refresh === true) {
+    refresh = true
+  }
+
+  // if a session is added or deleted, this changes -> the saved summary is out of date
+  const ids = []
+  for (const s of sessions.slice(0, 5)) {
+    ids.push(s.id)
+  }
+  const sessionsKey = ids.join(',')
+
+  // 1. use the saved summary if it is still up to date (no Gemini call)
+  if (!refresh) {
+    const saved = await Handover.findOne({ childId: child.id, audience: audience })
+    if (saved && saved.sessionsKey === sessionsKey) {
+      const result = saved.summary
+      result.cached = true // so we can tell it came from the database
+      return res.json(result)
+    }
+  }
+
+  // 2. otherwise ask Gemini
   try {
     const prompt = buildPrompt(child, sessions, audience)
     const ai = await callLLM(prompt)
@@ -232,13 +292,20 @@ router.post('/:childId', async (req, res) => {
       // add our own fields to the AI answer
       ai.recurring = findRecurring(sessions)
       ai.source = 'ai'
+
+      // save it for next time (update the old one, or create it if there is none yet)
+      await Handover.findOneAndUpdate(
+        { childId: child.id, audience: audience },
+        { sessionsKey: sessionsKey, summary: ai, createdAt: new Date().toISOString() },
+        { upsert: true },
+      )
       return res.json(ai)
     }
   } catch (error) {
     console.error('Gemini call failed, using fallback:', error.message)
   }
 
-  // if Gemini didn't work -> send the backup summary
+  // 3. Gemini didn't work -> send the backup summary (not saved, so we try Gemini again next time)
   const fallback = buildFallbackHandover(sessions, audience)
   res.json(fallback)
 })
