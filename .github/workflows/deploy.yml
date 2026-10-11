@@ -1,4 +1,4 @@
-# Deploys CareBridge to Cloudflare every time code lands on the main branch (and only then).
+# Deploys Kids Lapis to Cloudflare every time code lands on the main branch (and only then).
 # It always builds from a fresh copy of main on GitHub, never from anyone's own computer.
 # One-time setup: in GitHub -> Settings -> Secrets and variables -> Actions, add
 #   CLOUDFLARE_API_TOKEN   (a Cloudflare API token that can edit Workers and Pages)
@@ -43,7 +43,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       - name: Deploy the website
         working-directory: cloudflare/pages
-        run: npx wrangler pages deploy site --project-name carebridge-wad2g4 --branch main
+        run: npx wrangler pages deploy site --project-name kids-lapis-wad2g4 --branch main
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

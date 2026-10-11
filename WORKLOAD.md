@@ -1,7 +1,7 @@
-# CareBridge — Workload Split (6 members)
+# Kids Lapis — Workload Split (6 members)
 
-> **One-line pitch:** CareBridge is a continuity and handover system for student-care volunteers. It is **not** an online learning platform.
-> The question books stay. CareBridge makes sure that when the helper changes, what we know about the child is not lost.
+> **One-line pitch:** Kids Lapis is a continuity and handover system for student-care volunteers. It is **not** an online learning platform.
+> The question books stay. Kids Lapis makes sure that when the helper changes, what we know about the child is not lost.
 >
 > **Core flow:** Child practises → Volunteer records session → App stores history → API summarises handover → Next volunteer continues
 
@@ -107,7 +107,7 @@ Every page in the running app shows a yellow **"Owner / to build"** panel (`<Tod
 | Should | Sign up extras: volunteers pick skills + days, parents enter a **child code** from the centre to link their child. |
 | Should | Navbar unread-message badge (using Kat's endpoint). Landing page polish. Remove the demo-account box before submission (keep the accounts in the README). |
 | Must | **MongoDB Atlas setup** for the team: one free cluster, one database user, Network Access `0.0.0.0/0`. Share the connection string privately. Everyone uses their own database name for development (see README, Step 0). |
-| Should | **Deployment:** API on Render (or similar) with `DB=` pointing at the shared `carebridge` database + Vue on Netlify/Vercel with `VITE_API_URL`. |
+| Should | **Deployment:** API on Render (or similar) with `DB=` pointing at the shared `kids-lapis` database + Vue on Netlify/Vercel with `VITE_API_URL`. |
 | Should | **Integration lead:** review/merge PRs, keep `main` green (run all tests before merging), final README. |
 | Stretch | Swap the in-memory tokens for JWT, so logins survive server restarts on Render. |
 

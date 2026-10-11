@@ -3,8 +3,8 @@
 ## First time
 
 ```bash
-git clone https://github.com/<owner>/carebridge.git
-cd carebridge
+git clone https://github.com/<owner>/kids-lapis.git
+cd kids-lapis
 # then follow "Set up and run" in README.md
 ```
 

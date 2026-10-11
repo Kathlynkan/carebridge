@@ -36,7 +36,7 @@ const roles = [
             When the volunteer changes, the child's progress shouldn't reset.
           </h1>
           <p class="lead text-muted-cb mb-4">
-            CareBridge keeps every child's learning history in one place and turns past session
+            Kids Lapis keeps every child's learning history in one place and turns past session
             notes into a short handover for the next volunteer.
           </p>
           <div class="d-flex flex-wrap gap-2">

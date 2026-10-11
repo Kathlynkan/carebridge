@@ -1,5 +1,5 @@
 {
-  "name": "carebridge",
+  "name": "kids-lapis",
   "private": true,
   "description": "Convenience scripts - you can also cd into server/ and client/ and run pnpm there",
   "scripts": {

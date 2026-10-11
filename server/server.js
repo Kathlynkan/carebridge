@@ -1,5 +1,5 @@
 // =============================================================
-// CareBridge API server  (Express + MongoDB/Mongoose, like the IS113 / Week 5 blog-with-mongodb service)
+// Kids Lapis API server  (Express + MongoDB/Mongoose, like the IS113 / Week 5 blog-with-mongodb service)
 // Run:  pnpm dev   ->  http://localhost:8000
 // =============================================================
 import express from 'express'
@@ -25,7 +25,7 @@ app.use(express.json())
 
 // Health check - handy for deployment platforms and E2E tests
 app.get('/', (req, res) => {
-  res.json({ status: 'ok', app: 'CareBridge API' })
+  res.json({ status: 'ok', app: 'Kids Lapis API' })
 })
 
 //          URL prefix        Owner
@@ -49,5 +49,5 @@ app.use((err, req, res, next) => {
 
 await connectDb()
 app.listen(PORT, () => {
-  console.log(`CareBridge API running at http://localhost:${PORT}`)
+  console.log(`Kids Lapis API running at http://localhost:${PORT}`)
 })

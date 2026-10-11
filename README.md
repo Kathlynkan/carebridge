@@ -1,8 +1,8 @@
-# CareBridge — Student Care Handover & Progress Tracking
+# Kids Lapis — Student Care Handover & Progress Tracking
 
 IS216 Web Application Development II — Group Project
 
-At student care centres, a different volunteer may help the same child each day. Without a proper handover, the next volunteer doesn't know what the child learned, what they struggled with, or which teaching methods worked. CareBridge keeps each child's learning history in one place and uses an LLM API to turn past session notes into a short handover for the next volunteer.
+At student care centres, a different volunteer may help the same child each day. Without a proper handover, the next volunteer doesn't know what the child learned, what they struggled with, or which teaching methods worked. Kids Lapis keeps each child's learning history in one place and uses an LLM API to turn past session notes into a short handover for the next volunteer.
 
 **Core flow:** Child practises → Volunteer records session → App stores history → API summarises handover → Next volunteer continues
 
@@ -48,7 +48,7 @@ That way `pnpm seed` and the E2E tests (which reset the data) don't wipe each ot
 
 **Everyone:** put the string in `server/config.env` as `DB=...`.
 - Replace `<password>`.
-- Add your own database name after `.net/`, e.g. `...mongodb.net/carebridge_yuqi?retryWrites=true&w=majority`.
+- Add your own database name after `.net/`, e.g. `...mongodb.net/kidslapis_yuqi?retryWrites=true&w=majority`.
 
 MongoDB creates the database the first time you run `pnpm seed`.
 
@@ -63,7 +63,7 @@ pnpm seed                            # loads the demo data into YOUR database
 pnpm dev
 ```
 
-You should see `Connected to MongoDB database "carebridge_<yourname>"`. Run `pnpm seed` again any time to reset the demo data.
+You should see `Connected to MongoDB database "kidslapis_<yourname>"`. Run `pnpm seed` again any time to reset the demo data.
 
 To look at the data, use **Atlas → Browse Collections** or **MongoDB Compass**: `users`, `children`, `sessions`, `homeworks`, `messages`.
 
@@ -83,14 +83,14 @@ Open http://localhost:5173. The URL with `/__devtools__/` opens Vue DevTools.
 
 | Role | Email | Notes |
 |---|---|---|
-| Volunteer | `volunteer@carebridge.sg` | Aisha — assigned to Ethan, Arjun, Chloe |
-| Volunteer | `volunteer2@carebridge.sg` | Daniel — Ethan, Meera, Ryan |
-| Volunteer | `volunteer3@carebridge.sg` | Priya — Arjun |
-| Coordinator | `coordinator@carebridge.sg` | Sees the whole centre |
-| Parent | `parent@carebridge.sg` | Ms Grace — parent of Ethan **and** Mia |
-| Parent | `parent2@carebridge.sg` | Ravi — parent of Meera **and** Arjun |
-| Child | `child@carebridge.sg` | Ethan |
-| Child | `child2@carebridge.sg` | Meera |
+| Volunteer | `volunteer@kidslapis.sg` | Aisha — assigned to Ethan, Arjun, Chloe |
+| Volunteer | `volunteer2@kidslapis.sg` | Daniel — Ethan, Meera, Ryan |
+| Volunteer | `volunteer3@kidslapis.sg` | Priya — Arjun |
+| Coordinator | `coordinator@kidslapis.sg` | Sees the whole centre |
+| Parent | `parent@kidslapis.sg` | Ms Grace — parent of Ethan **and** Mia |
+| Parent | `parent2@kidslapis.sg` | Ravi — parent of Meera **and** Arjun |
+| Child | `child@kidslapis.sg` | Ethan |
+| Child | `child2@kidslapis.sg` | Meera |
 
 The demo data is built to trigger interesting cases:
 
@@ -124,7 +124,7 @@ The E2E tests run on two projects: **Desktop Chrome** and **iPhone 6** (responsi
 ## Project structure
 
 ```
-carebridge/
+kids-lapis/
 ├── WORKLOAD.md            <- who does what
 ├── CONTRIBUTING.md        <- git workflow
 ├── server/                <- Express API (port 8000)
