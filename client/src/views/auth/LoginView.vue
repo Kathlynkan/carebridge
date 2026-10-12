@@ -21,7 +21,7 @@ const loading = ref(false)
 const error = ref('')
 
 const demoAccounts = [
-  { role: 'Volunteer', email: 'volunteer@carebridge.sg' },
+  { role: 'Volunteer', email: 'volunteer@kidslapis.sg' },
   { role: 'Coordinator', email: 'coordinator@kidslapis.sg' },
   { role: 'Parent', email: 'parent@kidslapis.sg' },
   { role: 'Child', email: 'child@kidslapis.sg' },
