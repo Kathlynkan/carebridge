@@ -51,3 +51,44 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL(/\/parent$/)
   })
 })
+
+// Sign-up checks (Kai Sen). These use data-test="..." selectors, which don't change when wording changes.
+test.describe('Sign up', () => {
+  test('shows field errors and does not sign up when the form is wrong', async ({ page }) => {
+    await page.goto('/signup')
+    await page.locator('[data-test="signup-email"]').fill('not-an-email')
+    await page.locator('[data-test="signup-password"]').fill('short')
+    await page.locator('[data-test="signup-confirm"]').fill('different')
+    await page.locator('[data-test="signup-submit"]').click()
+
+    await expect(page.locator('[data-test="signup-name"]')).toHaveClass(/is-invalid/)
+    await expect(page.getByText('Please enter a valid email')).toBeVisible()
+    await expect(page.getByText('at least 8 characters')).toBeVisible()
+    await expect(page.getByText('Passwords do not match.')).toBeVisible()
+    await expect(page).toHaveURL(/\/signup$/) // still on the sign-up page
+  })
+
+  test('a new volunteer can sign up and lands on My Children', async ({ page }) => {
+    // A different email every run, because each test runs twice (desktop + iPhone 6)
+    const email = `new.volunteer.${Date.now()}@example.com`
+    await page.goto('/signup')
+    await page.locator('[data-test="signup-name"]').fill('New Volunteer')
+    await page.locator('[data-test="signup-email"]').fill(email)
+    await page.locator('[data-test="signup-password"]').fill('secret123')
+    await page.locator('[data-test="signup-confirm"]').fill('secret123')
+    await page.locator('[data-test="signup-submit"]').click()
+
+    await expect(page).toHaveURL(/\/volunteer$/)
+  })
+
+  test('signing up with an email that is already used shows an error', async ({ page }) => {
+    await page.goto('/signup')
+    await page.locator('[data-test="signup-name"]').fill('Someone')
+    await page.locator('[data-test="signup-email"]').fill('volunteer@kidslapis.sg') // demo account
+    await page.locator('[data-test="signup-password"]').fill('secret123')
+    await page.locator('[data-test="signup-confirm"]').fill('secret123')
+    await page.locator('[data-test="signup-submit"]').click()
+
+    await expect(page.locator('[data-test="signup-error"]')).toContainText('already exists')
+  })
+})
