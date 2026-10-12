@@ -1,10 +1,10 @@
 <!-- =============================================================
   Manage children (CRUD)                              Owner: Kai Sen
   -------------------------------------------------------------
-  Done: table of all children, "Add child" modal -> POST /children
+  Done: table of all children
+        "Add child" / "Edit" modal -> POST /children, PUT /children/:id
+        "Delete" with a warning    -> DELETE /children/:id
   TODO (Kai Sen):
-    [ ] edit (PUT) + delete (DELETE, with confirm)
-    [ ] create the child's login + a "child code" for the parent to link
     [ ] search + responsive table (.table-responsive) / cards on mobile
 ============================================================= -->
 <script setup>
@@ -38,10 +38,14 @@ onMounted(async () => {
   }
 })
 
-// ---------- "Add child" modal ----------
+// Keep the table in A-Z order, like the server's list
+const sortByName = (list) => list.sort((a, b) => a.name.localeCompare(b.name))
+
+// ---------- "Add child" / "Edit child" modal (one form for both) ----------
 const emptyForm = () => ({ name: '', level: '', school: '', parentId: '', needs: [] })
 
 const showModal = ref(false)
+const editingId = ref(null) // null = adding a new child, otherwise the id of the child being edited
 const form = ref(emptyForm())
 const submitted = ref(false) // only show red errors after the first Save click
 const saving = ref(false)
@@ -51,8 +55,25 @@ const saveError = ref('')
 const nameInvalid = computed(() => submitted.value && !form.value.name)
 const levelInvalid = computed(() => submitted.value && !form.value.level)
 
-function openModal() {
+function openAdd() {
+  editingId.value = null
   form.value = emptyForm()
+  submitted.value = false
+  saveError.value = ''
+  showModal.value = true
+}
+
+function openEdit(child) {
+  editingId.value = child.id
+  // Copy the child's current details into the form.
+  // [...] makes a copy of the needs list, so ticking boxes doesn't change the table before saving.
+  form.value = {
+    name: child.name,
+    level: child.level,
+    school: child.school || '',
+    parentId: child.parentId || '',
+    needs: [...(child.needs || [])],
+  }
   submitted.value = false
   saveError.value = ''
   showModal.value = true
@@ -62,17 +83,25 @@ function closeModal() {
   if (!saving.value) showModal.value = false
 }
 
-async function addChild() {
+async function saveChild() {
   submitted.value = true
   saveError.value = ''
   if (!form.value.name || !form.value.level) return // stop here, the red messages show
 
   saving.value = true
   try {
-    const res = await api.post('/children', form.value)
-    // Show the new child right away, kept in A-Z order like the server's list
-    children.value = [...children.value, res.data].sort((a, b) => a.name.localeCompare(b.name))
-    successMessage.value = `${res.data.name} was added.`
+    if (editingId.value) {
+      // Editing: PUT /children/:id, then swap the old row for the updated child
+      const res = await api.put(`/children/${editingId.value}`, form.value)
+      const others = children.value.filter((c) => c.id !== editingId.value)
+      children.value = sortByName([...others, res.data])
+      successMessage.value = `${res.data.name} was updated.`
+    } else {
+      // Adding: POST /children, then add the new child to the table
+      const res = await api.post('/children', form.value)
+      children.value = sortByName([...children.value, res.data])
+      successMessage.value = `${res.data.name} was added.`
+    }
     saving.value = false // turn the Save button back on (success)
     showModal.value = false
   } catch (err) {
@@ -80,17 +109,49 @@ async function addChild() {
     saving.value = false // turn the Save button back on (error)
   }
 }
+
+// ---------- "Delete child" confirmation ----------
+const childToDelete = ref(null) // the child the coordinator clicked Delete on (null = box closed)
+const deleting = ref(false)
+const deleteError = ref('')
+
+function openDelete(child) {
+  childToDelete.value = child
+  deleteError.value = ''
+}
+
+function closeDelete() {
+  if (!deleting.value) childToDelete.value = null
+}
+
+async function confirmDelete() {
+  const child = childToDelete.value
+  deleting.value = true
+  deleteError.value = ''
+  try {
+    const res = await api.delete(`/children/${child.id}`)
+    // Remove the row from the table
+    children.value = children.value.filter((c) => c.id !== child.id)
+    const d = res.data.deleted
+    successMessage.value = `${child.name} was deleted, along with ${d.sessions} session(s), ${d.homework} homework and ${d.messages} message(s).`
+    deleting.value = false // success
+    childToDelete.value = null
+  } catch (err) {
+    deleteError.value = errorMessage(err)
+    deleting.value = false // error
+  }
+}
 </script>
 
 <template>
   <div class="container py-4">
     <PageHeader title="Children" subtitle="Everyone enrolled at the centre.">
-      <button class="btn btn-primary" data-test="add-child" @click="openModal">
+      <button class="btn btn-primary" data-test="add-child" @click="openAdd">
         <i class="bi bi-plus-lg me-1"></i>Add child
       </button>
     </PageHeader>
 
-    <div v-if="successMessage" class="alert alert-success small" data-test="add-child-success">
+    <div v-if="successMessage" class="alert alert-success small" data-test="children-success">
       {{ successMessage }}
     </div>
 
@@ -119,20 +180,41 @@ async function addChild() {
               <span v-if="c.volunteerIds.length">{{ c.volunteerIds.length }}</span>
               <span v-else class="badge badge-danger-soft">Unassigned</span>
             </td>
-            <td class="text-end">
+            <td class="text-end text-nowrap">
               <RouterLink
                 :to="{ name: 'child-profile', params: { id: c.id } }"
                 class="btn btn-sm btn-outline-primary"
               >
                 View
               </RouterLink>
+              <!-- Icon-only buttons keep the row short on phones; aria-label is read out by screen readers -->
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-secondary ms-1"
+                :aria-label="`Edit ${c.name}`"
+                title="Edit"
+                data-test="edit-child"
+                @click="openEdit(c)"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger ms-1"
+                :aria-label="`Delete ${c.name}`"
+                title="Delete"
+                data-test="delete-child"
+                @click="openDelete(c)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Add child modal.
+    <!-- Add / Edit child modal (the same form is used for both).
          Bootstrap's modal look, but Vue decides when it shows (v-if),
          so we don't need Bootstrap's JavaScript to open or close it. -->
     <template v-if="showModal">
@@ -140,18 +222,15 @@ async function addChild() {
         class="modal d-block"
         tabindex="-1"
         role="dialog"
-        aria-labelledby="addChildTitle"
+        aria-labelledby="childFormTitle"
         @click.self="closeModal"
       >
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <form
-            class="modal-content"
-            novalidate
-            data-test="add-child-form"
-            @submit.prevent="addChild"
-          >
+          <form class="modal-content" novalidate data-test="child-form" @submit.prevent="saveChild">
             <div class="modal-header">
-              <h2 id="addChildTitle" class="modal-title h5">Add a child</h2>
+              <h2 id="childFormTitle" class="modal-title h5">
+                {{ editingId ? 'Edit child' : 'Add a child' }}
+              </h2>
               <button
                 type="button"
                 class="btn-close"
@@ -161,7 +240,7 @@ async function addChild() {
             </div>
 
             <div class="modal-body">
-              <div v-if="saveError" class="alert alert-danger small" data-test="add-child-error">
+              <div v-if="saveError" class="alert alert-danger small" data-test="child-form-error">
                 {{ saveError }}
               </div>
 
@@ -258,10 +337,75 @@ async function addChild() {
                 data-test="save-child"
               >
                 <span v-if="saving" class="spinner-border spinner-border-sm me-2"></span>
-                Save child
+                {{ editingId ? 'Save changes' : 'Save child' }}
               </button>
             </div>
           </form>
+        </div>
+      </div>
+      <div class="modal-backdrop show"></div>
+    </template>
+
+    <!-- Delete confirmation. Shows only while childToDelete has a child in it. -->
+    <template v-if="childToDelete">
+      <div
+        class="modal d-block"
+        tabindex="-1"
+        role="alertdialog"
+        aria-labelledby="deleteChildTitle"
+        @click.self="closeDelete"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" data-test="delete-child-dialog">
+            <div class="modal-header">
+              <h2 id="deleteChildTitle" class="modal-title h5">Delete {{ childToDelete.name }}?</h2>
+              <button
+                type="button"
+                class="btn-close"
+                aria-label="Close"
+                @click="closeDelete"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div
+                v-if="deleteError"
+                class="alert alert-danger small"
+                data-test="delete-child-error"
+              >
+                {{ deleteError }}
+              </div>
+              <p class="mb-2">
+                This will also permanently delete
+                <strong
+                  >all of {{ childToDelete.name }}'s sessions, homework, messages and their
+                  login</strong
+                >.
+              </p>
+              <p class="mb-0 text-danger small">
+                <i class="bi bi-exclamation-triangle me-1"></i>This cannot be undone.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                :disabled="deleting"
+                @click="closeDelete"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                :disabled="deleting"
+                data-test="confirm-delete"
+                @click="confirmDelete"
+              >
+                <span v-if="deleting" class="spinner-border spinner-border-sm me-2"></span>
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-backdrop show"></div>
