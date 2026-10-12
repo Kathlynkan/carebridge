@@ -2,8 +2,7 @@
   Sign up page (volunteers and parents).              Owner: Kai Sen
   Done: checks on the page (name, email format, password >= 8, passwords match)
         with Bootstrap .is-invalid / .invalid-feedback. The server checks again.
-  TODO (Kai Sen):
-    [ ] volunteers: pick skills + available days (SKILL_OPTIONS, DAYS in utils/constants.js)
+        Volunteers pick their skills + available days (used by matchmaking).
 ============================================================= -->
 <script setup>
 import { ref, computed } from 'vue'
@@ -11,11 +10,20 @@ import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { errorMessage } from '@/services/api'
 import { validateSignup, MIN_PASSWORD_LENGTH } from '@/utils/validation'
+import { SKILL_OPTIONS, DAYS } from '@/utils/constants'
 
 const auth = useAuthStore()
 const router = useRouter()
 
-const form = ref({ name: '', email: '', password: '', confirmPassword: '', role: 'volunteer' })
+const form = ref({
+  name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  role: 'volunteer',
+  skills: [], // volunteers only - ticked skill buttons go in here
+  availability: [], // volunteers only - ticked days go in here
+})
 const submitted = ref(false) // only show red errors after the first "Sign up" click
 const loading = ref(false)
 const error = ref('') // error from the server, e.g. "email already exists"
@@ -34,12 +42,18 @@ async function handleSignup() {
   loading.value = true
   try {
     // confirmPassword is only for this page, so don't send it to the server
-    await auth.signup({
+    const details = {
       name: form.value.name.trim(),
       email: form.value.email.trim(),
       password: form.value.password,
       role: form.value.role,
-    })
+    }
+    // Only volunteers have skills and days (a parent may have ticked some, then switched role)
+    if (form.value.role === 'volunteer') {
+      details.skills = form.value.skills
+      details.availability = form.value.availability
+    }
+    await auth.signup(details)
     loading.value = false // success
     router.push(auth.homePath)
   } catch (err) {
@@ -143,6 +157,52 @@ async function handleSignup() {
               />
               <div class="invalid-feedback">{{ shown.confirmPassword }}</div>
             </div>
+
+            <!-- Volunteers only: these feed Yu Xuan's skills-based matchmaking -->
+            <template v-if="form.role === 'volunteer'">
+              <fieldset class="mb-3" data-test="signup-skills">
+                <legend class="form-label fs-6 mb-2">Skills I can help with</legend>
+                <div class="d-flex flex-wrap gap-2">
+                  <template v-for="(skill, i) in SKILL_OPTIONS" :key="skill">
+                    <!-- v-model on an array: ticking adds the skill, unticking removes it -->
+                    <input
+                      :id="`skill-${i}`"
+                      v-model="form.skills"
+                      type="checkbox"
+                      class="btn-check"
+                      :value="skill"
+                      autocomplete="off"
+                    />
+                    <label class="btn btn-sm btn-outline-primary" :for="`skill-${i}`">
+                      {{ skill }}
+                    </label>
+                  </template>
+                </div>
+                <div v-if="shown.skills" class="small text-danger mt-1">{{ shown.skills }}</div>
+              </fieldset>
+
+              <fieldset class="mb-4" data-test="signup-days">
+                <legend class="form-label fs-6 mb-2">Days I can come in</legend>
+                <div class="d-flex flex-wrap gap-2">
+                  <template v-for="day in DAYS" :key="day">
+                    <input
+                      :id="`day-${day}`"
+                      v-model="form.availability"
+                      type="checkbox"
+                      class="btn-check"
+                      :value="day"
+                      autocomplete="off"
+                    />
+                    <label class="btn btn-sm btn-outline-primary" :for="`day-${day}`">
+                      {{ day }}
+                    </label>
+                  </template>
+                </div>
+                <div v-if="shown.availability" class="small text-danger mt-1">
+                  {{ shown.availability }}
+                </div>
+              </fieldset>
+            </template>
 
             <button
               type="submit"

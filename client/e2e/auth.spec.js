@@ -65,6 +65,7 @@ test.describe('Sign up', () => {
     await expect(page.getByText('Please enter a valid email')).toBeVisible()
     await expect(page.getByText('at least 8 characters')).toBeVisible()
     await expect(page.getByText('Passwords do not match.')).toBeVisible()
+    await expect(page.getByText('Pick at least one skill')).toBeVisible()
     await expect(page).toHaveURL(/\/signup$/) // still on the sign-up page
   })
 
@@ -76,6 +77,9 @@ test.describe('Sign up', () => {
     await page.locator('[data-test="signup-email"]').fill(email)
     await page.locator('[data-test="signup-password"]').fill('secret123')
     await page.locator('[data-test="signup-confirm"]').fill('secret123')
+    // Volunteers pick at least one skill and one day (click the button-style labels)
+    await page.locator('[data-test="signup-skills"]').getByText('Fractions').click()
+    await page.locator('[data-test="signup-days"]').getByText('Mon').click()
     await page.locator('[data-test="signup-submit"]').click()
 
     await expect(page).toHaveURL(/\/volunteer$/)
@@ -83,6 +87,7 @@ test.describe('Sign up', () => {
 
   test('signing up with an email that is already used shows an error', async ({ page }) => {
     await page.goto('/signup')
+    await page.getByText('Parent', { exact: true }).click() // parents don't need skills or days
     await page.locator('[data-test="signup-name"]').fill('Someone')
     await page.locator('[data-test="signup-email"]').fill('volunteer@kidslapis.sg') // demo account
     await page.locator('[data-test="signup-password"]').fill('secret123')

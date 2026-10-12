@@ -32,5 +32,16 @@ export function validateSignup(form) {
     errors.confirmPassword = 'Passwords do not match.'
   }
 
+  // Volunteers must pick at least one skill and one day, otherwise matchmaking
+  // can never suggest them for a child. Parents don't see these questions.
+  if (form.role === 'volunteer') {
+    if (!form.skills || form.skills.length === 0) {
+      errors.skills = 'Pick at least one skill you can help with.'
+    }
+    if (!form.availability || form.availability.length === 0) {
+      errors.availability = 'Pick at least one day you can come in.'
+    }
+  }
+
   return errors
 }

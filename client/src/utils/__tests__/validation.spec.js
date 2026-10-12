@@ -9,6 +9,9 @@ const goodForm = () => ({
   email: 'ahkow@example.com',
   password: 'secret123',
   confirmPassword: 'secret123',
+  role: 'volunteer',
+  skills: ['Fractions'],
+  availability: ['Mon'],
 })
 
 describe('isValidEmail', () => {
@@ -50,5 +53,16 @@ describe('validateSignup', () => {
   it('needs the two passwords to match', () => {
     const form = { ...goodForm(), confirmPassword: 'different1' }
     expect(validateSignup(form).confirmPassword).toBe('Passwords do not match.')
+  })
+
+  it('needs a volunteer to pick at least one skill and one day', () => {
+    const errors = validateSignup({ ...goodForm(), skills: [], availability: [] })
+    expect(errors.skills).toContain('at least one skill')
+    expect(errors.availability).toContain('at least one day')
+  })
+
+  it('does not ask parents for skills or days', () => {
+    const form = { ...goodForm(), role: 'parent', skills: [], availability: [] }
+    expect(validateSignup(form)).toEqual({})
   })
 })
