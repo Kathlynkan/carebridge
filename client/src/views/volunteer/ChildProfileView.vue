@@ -5,7 +5,7 @@
   -------------------------------------------------------------
   Already loads: child, sessions, homework, handover (AI summary, cached, with fallback)
   TODO (Yuqi):
-   [x] HandoverCard refresh -> POST /handover/:id with refresh: true
+   [x] HandoverCard: POST /handover/:id (auto-updates, no refresh button)
   TODO (Ning Xuan):
     [done] wire SessionCard @edit / @delete (DELETE /sessions/:id, then reload)
 ============================================================= -->
@@ -38,19 +38,15 @@ const error = ref('')
 
 const pendingHomework = computed(() => homework.value.filter((h) => h.status !== 'verified'))
 
-async function loadHandover(refresh) {
+async function loadHandover() {
   handoverLoading.value = true
   try {
-    const res = await api.post(`/handover/${childId}`, {
-      audience: 'volunteer',
-      refresh: refresh === true, // true only when the refresh button is clicked
-    })
-    handover.value = res.data
+    const response = await api.post(`/handover/${childId}`, { audience: 'volunteer' })
+    handover.value = response.data
   } catch (err) {
-    console.error(errorMessage(err))
-  } finally {
-    handoverLoading.value = false
+    handover.value = null // the rest of the page still works without the summary
   }
+  handoverLoading.value = false
 }
 
 async function loadData() {
@@ -133,7 +129,7 @@ onMounted(() => {
 
       <div class="row g-4">
         <div class="col-lg-7">
-          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" @refresh="loadHandover(true)" />
+          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" />
 
           <h2 class="h5 mb-3">Session history</h2>
           <StateMessage v-if="sessions.length === 0" message="No sessions recorded yet." />
@@ -142,7 +138,7 @@ onMounted(() => {
               v-for="s in sessions"
               :key="s.id"
               :session="s"
-              :can-edit="s.volunteerId === auth.user.id || auth.role === 'coordinator'"
+              :can-edit="s.volunteerId === auth.user?.id || auth.role === 'coordinator'"
               @edit="editSession"
               @delete="deleteSession"
             />

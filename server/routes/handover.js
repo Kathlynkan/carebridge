@@ -241,7 +241,7 @@ async function callLLM(prompt) {
 
 
 // POST /handover/:childId
-// body: { audience: 'volunteer' or 'parent', refresh: true or false }
+// body: { audience: 'volunteer' or 'parent' }
 router.post('/:childId', async (req, res) => {
   // get the child from MongoDB
   const child = await Child.findById(req.params.childId)
@@ -259,13 +259,8 @@ router.post('/:childId', async (req, res) => {
     audience = req.body.audience
   }
 
-  // did the user click the refresh button? (then always ask Gemini again)
-  let refresh = false
-  if (req.body && req.body.refresh === true) {
-    refresh = true
-  }
-
   // if a session is added or deleted, this changes -> the saved summary is out of date
+  // (if a session is edited, the IDs stay the same, so sessions.js deletes the saved summary)  
   const ids = []
   for (const s of sessions.slice(0, 5)) {
     ids.push(s.id)
@@ -273,13 +268,11 @@ router.post('/:childId', async (req, res) => {
   const sessionsKey = ids.join(',')
 
   // 1. use the saved summary if it is still up to date (no Gemini call)
-  if (!refresh) {
-    const saved = await Handover.findOne({ childId: child.id, audience: audience })
-    if (saved && saved.sessionsKey === sessionsKey) {
-      const result = saved.summary
-      result.cached = true // so we can tell it came from the database
-      return res.json(result)
-    }
+  const saved = await Handover.findOne({ childId: child.id, audience: audience })
+  if (saved && saved.sessionsKey === sessionsKey) {
+    const result = saved.summary
+    result.cached = true // so we can tell it came from the database
+    return res.json(result)
   }
 
   // 2. otherwise ask Gemini

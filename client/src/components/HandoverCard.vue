@@ -2,7 +2,6 @@
   HandoverCard - "Today's Handover" box.             Owner: Yuqi
   Props:  handover  { continueTopic, struggle, whatWorked, lastResult, nextStep, source }
           loading   Boolean
-  Emits:  refresh   (ask the server to regenerate the AI summary)
   Re-used by Kat on the parent page (audience = 'parent').
 ============================================================= -->
 <script setup>
@@ -14,7 +13,6 @@ const props = defineProps({
   title: { type: String, default: "Today's Handover" },
   audience: { type: String, default: 'volunteer' }, // 'volunteer' or 'parent'
 })
-const emit = defineEmits(['refresh'])
 
 // labels for volunteers (summary handover)
 const VOLUNTEER_ROWS = [
@@ -59,9 +57,6 @@ const recurringLabel = computed(() => {
         <span v-if="handover" class="badge" :class="handover.source === 'ai' ? 'badge-accent' : 'badge-soft'">
           {{ handover.source === 'ai' ? 'AI summary' : 'From last session' }}
         </span>
-        <button class="btn btn-sm btn-outline-primary" :disabled="loading" @click="emit('refresh')">
-          <i class="bi bi-arrow-clockwise"></i>
-        </button>
       </div>
     </div>
 
