@@ -11,7 +11,7 @@
 //   [done] Validate: correct <= attempted, date not in the future, topic required
 // =============================================================
 import { Router } from 'express'
-import { Child, Session, User } from '../models/index.js' // import mongoDB collections
+import { Child, Session, User, Handover } from '../models/index.js' // import mongoDB collections
 import { requireAuth, requireRole } from '../middleware/auth.js'
 import { canAccessChild, visibleChildIds } from '../utils/access.js'
 
@@ -268,8 +268,11 @@ router.put('/:id', requireRole('volunteer', 'coordinator'), async (req, res) => 
     session.notes = req.body.notes
 
     await session.save()
+    // when session was edited -> saved AI summary is outdated -> delete 
+    await Handover.deleteMany({ childId: session.childId })
 
     return res.json(session)
+
   } catch (error) {
     return res.status(500).json({
       message: 'Failed to edit session'
@@ -300,6 +303,8 @@ router.delete('/:id', requireRole('volunteer', 'coordinator'), async (req, res) 
     }
 
     await session.deleteOne()
+    // session was deleted -> the saved AI summary is out of date, delete it
+    await Handover.deleteMany({ childId: session.childId })
 
     return res.json({
       message: 'Session deleted successfully'

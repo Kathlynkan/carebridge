@@ -148,7 +148,6 @@ onMounted(async () => {
             audience="parent"
             title="Today at student care"
             class="mb-4"
-            @refresh="loadHandover(selectedId)"
           />
 
           <!-- the newest session -->

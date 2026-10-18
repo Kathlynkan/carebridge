@@ -62,7 +62,7 @@ const today = DAY_NAMES[new Date().getDay()] // e.g. 'Fri'
 
 // my volunteering days, e.g. ['Mon', 'Wed']
 const myDays = computed(() => {
-  if (auth.user.availability) {
+  if (auth.user?.availability) {
     return auth.user.availability
   }
   return []
@@ -83,7 +83,7 @@ const todaysChildren = computed(() => {
     }
     for (const slot of schedule) {
       // if the schedule slot if this volunteer and the slot day is today
-      if (slot.volunteerId === auth.user.id && slot.day === today) {
+      if (slot.volunteerId === auth.user?.id && slot.day === today) {
         result.push(child) // to show the child under today tab ltr
         break // found a match for this child, check the next child
       }
@@ -154,7 +154,7 @@ onMounted(loadData)
 <template>
   <div class="container py-4">
     <PageHeader
-      :title="`Hi ${firstName(auth.user.name)} 👋`"
+      :title="`Hi ${firstName(auth.user?.name)} 👋`"
       subtitle="Open a child to see their handover before your session."
     />
     <StateMessage v-if="loading" type="loading" />

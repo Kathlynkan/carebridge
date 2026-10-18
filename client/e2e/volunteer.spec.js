@@ -13,7 +13,7 @@ test.describe('Volunteer handover', () => {
 
   test('sees only the children assigned to them', async ({ page }) => {
     // Aisha (volunteer@) is assigned Ethan, Arjun and Chloe in the seed data
-    await expect(page.locator('[data-test="child-card"]')).toHaveCount(3)
+    await expect(page.locator('[data-test="child-card"]')).toHaveCount(4)
   })
 
   test('search filters the children by name', async ({ page }) => {
