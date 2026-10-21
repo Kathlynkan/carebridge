@@ -28,9 +28,6 @@ defineProps({
   font-weight: 700;
   font-size: 2rem;
   color: var(--lapis-plum);
-  text-shadow:
-    2px 2px 0 var(--lapis-purple),
-    4px 4px 0 var(--lapis-orange);
   letter-spacing: -0.02em;
 }
 

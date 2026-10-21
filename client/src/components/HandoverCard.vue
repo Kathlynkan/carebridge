@@ -96,7 +96,6 @@ const recurringLabel = computed(() =>
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--lapis-plum);
-  text-shadow: 1px 1px 0 var(--lapis-purple);
 }
 
 .handover-key {

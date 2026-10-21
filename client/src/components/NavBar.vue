@@ -121,7 +121,6 @@ async function logout() {
   font-weight: 700;
   font-size: 1.4rem;
   color: var(--lapis-plum) !important;
-  text-shadow: 2px 2px 0 var(--lapis-shadow);
   text-decoration: none;
   background: var(--lapis-cream);
   border: 3px solid var(--lapis-shadow);
