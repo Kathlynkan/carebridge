@@ -21,8 +21,8 @@ const props = defineProps({
 
 function barColor(acc) {
   if (acc < 50) return '#e05c3a'
-  if (acc < 75) return '#f2b63d'
-  return '#2f6f62'
+  if (acc < 75) return '#e8a33d'
+  return '#2f7d4f'
 }
 
 const byTopic = computed(() => {
@@ -76,8 +76,8 @@ const chartOptions = {
         <Bar :data="chartData" :options="chartOptions" />
       </div>
       <div class="d-flex flex-wrap gap-3 mt-2 small text-muted-cb">
-        <span><span style="color: #2f6f62; font-size: 1.1em">●</span> Strong (≥75%)</span>
-        <span><span style="color: #f2b63d; font-size: 1.1em">●</span> Steady (50–74%)</span>
+        <span><span style="color: #2f7d4f; font-size: 1.1em">●</span> Strong (≥75%)</span>
+        <span><span style="color: #e8a33d; font-size: 1.1em">●</span> Steady (50–74%)</span>
         <span><span style="color: #e05c3a; font-size: 1.1em">●</span> Needs help (&lt;50%)</span>
       </div>
     </template>

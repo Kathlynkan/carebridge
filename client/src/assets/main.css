@@ -5,25 +5,27 @@
    Owner of the overall look: Kai Sen (but anyone can propose changes)
    ============================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@500;600&display=swap');
 
 :root {
-  --cb-primary: #2f6f62; /* calm teal - main brand colour */
-  --cb-primary-dark: #24574d;
-  --cb-primary-soft: #e3efec;
-  --cb-accent: #f2b63d; /* warm amber - rewards, highlights */
-  --cb-accent-soft: #fdf3dc;
-  --cb-danger-soft: #fbe5e1;
-  --cb-bg: #f7f5f0; /* page background */
-  --cb-surface: #ffffff; /* cards */
-  --cb-text: #23302d;
-  --cb-muted: #6b7774;
-  --cb-border: #e4e0d8;
-  --cb-radius: 14px;
+  --cb-primary: #2f7d4f; /* pandan green - main brand colour */
+  --cb-primary-dark: #236040; /* darker pandan */
+  --cb-primary-soft: #e3f3e8;
+  --cb-accent: #e8708a; /* rose pink - rewards, highlights */
+  --cb-accent-soft: #fde6ec;
+  --cb-danger-soft: #fbe3df;
+  --cb-cream: #fff2d6; /* the cream layer */
+  --cb-brown: #7a4a2e; /* the spice layer */
+  --cb-bg: #fff8ea; /* page background: warm cream */
+  --cb-surface: #fffdf8; /* cards */
+  --cb-text: #4a2f22; /* warm brown */
+  --cb-muted: #8a6f60;
+  --cb-border: #eddcc2;
+  --cb-radius: 18px;
 
   /* Re-colour Bootstrap's primary to our brand */
   --bs-primary: var(--cb-primary);
-  --bs-primary-rgb: 47, 111, 98;
+  --bs-primary-rgb: 47, 125, 79;
   --bs-link-color: var(--cb-primary);
   --bs-link-hover-color: var(--cb-primary-dark);
   --bs-body-font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -55,14 +57,19 @@ h1,
 h2,
 h3,
 .fw-heavy {
-  font-weight: 800;
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-weight: 600;
 }
 
 .text-muted-cb {
   color: var(--cb-muted);
 }
 
-/* Bootstrap buttons in brand colours */
+/* Bootstrap buttons in brand colours (pill-shaped) */
+.btn {
+  border-radius: 999px;
+}
+
 .btn-primary {
   --bs-btn-bg: var(--cb-primary);
   --bs-btn-border-color: var(--cb-primary);
@@ -88,6 +95,7 @@ h3,
   background: var(--cb-surface);
   border: 1px solid var(--cb-border);
   border-radius: var(--cb-radius);
+  box-shadow: 0 2px 6px rgba(122, 74, 46, 0.08);
 }
 
 .cb-card-hover {
@@ -98,7 +106,7 @@ h3,
 
 .cb-card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(35, 48, 45, 0.08);
+  box-shadow: 0 8px 20px rgba(122, 74, 46, 0.14);
 }
 
 .badge-soft {
@@ -109,7 +117,7 @@ h3,
 
 .badge-accent {
   background: var(--cb-accent-soft);
-  color: #8a5d00;
+  color: #b13b5a;
   font-weight: 700;
 }
 
@@ -152,10 +160,56 @@ h3,
 .form-control:focus,
 .form-select:focus {
   border-color: var(--cb-primary);
-  box-shadow: 0 0 0 0.2rem rgba(47, 111, 98, 0.2);
+  box-shadow: 0 0 0 0.2rem rgba(47, 125, 79, 0.2);
 }
 
 .form-check-input:checked {
   background-color: var(--cb-primary);
   border-color: var(--cb-primary);
+}
+
+/* ---------- kueh lapis theme ---------- */
+
+/* the navbar gets a stripe of cake layers along its bottom edge */
+.navbar {
+  border-bottom: 0 !important;
+  background: var(--cb-surface) !important;
+}
+.navbar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  background: linear-gradient(
+    to bottom,
+    #e8708a 0 20%,
+    #fff2d6 20% 40%,
+    #7a4a2e 40% 60%,
+    #fff2d6 60% 80%,
+    #2f7d4f 80% 100%
+  );
+}
+.navbar {
+  padding-bottom: 14px;
+}
+.navbar-brand {
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-size: 1.3rem;
+  color: var(--cb-brown);
+}
+
+/* a small stripe you can put anywhere: <div class="lapis-stripe"></div> */
+.lapis-stripe {
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(
+    to bottom,
+    #e8708a 0 20%,
+    #fff2d6 20% 40%,
+    #7a4a2e 40% 60%,
+    #fff2d6 60% 80%,
+    #2f7d4f 80% 100%
+  );
 }

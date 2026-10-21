@@ -6,7 +6,7 @@
 .parentpage .top-summary {
   margin-bottom: 24px;
   padding: 20px 24px;
-  border-left: 8px solid #f2b63d;
+  border-left: 8px solid #e8708a;
   border-radius: 12px;
   background: #fff1a8;
   font-size: 20px;
@@ -147,7 +147,7 @@
   border: 0;
   background: transparent;
   font-size: 24px;
-  color: #2f6f62;
+  color: #2f7d4f;
   cursor: pointer;
 }
 
@@ -204,7 +204,7 @@
 
 /* a line down the left with a dot for each session */
 .parentpage .timeline {
-  border-left: 2px solid #f2b63d;
+  border-left: 2px solid #e8708a;
   margin-left: 6px;
 }
 
@@ -223,5 +223,5 @@
   width: 12px;
   height: 12px;
   border-radius: 6px;
-  background: #f2b63d;
+  background: #e8708a;
 }
