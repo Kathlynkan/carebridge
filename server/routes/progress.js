@@ -10,7 +10,7 @@ const router = Router()
 router.use(requireAuth)
 
 // GET /progress/overview  -> centre-wide data for Yu Xuan's dashboard (coordinators + volunteers only)
-router.get('/overview', requireRole('coordinator', 'volunteer'), async (req, res) => {
+router.get('/overview', requireRole('teacher', 'volunteer'), async (req, res) => {
   const sessions = await Session.find({})
   res.json(aggregate(sessions))
 })

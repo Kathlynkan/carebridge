@@ -73,7 +73,7 @@ onMounted(async () => {
 
 <template>
   <div class="container py-4">
-    <PageHeader title="Messages" subtitle="Keep parents and volunteers on the same page." />
+    <PageHeader title="Messages" subtitle="Chat with your child's teacher." />
 
     <StateMessage v-if="loading" type="loading" />
     <StateMessage v-else-if="error" type="error" :message="error" />

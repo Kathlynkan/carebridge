@@ -16,7 +16,7 @@ router.use(requireAuth)
 // GET /messages?childId=c_1   (DONE) -> oldest first, with sender name
 router.get('/', async (req, res) => {
   const child = await Child.findById(req.query.childId)
-  if (!canAccessChild(req.user, child) || req.user.role === 'child') {
+  if (!canAccessChild(req.user, child) || req.user.role === 'child' || req.user.role === 'volunteer') {
     return res.status(403).json({ message: 'You do not have access to this conversation.' })
   }
   const messages = await Message.find({ childId: child.id }).sort({ sentAt: 1 })
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
   const text = String(req.body.text ?? '').trim()
   if (!text) return res.status(400).json({ message: 'Message text is required.' })
   const child = await Child.findById(childId)
-  if (!canAccessChild(req.user, child) || req.user.role === 'child') {
+  if (!canAccessChild(req.user, child) || req.user.role === 'child' || req.user.role === 'volunteer') {
     return res.status(403).json({ message: 'You do not have access to this conversation.' })
   }
   const message = await Message.create({ childId, fromId: req.user.id, text, readBy: [req.user.id] })
@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
 router.put('/read', async (req, res) => {
   const { childId } = req.body
   const child = await Child.findById(childId)
-  if (!canAccessChild(req.user, child) || req.user.role === 'child') {
+  if (!canAccessChild(req.user, child) || req.user.role === 'child' || req.user.role === 'volunteer') {
     return res.status(403).json({ message: 'You do not have access to this conversation.' })
   }
   await Message.updateMany({ childId }, { $addToSet: { readBy: req.user.id } })

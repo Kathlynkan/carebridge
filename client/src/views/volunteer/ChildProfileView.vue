@@ -153,7 +153,7 @@ onMounted(() => {
               v-for="s in sessions"
               :key="s.id"
               :session="s"
-              :can-edit="s.volunteerId === auth.user?.id || auth.role === 'coordinator'"
+              :can-edit="s.volunteerId === auth.user?.id || auth.role === 'teacher'"
               @edit="editSession"
               @delete="deleteSession"
             />

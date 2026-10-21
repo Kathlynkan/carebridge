@@ -1,8 +1,11 @@
 /* =============================================================
-   Global styles - shared design tokens for the whole team.
-   Use these variables (and Bootstrap classes) instead of random
-   hex codes so every page looks like ONE app.
-   Owner of the overall look: Kai Sen (but anyone can propose changes)
+   Global styles — Kids Lapis design system.
+   Palette: Kueh Lapis (the layers of the cake)
+     Rose pink     #E8708A  - the sweet layer
+     Spice brown   #7A4A2E  - the spice layer
+     Pandan green  #2F7D4F  - the pandan layer
+     Cream         #FFF2D6  - the layer between each colour
+   9 layers in the stripe, rounded Fredoka headings, pill buttons.
    ============================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@500;600&display=swap');
@@ -21,9 +24,11 @@
   --cb-text: #4a2f22; /* warm brown */
   --cb-muted: #8a6f60;
   --cb-border: #eddcc2;
+  --cb-ruby: #d6455d; /* rose red, used by Jachin's pages */
+  --cb-ruby-soft: #fde6ec;
   --cb-radius: 18px;
 
-  /* Re-colour Bootstrap's primary to our brand */
+  /* Bootstrap overrides */
   --bs-primary: var(--cb-primary);
   --bs-primary-rgb: 47, 125, 79;
   --bs-link-color: var(--cb-primary);
@@ -51,6 +56,7 @@ body {
 
 .app-footer {
   color: var(--cb-muted);
+  border-top: 1px solid var(--cb-border);
 }
 
 h1,
@@ -70,6 +76,7 @@ h3,
   border-radius: 999px;
 }
 
+/* ---- Buttons ---- */
 .btn-primary {
   --bs-btn-bg: var(--cb-primary);
   --bs-btn-border-color: var(--cb-primary);
@@ -90,10 +97,16 @@ h3,
   --bs-btn-active-border-color: var(--cb-primary);
 }
 
-/* Card style used everywhere: <div class="cb-card p-3"> */
+/* ---- Cards ---- */
+/*
+ * Glossy finish: semi-opaque white surface with a soft shadow and a
+ * 3 px Emerald Green top border (the edge of the top-most layer).
+ * The inner white highlight simulates the glossy sheen.
+ */
 .cb-card {
-  background: var(--cb-surface);
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--cb-border);
+  border-top: 3px solid var(--cb-primary);
   border-radius: var(--cb-radius);
   box-shadow: 0 2px 6px rgba(122, 74, 46, 0.08);
 }
@@ -109,6 +122,49 @@ h3,
   box-shadow: 0 8px 20px rgba(122, 74, 46, 0.14);
 }
 
+/* ---- Kueh Lapis Sago stripe — 9 layers, palindrome: R W Y W G W Y W R ---- */
+/*
+ * opacity: 0.85 per spec — the material is semi-translucent.
+ * Height 9 px: one pixel per layer, crisp on all screens.
+ */
+.lapis-stripe {
+  height: 9px;
+  flex-shrink: 0;
+  opacity: 0.85;
+  background: linear-gradient(
+    to right,
+    #e8708a  0%      11.11%,
+    #fff2d6  11.11%  22.22%,
+    #7a4a2e  22.22%  33.33%,
+    #fff2d6  33.33%  44.44%,
+    #2f7d4f  44.44%  55.56%,
+    #fff2d6  55.56%  66.67%,
+    #7a4a2e  66.67%  77.78%,
+    #fff2d6  77.78%  88.89%,
+    #e8708a  88.89%  100%
+  );
+}
+
+/* Thinner version for section dividers inside a page */
+.lapis-divider {
+  height: 5px;
+  border-radius: 3px;
+  opacity: 0.85;
+  background: linear-gradient(
+    to right,
+    #e8708a  0%      11.11%,
+    #fff2d6  11.11%  22.22%,
+    #7a4a2e  22.22%  33.33%,
+    #fff2d6  33.33%  44.44%,
+    #2f7d4f  44.44%  55.56%,
+    #fff2d6  55.56%  66.67%,
+    #7a4a2e  66.67%  77.78%,
+    #fff2d6  77.78%  88.89%,
+    #e8708a  88.89%  100%
+  );
+}
+
+/* ---- Badges ---- */
 .badge-soft {
   background: var(--cb-primary-soft);
   color: var(--cb-primary-dark);
@@ -121,12 +177,19 @@ h3,
   font-weight: 700;
 }
 
-.badge-danger-soft {
-  background: var(--cb-danger-soft);
-  color: #a3341f;
+.badge-ruby {
+  background: var(--cb-ruby-soft);
+  color: #991b1b;
   font-weight: 700;
 }
 
+.badge-danger-soft {
+  background: var(--cb-danger-soft);
+  color: #991b1b;
+  font-weight: 700;
+}
+
+/* ---- Avatar circle ---- */
 .avatar {
   width: 48px;
   height: 48px;
@@ -143,7 +206,7 @@ h3,
   font-weight: 700;
 }
 
-/* Other Bootstrap components that default to blue */
+/* ---- Other Bootstrap components ---- */
 .progress {
   --bs-progress-bar-bg: var(--cb-primary);
 }
@@ -170,46 +233,11 @@ h3,
 
 /* ---------- kueh lapis theme ---------- */
 
-/* the navbar gets a stripe of cake layers along its bottom edge */
 .navbar {
-  border-bottom: 0 !important;
   background: var(--cb-surface) !important;
-}
-.navbar::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 8px;
-  background: linear-gradient(
-    to bottom,
-    #e8708a 0 20%,
-    #fff2d6 20% 40%,
-    #7a4a2e 40% 60%,
-    #fff2d6 60% 80%,
-    #2f7d4f 80% 100%
-  );
-}
-.navbar {
-  padding-bottom: 14px;
 }
 .navbar-brand {
   font-family: 'Fredoka', 'Nunito', sans-serif;
   font-size: 1.3rem;
   color: var(--cb-brown);
-}
-
-/* a small stripe you can put anywhere: <div class="lapis-stripe"></div> */
-.lapis-stripe {
-  height: 8px;
-  border-radius: 4px;
-  background: linear-gradient(
-    to bottom,
-    #e8708a 0 20%,
-    #fff2d6 20% 40%,
-    #7a4a2e 40% 60%,
-    #fff2d6 60% 80%,
-    #2f7d4f 80% 100%
-  );
 }

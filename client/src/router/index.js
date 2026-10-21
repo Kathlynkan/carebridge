@@ -36,7 +36,7 @@ const routes = [
     path: '/children/:id', // dynamic route
     name: 'child-profile',
     component: () => import('@/views/volunteer/ChildProfileView.vue'), // Yuqi
-    meta: { roles: ['volunteer', 'coordinator'] },
+    meta: { roles: ['volunteer', 'teacher'] },
   },
   {
     path: '/children/:id/sessions/new', // record new session
@@ -48,7 +48,7 @@ const routes = [
     path: '/sessions/:sessionId/edit', // edit existing session
     name: 'session-edit',
     component: () => import('@/views/volunteer/SessionFormView.vue'), // Ning Xuan (same form)
-    meta: { roles: ['volunteer', 'coordinator'] },
+    meta: { roles: ['volunteer', 'teacher'] },
   },
   {
     path: '/children/:id/homework/new', // assign new homework
@@ -57,12 +57,20 @@ const routes = [
     meta: { roles: ['volunteer'] },
   },
 
+  // ---------- Profile - all roles ----------
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/views/shared/ProfileView.vue'),
+    meta: { roles: ['volunteer', 'teacher', 'parent', 'child'] },
+  },
+
   // ---------- Messages (Kat) - shared by volunteer, parent, coordinator ----------
   {
     path: '/messages/:childId?', // ?: childId parameter optional
     name: 'messages',
     component: () => import('@/views/shared/MessagesView.vue'),
-    meta: { roles: ['volunteer', 'parent', 'coordinator'] },
+    meta: { roles: ['parent', 'teacher'] },
   },
 
   // ---------- Parent (Kat) ----------
@@ -92,25 +100,25 @@ const routes = [
     path: '/coordinator',
     name: 'coordinator-home',
     component: () => import('@/views/coordinator/CoordinatorDashboardView.vue'), // Yu Xuan
-    meta: { roles: ['coordinator'] },
+    meta: { roles: ['teacher'] },
   },
   {
     path: '/coordinator/children',
     name: 'manage-children',
     component: () => import('@/views/coordinator/ManageChildrenView.vue'), // Kai Sen
-    meta: { roles: ['coordinator'] },
+    meta: { roles: ['teacher'] },
   },
   {
     path: '/coordinator/volunteers',
     name: 'manage-volunteers',
     component: () => import('@/views/coordinator/ManageVolunteersView.vue'), // Yu Xuan
-    meta: { roles: ['coordinator'] },
+    meta: { roles: ['teacher'] },
   },
   {
     path: '/coordinator/matchmaking/:childId?',
     name: 'matchmaking',
     component: () => import('@/views/coordinator/MatchmakingView.vue'), // Yu Xuan
-    meta: { roles: ['coordinator'] },
+    meta: { roles: ['teacher'] },
   },
 
   // ---------- 404 ----------

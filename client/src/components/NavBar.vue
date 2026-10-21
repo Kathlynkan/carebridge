@@ -15,21 +15,25 @@ const router = useRouter()
 const LINKS = {
   volunteer: [
     { to: '/volunteer', label: 'My Children', icon: 'bi-people' },
-    { to: '/messages', label: 'Messages', icon: 'bi-chat-dots' },
+    { to: '/profile', label: 'Profile', icon: 'bi-person-gear' },
   ],
-  coordinator: [
+  teacher: [
     { to: '/coordinator', label: 'Dashboard', icon: 'bi-speedometer2' },
     { to: '/coordinator/children', label: 'Children', icon: 'bi-person-badge' },
     { to: '/coordinator/volunteers', label: 'Volunteers', icon: 'bi-person-heart' },
     { to: '/coordinator/matchmaking', label: 'Matchmaking', icon: 'bi-shuffle' },
+    { to: '/messages', label: 'Messages', icon: 'bi-chat-dots' },
+    { to: '/profile', label: 'Profile', icon: 'bi-person-gear' },
   ],
   parent: [
     { to: '/parent', label: 'My Child', icon: 'bi-house-heart' },
     { to: '/messages', label: 'Messages', icon: 'bi-chat-dots' },
+    { to: '/profile', label: 'Profile', icon: 'bi-person-gear' },
   ],
   child: [
     { to: '/child', label: 'My Quests', icon: 'bi-stars' },
     { to: '/child/leaderboard', label: 'Bounty Board', icon: 'bi-trophy' },
+    { to: '/profile', label: 'Profile', icon: 'bi-person-gear' },
   ],
 }
 
@@ -71,10 +75,15 @@ async function logout() {
         </ul>
 
         <div v-if="auth.isLoggedIn" class="d-flex align-items-center gap-3">
-          <span class="small text-muted-cb">
+          <RouterLink
+            to="/profile"
+            class="small text-decoration-none d-flex align-items-center gap-1"
+            style="color: inherit"
+            data-test="nav-profile"
+          >
             <i class="bi bi-person-circle me-1"></i>{{ auth.user.name }}
             <span class="badge badge-soft ms-1 text-capitalize">{{ auth.role }}</span>
-          </span>
+          </RouterLink>
           <button class="btn btn-sm btn-outline-secondary" data-test="logout" @click="logout">
             Log out
           </button>

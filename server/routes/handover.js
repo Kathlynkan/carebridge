@@ -158,7 +158,12 @@ function buildPrompt(child, sessions, audience) {
     notes = notes + `Mood: ${s.mood || 'not recorded'}. `
     notes = notes + `Struggled with: ${struggles}. `
     notes = notes + `What worked: ${whatWorked}. `
-    notes = notes + `Next step planned: ${nextStep}.\n`
+    notes = notes + `Next step planned: ${nextStep}. `
+    if (s.activity) notes = notes + `Activity: ${s.activity}. `
+    if (s.interaction) notes = notes + `Peer interaction: ${s.interaction}. `
+    if (s.behaviour) notes = notes + `Positive behaviour: ${s.behaviour}. `
+    if (s.socialNotes) notes = notes + `Social note: ${s.socialNotes}. `
+    notes = notes + '\n'
   }
 
   // 2. struggles that keep coming back 
@@ -175,7 +180,8 @@ function buildPrompt(child, sessions, audience) {
 Write short, warm, plain sentences. No jargon or abbreviations.
 Say "got 6 out of 8 right" instead of "6/8 correct". Say "a bit tricky" instead of "struggled".
 Be kind and honest. Mention one thing the child did well.
-If the child's mood was tired or frustrated in several recent sessions, mention this gently in the "struggle" field (e.g. "seemed a bit tired lately, and found X tricky"). If the mood was happy or okay, you can note positive engagement. Do not overinterpret a single session.`
+If the child's mood was tired or frustrated in several recent sessions, mention this gently in the "struggle" field (e.g. "seemed a bit tired lately, and found X tricky"). If the mood was happy or okay, you can note positive engagement. Do not overinterpret a single session.
+If activity or peer interaction data is present, weave it naturally into "whatWorked" or "nextStep" (e.g. "enjoyed board games with friends" or "worked well in a group"). If no social data is recorded, focus on the academic summary only.`
   } else {
     style = `You are writing for the NEXT VOLUNTEER, who has never met this child.
 Be practical and specific, like a short note from one tutor to another.`

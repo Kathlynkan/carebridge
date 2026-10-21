@@ -58,8 +58,8 @@ async function checkChildForm({ name, level, needs, parentId }) {
 }
 
 // POST /children   body: { name, level, school, parentId, needs, avatar }
-// Only coordinators get past requireRole('coordinator'); everyone else gets 403.
-router.post('/', requireRole('coordinator'), async (req, res) => {
+// Only coordinators get past requireRole('teacher'); everyone else gets 403.
+router.post('/', requireRole('teacher'), async (req, res) => {
   const { name, level, school, parentId, needs, avatar } = req.body
 
   // 1. Validate
@@ -93,7 +93,7 @@ router.post('/', requireRole('coordinator'), async (req, res) => {
 // PUT /children/:id   body: { name, level, school, parentId, needs }
 // Edits the child's profile only. Volunteers (Yu Xuan), points (Jachin) and
 // follow-up flags are changed by their own features, so they are not touched here.
-router.put('/:id', requireRole('coordinator'), async (req, res) => {
+router.put('/:id', requireRole('teacher'), async (req, res) => {
   // 1. Does this child exist?
   const child = await Child.findById(req.params.id)
   if (!child) {
@@ -129,7 +129,7 @@ router.put('/:id', requireRole('coordinator'), async (req, res) => {
 // Decision (Kai Sen): deleting a child also deletes everything that belongs to them,
 // so no session, homework, message or login is left pointing to a child that no longer
 // exists. The page warns the coordinator before sending this request.
-router.delete('/:id', requireRole('coordinator'), async (req, res) => {
+router.delete('/:id', requireRole('teacher'), async (req, res) => {
   // 1. Does this child exist?
   const child = await Child.findById(req.params.id)
   if (!child) {

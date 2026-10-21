@@ -112,7 +112,7 @@ router.get('/leaderboard', async (req, res) => {
 // With a deckId, the quest gets a COPY of the questions of the deck. The title, subject and details of the deck are used
 // when the volunteer did not type their own. Without a deckId the quest has no questions.
 // ---------------------------------------------------------------
-router.post('/', requireRole('volunteer', 'coordinator'), async (req, res) => {
+router.post('/', requireRole('volunteer', 'teacher'), async (req, res) => {
   // only volunteers and coordinators can assign homework
   try {
     const child = await Child.findById(req.body.childId)
@@ -229,7 +229,7 @@ router.put('/:id/submit', requireRole('child'), async (req, res) => {
 // PUT /homework/:id/verify  (Jachin) -> volunteer confirms, child earns points
 // findOneAndUpdate with status condition makes the submitted→verified transition atomic,
 // preventing double-award if two requests race on the same homework.
-router.put('/:id/verify', requireRole('volunteer', 'coordinator'), async (req, res) => {
+router.put('/:id/verify', requireRole('volunteer', 'teacher'), async (req, res) => {
   const hw = await Homework.findOneAndUpdate(
     { _id: req.params.id, status: 'submitted' },
     { $set: { status: 'verified' } },
