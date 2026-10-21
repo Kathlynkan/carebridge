@@ -56,43 +56,16 @@
 
 /* 16px bands look great on all screen sizes — no override needed */
 
-/* ── The background IS the kueh: repeating horizontal bands ─── */
+/* ── Plain cream background — theme lives in the cards and nav ── */
 html, body {
   min-height: 100%;
   background-color: var(--lapis-cream);
-  background-image: repeating-linear-gradient(
-    to bottom,
-    var(--lapis-pink)   0                     calc(var(--band) * 1),
-    var(--lapis-cream)  calc(var(--band) * 1)  calc(var(--band) * 2),
-    var(--lapis-lime)   calc(var(--band) * 2)  calc(var(--band) * 3),
-    var(--lapis-cream)  calc(var(--band) * 3)  calc(var(--band) * 4),
-    var(--lapis-yellow) calc(var(--band) * 4)  calc(var(--band) * 5),
-    var(--lapis-cream)  calc(var(--band) * 5)  calc(var(--band) * 6),
-    var(--lapis-orange) calc(var(--band) * 6)  calc(var(--band) * 7),
-    var(--lapis-cream)  calc(var(--band) * 7)  calc(var(--band) * 8)
-  );
-  background-attachment: fixed;
-  background-size: 100% calc(var(--band) * 8);
   font-size: 16px;
   line-height: 1.5;
   font-weight: 500;
   color: var(--lapis-plum);
 }
 
-/* Speckle: reads as steamed cake, not a striped flag */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image: radial-gradient(
-    circle,
-    rgba(58, 10, 42, 0.06) 1px,
-    transparent 1px
-  );
-  background-size: 12px 12px;
-}
 
 /* ── App shell — no backgrounds: body stripes must show through ─ */
 #app {
@@ -139,7 +112,7 @@ h4, h5, h6 {
  */
 .cb-card {
   position: relative;
-  background: rgba(255, 248, 240, 0.95);
+  background: var(--lapis-cream);
   border: 3px solid var(--lapis-shadow);
   border-radius: var(--cb-radius);
   box-shadow: 6px 6px 0 var(--lapis-shadow);
