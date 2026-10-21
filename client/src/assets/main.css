@@ -10,12 +10,12 @@
 :root {
   --band: 16px;
 
-  --lapis-pink:   #C9577F; /* pink */
+  --lapis-pink:   #D989A5; /* pink */
   --lapis-cream:  #FBF8F3; /* coconut white */
-  --lapis-lime:   #86B67A; /* pandan green */
-  --lapis-yellow: #F4DEE5; /* butter yellow */
-  --lapis-orange: #5EA9C6; /* peach */
-  --lapis-purple: #8C6DB3; /* lavender */
+  --lapis-lime:   #AACCA2; /* pandan green */
+  --lapis-yellow: #F6E3E9; /* butter yellow */
+  --lapis-orange: #8EC3D7; /* peach */
+  --lapis-purple: #AF99CA; /* lavender */
   --lapis-plum:   #4A3F3A; /* warm brown ink, for text */
   --lapis-shadow: #B9A99B; /* soft taupe, for borders and shadows */
   --lapis-apricot: #EBCDB2;
@@ -58,11 +58,11 @@
 
   /* Bootstrap colour overrides */
   --bs-primary:           var(--lapis-pink);
-  --bs-primary-rgb:       201, 87, 127;
+  --bs-primary-rgb:       217, 137, 165;
   --bs-success:           var(--lapis-lime);
-  --bs-success-rgb:       134, 182, 122;
+  --bs-success-rgb:       170, 204, 162;
   --bs-warning:           var(--lapis-yellow);
-  --bs-warning-rgb:       244, 222, 229;
+  --bs-warning-rgb:       246, 227, 233;
   --bs-danger:            var(--topic-alert);
   --bs-danger-rgb:        255, 138, 128;
   --bs-link-color:        #7A4FB8;
