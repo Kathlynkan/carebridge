@@ -242,7 +242,7 @@ onMounted(async () => {
       </div>
 
       <!-- the child's name, level and stars -->
-      <div class="cb-card tile-sky p-3 p-md-4 mb-4 d-flex align-items-center gap-3">
+      <div class="cb-card p-3 p-md-4 mb-4 d-flex align-items-center gap-3">
         <span class="avatar">{{ selectedChild.avatar }}</span>
         <div>
           <h2 class="h5 mb-0">{{ selectedChild.name }}</h2>
@@ -260,7 +260,7 @@ onMounted(async () => {
         {{ topSentence }}
         <!-- who ran the last session, and when the next one is -->
         <div v-if="latest && latest.volunteerName" class="top-extra">{{ latest.volunteerName }} ran {{ latestWeekday }}'s session.</div>
-        <div v-if="nextSession" class="top-extra">
+        <div v-if="nextSession" class="top-extra top-next">
           Next session: {{ nextSession.isToday ? 'today, ' : '' }}{{ formatDate(nextSession.date) }}
           <span v-if="nextSession.volunteer">with {{ nextSession.volunteer }}</span>
         </div>
@@ -269,14 +269,14 @@ onMounted(async () => {
       <!-- the notice board (the AI summary is inside it, under the academic details) -->
       <div class="row g-4 mb-4">
         <div class="col-12">
-          <div class="notice-board" data-test="notice-board">
+          <div class="notice-board" :class="'board-' + noticeTab" data-test="notice-board">
             <h2 class="board-title">Notice board</h2>
 
             <!-- the three tabs -->
             <div class="notice-tabs">
-              <button type="button" class="notice-tab" :class="{ active: noticeTab === 'social' }" @click="noticeTab = 'social'">Social</button>
-              <button type="button" class="notice-tab" :class="{ active: noticeTab === 'latest' }" @click="noticeTab = 'latest'">Latest session</button>
-              <button type="button" class="notice-tab" :class="{ active: noticeTab === 'homework' }" @click="noticeTab = 'homework'">Homework</button>
+              <button type="button" class="notice-tab tab-social" :class="{ active: noticeTab === 'social' }" @click="noticeTab = 'social'">Social</button>
+              <button type="button" class="notice-tab tab-latest" :class="{ active: noticeTab === 'latest' }" @click="noticeTab = 'latest'">Latest session</button>
+              <button type="button" class="notice-tab tab-homework" :class="{ active: noticeTab === 'homework' }" @click="noticeTab = 'homework'">Homework</button>
             </div>
 
             <!-- tab: social = one post-it per session. Click it to open the social card of that session. -->
@@ -361,7 +361,7 @@ onMounted(async () => {
           <SkillProgressChart :sessions="sessions" />
         </div>
         <div class="col-lg-5">
-          <div v-if="recentSessions.length > 0" class="cb-card tile-lav p-3 p-md-4" data-test="session-timeline">
+          <div v-if="recentSessions.length > 0" class="cb-card topic-academic p-3 p-md-4" data-test="session-timeline">
             <h2 class="h5 mb-3">Recent sessions</h2>
             <ul class="timeline list-unstyled mb-0">
               <li v-for="session in recentSessions" :key="session.id" class="timeline-item">

@@ -18,9 +18,9 @@ const isOverdue = computed(
 
 <template>
   <div
-    class="cb-card p-3 h-100 d-flex flex-column"
+    class="cb-card topic-homework p-3 h-100 d-flex flex-column"
     data-test="homework-card"
-    :style="isOverdue ? 'border-color:var(--lapis-pink)' : ''"
+    :style="isOverdue ? 'border-color:var(--topic-alert)' : ''"
     style="padding-top: 1.25rem !important;"
   >
     <div class="d-flex justify-content-between align-items-start gap-2">
@@ -36,7 +36,7 @@ const isOverdue = computed(
       <span
         v-if="isOverdue"
         class="badge ms-1"
-        style="background:var(--lapis-pink);color:var(--lapis-cream)"
+        style="background:var(--topic-alert);color:var(--lapis-plum)"
       >Overdue</span>
     </div>
 

@@ -360,3 +360,55 @@
 .parentpage .cake i:nth-child(7).baked { background: var(--lapis-sky); }
 .parentpage .cake i:nth-child(8).baked { background: var(--lapis-cream); }
 .parentpage .cake i:nth-child(9).baked { background: var(--lapis-purple); }
+
+/* ---------- topic colours on the parent page ---------- */
+/* academic = pink, social = blue, homework = lavender, schedule = apricot, highlights = yellow */
+
+/* today at a glance: the yellow highlight; the next session line is the schedule colour */
+.parentpage .top-summary {
+  background: var(--topic-highlight);
+}
+.parentpage .top-next {
+  display: inline-block;
+  padding: 2px 12px;
+  background: var(--topic-schedule);
+}
+
+/* the notice board takes the colour of the open tab */
+.parentpage .notice-board.board-social { background: var(--topic-social); }
+.parentpage .notice-board.board-latest { background: var(--topic-academic); }
+.parentpage .notice-board.board-homework { background: var(--topic-homework); }
+
+/* the tabs: each one has its topic colour underneath, and is filled when open */
+.parentpage .notice-tab.tab-social { border-bottom: 8px solid var(--topic-social); }
+.parentpage .notice-tab.tab-latest { border-bottom: 8px solid var(--topic-academic); }
+.parentpage .notice-tab.tab-homework { border-bottom: 8px solid var(--topic-homework); }
+.parentpage .notice-tab.tab-social.active { background: var(--topic-social); }
+.parentpage .notice-tab.tab-latest.active { background: var(--topic-academic); }
+.parentpage .notice-tab.tab-homework.active { background: var(--topic-homework); }
+
+/* the notes on the board are the soft version of the board colour */
+.parentpage .board-social .note { background: var(--topic-social-soft); }
+.parentpage .board-latest .note { background: var(--topic-academic-soft); }
+.parentpage .board-homework .note { background: var(--topic-homework-soft); }
+
+/* the session card: academic = pink, social = blue */
+.parentpage .parent-session-card.kind-academic {
+  background: var(--topic-academic-soft);
+  border-top: 8px solid var(--topic-academic);
+}
+.parentpage .parent-session-card.kind-social {
+  background: var(--topic-social-soft);
+  border-top: 8px solid var(--topic-social);
+}
+.parentpage .kind-social .note { background: var(--lapis-cream); }
+
+/* homework is lavender everywhere: the box in the card, the status boxes and the cake */
+.parentpage .session-homework { background: var(--topic-homework); }
+.parentpage .status-box { background: var(--topic-homework-soft); }
+.parentpage .status-box.late { background: var(--topic-alert); color: var(--lapis-plum); }
+.parentpage .cake-box { background: var(--topic-homework-soft); }
+
+/* the timeline is about sessions, so it is pink */
+.parentpage .timeline { border-left-color: var(--topic-academic); }
+.parentpage .timeline-item::before { background: var(--topic-academic); }

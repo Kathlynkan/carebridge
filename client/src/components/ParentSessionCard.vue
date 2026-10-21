@@ -61,7 +61,7 @@ const someHomework = computed(() => props.homework.slice(0, 3))
 </script>
 
 <template>
-  <div class="parent-session-card" data-test="parent-session-card">
+  <div class="parent-session-card" :class="'kind-' + kind" data-test="parent-session-card">
     <!-- left: the picture -->
     <div class="session-pic">
       <button v-if="photos.length > 1" type="button" class="pic-arrow" aria-label="Previous photo" @click="nextPhoto(-1)">&lt;</button>

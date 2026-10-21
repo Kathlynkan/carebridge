@@ -88,7 +88,7 @@ const recurringLabel = computed(() =>
 
 <style scoped>
 .handover-card {
-  border-left: 6px solid var(--lapis-orange);
+  border-left: 6px solid var(--topic-academic);
 }
 
 .handover-title {

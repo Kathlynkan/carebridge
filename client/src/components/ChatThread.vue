@@ -85,13 +85,13 @@ function time(iso) {
 }
 
 .mine {
-  background: var(--lapis-pink);
-  color: var(--lapis-cream);
+  background: var(--topic-messages);
+  color: var(--lapis-plum);
   border-bottom-right-radius: 4px;
 }
 
 .theirs {
-  background: var(--lapis-lime);
+  background: var(--topic-messages-soft);
   color: var(--lapis-plum);
   border-bottom-left-radius: 4px;
 }

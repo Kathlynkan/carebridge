@@ -10,42 +10,63 @@
 :root {
   --band: 16px;
 
-  --lapis-pink:   #EE92AA;
-  --lapis-cream:  #FFF8F0;
-  --lapis-lime:   #B8DC88;
-  --lapis-yellow: #F2D878;
-  --lapis-orange: #F2B880;
-  --lapis-purple: #B890CC;
-  --lapis-plum:   #3A0A2A;
-  --lapis-shadow: #5A2040;
+  --lapis-pink:   #F7A3C2; /* pink */
+  --lapis-cream:  #FFFDF7; /* coconut white */
+  --lapis-lime:   #90D49A; /* pandan green */
+  --lapis-yellow: #FFEB66; /* butter yellow */
+  --lapis-orange: #FFB59C; /* peach */
+  --lapis-purple: #BCA6EA; /* lavender */
+  --lapis-plum:   #4A3F3A; /* warm brown ink, for text */
+  --lapis-shadow: #B9A99B; /* soft taupe, for borders and shadows */
+  --lapis-apricot: #FFC78E;
+  --lapis-mint:    #B4E5BE;
+  --lapis-sky:     #8DD3F6; /* sky blue */
+
+  /* ── One colour per topic, used everywhere in the app ──
+     academic = pink, social = blue, homework = lavender,
+     schedule = apricot, messages = green, highlights = yellow */
+  --topic-academic:       #F7A3C2;
+  --topic-academic-soft:  #FDE3EE;
+  --topic-social:         #8DD3F6;
+  --topic-social-soft:    #E0F3FD;
+  --topic-homework:       #BCA6EA;
+  --topic-homework-soft:  #EEE8FA;
+  --topic-schedule:       #FFC78E;
+  --topic-schedule-soft:  #FFF0DC;
+  --topic-messages:       #90D49A;
+  --topic-messages-soft:  #E6F6E9;
+  --topic-highlight:      #FFEB66;
+  --topic-highlight-soft: #FFF8C2;
+  --topic-alert:          #FF8A80;
+  --topic-alert-soft:     #FFE1DE;
 
   /* Legacy cb tokens — remapped so existing templates keep working */
   --cb-primary:      var(--lapis-lime);
-  --cb-primary-dark: #7BC23F;
-  --cb-primary-soft: #D6F5A0;
+  --cb-primary-dark: #6FBF7B;
+  --cb-primary-soft: #D4F0DA;
   --cb-accent:       var(--lapis-yellow);
-  --cb-accent-soft:  #FFF5B0;
+  --cb-accent-soft:  #FFF4B0;
   --cb-ruby:         var(--lapis-pink);
-  --cb-ruby-soft:    #FFD0E2;
-  --cb-danger-soft:  #FFD0E2;
+  --cb-ruby-soft:    #FDE3EE;
+  --cb-danger-soft:  #FFE1DE;
   --cb-bg:           var(--lapis-cream);
   --cb-surface:      var(--lapis-cream);
   --cb-text:         var(--lapis-plum);
-  --cb-muted:        #7B4060;
+  --cb-muted:        #8D7F77;
   --cb-border:       var(--lapis-shadow);
   --cb-radius:       0px;
 
   /* Bootstrap colour overrides */
   --bs-primary:           var(--lapis-pink);
-  --bs-primary-rgb:       238, 146, 170;
+  --bs-primary-rgb:       247, 163, 194;
   --bs-success:           var(--lapis-lime);
-  --bs-success-rgb:       184, 220, 136;
+  --bs-success-rgb:       144, 212, 154;
   --bs-warning:           var(--lapis-yellow);
-  --bs-warning-rgb:       242, 216, 120;
-  --bs-danger:            var(--lapis-pink);
-  --bs-danger-rgb:        238, 146, 170;
-  --bs-link-color:        var(--lapis-purple);
-  --bs-link-hover-color:  var(--lapis-pink);
+  --bs-warning-rgb:       255, 235, 102;
+  --bs-danger:            var(--topic-alert);
+  --bs-danger-rgb:        255, 138, 128;
+  --bs-link-color:        #7A5AA6;
+  --bs-link-hover-color:  #C2557A;
   --bs-body-font-family:  'Nunito', ui-rounded, 'Segoe UI', sans-serif;
   --bs-body-color:        var(--lapis-plum);
   --bs-body-bg:           var(--lapis-cream);
@@ -178,10 +199,10 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-pink);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-cream);
-  --bs-btn-hover-bg:            #C95070;
+  --bs-btn-hover-bg:            #E27AA2;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-cream);
-  --bs-btn-active-bg:           #C95070;
+  --bs-btn-active-bg:           #E27AA2;
   --bs-btn-active-border-color: var(--lapis-shadow);
   --bs-btn-disabled-bg:         var(--lapis-pink);
   --bs-btn-disabled-border-color: var(--lapis-shadow);
@@ -227,10 +248,10 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-orange);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-plum);
-  --bs-btn-hover-bg:            #C87840;
+  --bs-btn-hover-bg:            #F29E7C;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-plum);
-  --bs-btn-active-bg:           #C87840;
+  --bs-btn-active-bg:           #F29E7C;
   box-shadow: 4px 4px 0 var(--lapis-shadow);
 }
 
@@ -265,7 +286,7 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-pink);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-cream);
-  --bs-btn-hover-bg:            #cc0055;
+  --bs-btn-hover-bg:            #E592AD;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-cream);
   box-shadow: 4px 4px 0 var(--lapis-shadow);
@@ -688,3 +709,21 @@ h4, h5, h6 {
 .page-peel-leave-active {
   transition: all 0.18s ease-in;
 }
+
+/* ---------- topic colours: the same colour for the same kind of information, everywhere ---------- */
+
+/* soft tinted block with a strong left edge */
+.topic-academic { background: var(--topic-academic-soft); border-left: 8px solid var(--topic-academic); }
+.topic-social   { background: var(--topic-social-soft);   border-left: 8px solid var(--topic-social); }
+.topic-homework { background: var(--topic-homework-soft); border-left: 8px solid var(--topic-homework); }
+.topic-schedule { background: var(--topic-schedule-soft); border-left: 8px solid var(--topic-schedule); }
+.topic-messages { background: var(--topic-messages-soft); border-left: 8px solid var(--topic-messages); }
+
+/* small coloured tags: <span class="chip chip-social">Happy</span> */
+.chip { display: inline-block; padding: 2px 10px; font-size: 0.8rem; font-weight: 700; color: var(--lapis-plum); }
+.chip-academic { background: var(--topic-academic); }
+.chip-social   { background: var(--topic-social); }
+.chip-homework { background: var(--topic-homework); }
+.chip-schedule { background: var(--topic-schedule); }
+.chip-messages { background: var(--topic-messages); }
+.chip-alert    { background: var(--topic-alert); }

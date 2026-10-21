@@ -28,12 +28,12 @@ function cancelDelete()  { showDeleteModal.value = false }
         <strong style="color:var(--lapis-plum)">{{ session.subject }} - {{ session.topic }}</strong>
         <div class="small" style="color:var(--cb-muted)">
           {{ formatDate(session.date) }} &middot; by {{ session.volunteerName }}
-          <span v-if="mood"> &middot; {{ mood.emoji }} {{ mood.label }}</span>
+          <span v-if="mood" class="chip chip-social ms-1">{{ mood.emoji }} {{ mood.label }}</span>
         </div>
       </div>
       <span
         class="badge align-self-start fs-6"
-        style="background:var(--lapis-lime);color:var(--lapis-plum)"
+        style="background:var(--topic-academic);color:var(--lapis-plum)"
       >
         {{ session.correct }}/{{ session.attempted }} &middot; {{ accuracy(session) }}%
       </span>
@@ -46,7 +46,7 @@ function cancelDelete()  { showDeleteModal.value = false }
           v-for="s in session.struggles"
           :key="s"
           class="badge me-1"
-          style="background:var(--lapis-orange);color:var(--lapis-plum)"
+          style="background:var(--topic-academic-soft);color:var(--lapis-plum)"
         >{{ s }}</span>
       </div>
       <div>
