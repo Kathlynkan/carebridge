@@ -18,10 +18,10 @@
 import { ref, computed, onUnmounted } from 'vue'
 
 const STRIP_COLOURS = [
-  { front: '#E8789A', under: '#C05070' },
-  { front: '#A8D870', under: '#70A840' },
-  { front: '#F0D060', under: '#C8A830' },
-  { front: '#F0A868', under: '#C87840' },
+  { front: '#EE92AA', under: '#C06080' },
+  { front: '#B8DC88', under: '#80B050' },
+  { front: '#F2D878', under: '#C8A830' },
+  { front: '#F2B880', under: '#C88040' },
 ]
 
 const STRIP_W   = 14   // px — width of the draggable strip

@@ -10,12 +10,12 @@
 :root {
   --band: 16px;
 
-  --lapis-pink:   #E8789A;
+  --lapis-pink:   #EE92AA;
   --lapis-cream:  #FFF8F0;
-  --lapis-lime:   #A8D870;
-  --lapis-yellow: #F0D060;
-  --lapis-orange: #F0A868;
-  --lapis-purple: #9060A8;
+  --lapis-lime:   #B8DC88;
+  --lapis-yellow: #F2D878;
+  --lapis-orange: #F2B880;
+  --lapis-purple: #B890CC;
   --lapis-plum:   #3A0A2A;
   --lapis-shadow: #5A2040;
 
@@ -33,24 +33,24 @@
   --cb-text:         var(--lapis-plum);
   --cb-muted:        #7B4060;
   --cb-border:       var(--lapis-shadow);
-  --cb-radius:       8px;
+  --cb-radius:       0px;
 
   /* Bootstrap colour overrides */
   --bs-primary:           var(--lapis-pink);
-  --bs-primary-rgb:       232, 120, 154;
+  --bs-primary-rgb:       238, 146, 170;
   --bs-success:           var(--lapis-lime);
-  --bs-success-rgb:       168, 216, 112;
+  --bs-success-rgb:       184, 220, 136;
   --bs-warning:           var(--lapis-yellow);
-  --bs-warning-rgb:       240, 208, 96;
+  --bs-warning-rgb:       242, 216, 120;
   --bs-danger:            var(--lapis-pink);
-  --bs-danger-rgb:        232, 120, 154;
+  --bs-danger-rgb:        238, 146, 170;
   --bs-link-color:        var(--lapis-purple);
   --bs-link-hover-color:  var(--lapis-pink);
   --bs-body-font-family:  'Nunito', ui-rounded, 'Segoe UI', sans-serif;
   --bs-body-color:        var(--lapis-plum);
   --bs-body-bg:           var(--lapis-cream);
   --bs-border-color:      var(--lapis-shadow);
-  --bs-border-radius:     6px;
+  --bs-border-radius:     0px;
   --bs-border-width:      3px;
 }
 
