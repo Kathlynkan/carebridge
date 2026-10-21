@@ -107,6 +107,11 @@ const someHomework = computed(() => props.homework.slice(0, 3))
           </ul>
           <div v-else class="small text-muted-cb">No homework right now.</div>
         </div>
+
+        <!-- an empty spot for whatever the page puts here (the AI summary), only in the academic view -->
+        <div class="mt-3">
+          <slot name="academic-extra"></slot>
+        </div>
       </div>
 
       <!-- social view: a notice board, nothing academic -->

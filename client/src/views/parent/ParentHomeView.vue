@@ -259,9 +259,9 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- the whiteboard layout: the notice board on the left, the AI summary on the right -->
+      <!-- the notice board (the AI summary is inside it, under the academic details) -->
       <div class="row g-4 mb-4">
-        <div class="col-lg-7">
+        <div class="col-12">
           <div class="notice-board" data-test="notice-board">
             <h2 class="board-title">Notice board</h2>
 
@@ -291,7 +291,19 @@ onMounted(async () => {
             <!-- tab: latest session = the session card -->
             <div v-else-if="noticeTab === 'latest'">
               <p v-if="!latest" class="note mb-0">No sessions yet.</p>
-              <ParentSessionCard v-else :session="latest" :child="selectedChild" :homework="homework" />
+              <ParentSessionCard v-else :session="latest" :child="selectedChild" :homework="homework">
+                <!-- the AI summary, under the academic details -->
+                <template #academic-extra>
+                  <HandoverCard
+                    v-if="handover || handoverLoading"
+                    :handover="handover"
+                    :loading="handoverLoading"
+                    audience="parent"
+                    title="AI summary"
+                  />
+                  <div v-else class="small text-muted-cb">No summary yet.</div>
+                </template>
+              </ParentSessionCard>
             </div>
 
             <!-- tab: homework = the homework of the child -->
@@ -325,17 +337,6 @@ onMounted(async () => {
           </div>
         </div>
 
-        <!-- the big AI summary box -->
-        <div class="col-lg-5">
-          <HandoverCard
-            v-if="handover || handoverLoading"
-            :handover="handover"
-            :loading="handoverLoading"
-            audience="parent"
-            title="AI summary"
-          />
-          <div v-else class="cb-card p-3 p-md-4 text-muted-cb">No summary yet.</div>
-        </div>
       </div>
 
       <!-- below: the progress chart and the recent sessions -->
