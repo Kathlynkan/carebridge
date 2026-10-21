@@ -195,6 +195,7 @@ router.post('/', requireRole('volunteer', 'teacher'), async (req, res) => {
       interaction: req.body.interaction,
       behaviour: req.body.behaviour,
       socialNotes: req.body.socialNotes,
+      photos: req.body.photos || []
     })
 
     // return new session
@@ -270,10 +271,15 @@ router.put('/:id', requireRole('volunteer', 'teacher'), async (req, res) => {
     session.nextStep = req.body.nextStep
     session.mood = req.body.mood
     session.notes = req.body.notes
+    session.activity: req.body.activity
+    session.interaction: req.body.interaction
+    session.behaviour: req.body.behaviour
+    session.socialNotes: req.body.socialNotes
     session.activity = req.body.activity
     session.interaction = req.body.interaction
     session.behaviour = req.body.behaviour
     session.socialNotes = req.body.socialNotes
+    session.photos = req.body.photos || []
 
     await session.save()
     // when session was edited -> saved AI summary is outdated -> delete 

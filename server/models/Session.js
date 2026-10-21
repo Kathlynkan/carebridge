@@ -20,11 +20,10 @@ const sessionSchema = new mongoose.Schema(
     activity: String,
     interaction: String,
     behaviour: String,
-    socialNotes: String
+    socialNotes: String,
+    photos: [{type: String}]
   },
   { toJSON: jsonOptions },
 )
-
-// TODO (Ning Xuan): also check correct <= attempted (custom validator or in the route)
 
 export default mongoose.model('Session', sessionSchema)
