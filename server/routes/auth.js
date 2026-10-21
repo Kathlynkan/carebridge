@@ -10,7 +10,7 @@
 // =============================================================
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
-import { User } from '../models/index.js'
+import { User, Child } from '../models/index.js'
 import { issueToken, revokeToken, requireAuth } from '../middleware/auth.js'
 
 const router = Router()
@@ -118,6 +118,59 @@ router.post('/login', async (req, res) => {
 // GET /auth/me  -> who am I? (used to check a saved token is still valid)
 router.get('/me', requireAuth, (req, res) => {
   res.json(req.user)
+})
+
+// PUT /auth/profile  -> update the logged-in user's own profile
+router.put('/profile', requireAuth, async (req, res) => {
+  const user = await User.findById(req.user.id)
+  if (!user) return res.status(404).json({ message: 'User not found.' })
+
+  // Name (child accounts are named by the teacher, not themselves)
+  if (user.role !== 'child' && req.body.name !== undefined) {
+    const name = String(req.body.name).trim()
+    if (!name) return res.status(400).json({ message: 'Name is required.' })
+    user.name = name
+  }
+
+  // Password change (optional — only sent when the user fills in the password section)
+  if (user.role !== 'child' && req.body.newPassword !== undefined) {
+    if (!req.body.currentPassword) {
+      return res.status(400).json({ message: 'Enter your current password to change it.' })
+    }
+    const valid = await bcrypt.compare(req.body.currentPassword, user.password)
+    if (!valid) return res.status(400).json({ message: 'Current password is incorrect.' })
+    if (typeof req.body.newPassword !== 'string' || req.body.newPassword.length < MIN_PASSWORD_LENGTH) {
+      return res
+        .status(400)
+        .json({ message: `New password must be at least ${MIN_PASSWORD_LENGTH} characters.` })
+    }
+    user.password = await bcrypt.hash(req.body.newPassword, 10)
+  }
+
+  // Volunteer: update skills and availability
+  if (user.role === 'volunteer') {
+    if (req.body.skills !== undefined) {
+      if (!isPickedFrom(req.body.skills, SKILL_OPTIONS)) {
+        return res.status(400).json({ message: 'Pick at least one skill from the list.' })
+      }
+      user.skills = [...new Set(req.body.skills)]
+    }
+    if (req.body.availability !== undefined) {
+      if (!isPickedFrom(req.body.availability, DAYS)) {
+        return res.status(400).json({ message: 'Pick at least one day from the list.' })
+      }
+      user.availability = [...new Set(req.body.availability)]
+    }
+  }
+
+  await user.save()
+
+  // Child: avatar is stored on the Child document, not the User
+  if (user.role === 'child' && req.body.avatar) {
+    await Child.findByIdAndUpdate(user.childId, { avatar: String(req.body.avatar) })
+  }
+
+  res.json(user) // password stripped by toJSON in models/helpers.js
 })
 
 // POST /auth/logout

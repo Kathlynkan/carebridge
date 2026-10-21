@@ -7,7 +7,7 @@ import { requireAuth, requireRole } from '../middleware/auth.js'
 import { rankVolunteers } from '../utils/matchmaking.js'
 
 const router = Router()
-router.use(requireAuth, requireRole('coordinator')) // every matchmaking route is coordinator-only
+router.use(requireAuth, requireRole('teacher')) // every matchmaking route is coordinator-only
 
 // Mongoose keeps the id in _id. This gives the same { id, ... } shape the client and
 // seed.json use, which is what the pure scoring functions expect.

@@ -5,10 +5,11 @@ import NavBar from './components/NavBar.vue'
 
 <template>
   <NavBar />
-  <main class="app-main"> <!--main content area-->
-    <RouterView /> <!--Routes the current page, for exmaple if child page then /child etc-->
+  <!-- Kueh Lapis signature stripe: Spiced Brown | Golden Yellow | Pandan Green -->
+  <div class="lapis-stripe" aria-hidden="true"></div>
+  <main class="app-main">
+    <RouterView />
   </main>
-  <!-- displays footer at the bottom of every page -->
   <footer class="app-footer text-center small py-4">
     Kids Lapis &middot; IS216 WAD2 Group Project
   </footer>

@@ -1,29 +1,32 @@
 /* =============================================================
-   Global styles - shared design tokens for the whole team.
-   Use these variables (and Bootstrap classes) instead of random
-   hex codes so every page looks like ONE app.
-   Owner of the overall look: Kai Sen (but anyone can propose changes)
+   Global styles — Kids Lapis design system.
+   Palette inspired by Kueh Lapis (spiced layer cake):
+     Spiced Brown  #5C3A21  — the baked caramelised top layer
+     Golden Yellow #F3A953  — the standard inner layers
+     Pandan Green  #4D7C0F  — the aromatic pandan layers
    ============================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
 
 :root {
-  --cb-primary: #2f6f62; /* calm teal - main brand colour */
-  --cb-primary-dark: #24574d;
-  --cb-primary-soft: #e3efec;
-  --cb-accent: #f2b63d; /* warm amber - rewards, highlights */
-  --cb-accent-soft: #fdf3dc;
+  --cb-primary: #5c3a21;        /* Spiced Brown — caramelised top */
+  --cb-primary-dark: #3d2416;
+  --cb-primary-soft: #f5e8d8;   /* warm cream */
+  --cb-accent: #f3a953;         /* Golden Yellow — inner layers */
+  --cb-accent-soft: #fef3e2;
+  --cb-pandan: #4d7c0f;         /* Pandan Green */
+  --cb-pandan-soft: #eaf2dc;
   --cb-danger-soft: #fbe5e1;
-  --cb-bg: #f7f5f0; /* page background */
-  --cb-surface: #ffffff; /* cards */
-  --cb-text: #23302d;
-  --cb-muted: #6b7774;
-  --cb-border: #e4e0d8;
+  --cb-bg: #fbf6ee;             /* warm parchment */
+  --cb-surface: #fffdf8;        /* card surface */
+  --cb-text: #2a1a0d;           /* warm near-black */
+  --cb-muted: #7a6252;          /* warm muted brown */
+  --cb-border: #e8d9c4;         /* warm cream border */
   --cb-radius: 14px;
 
-  /* Re-colour Bootstrap's primary to our brand */
+  /* Re-colour Bootstrap's primary to Spiced Brown */
   --bs-primary: var(--cb-primary);
-  --bs-primary-rgb: 47, 111, 98;
+  --bs-primary-rgb: 92, 58, 33;
   --bs-link-color: var(--cb-primary);
   --bs-link-hover-color: var(--cb-primary-dark);
   --bs-body-font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -49,6 +52,7 @@ body {
 
 .app-footer {
   color: var(--cb-muted);
+  border-top: 1px solid var(--cb-border);
 }
 
 h1,
@@ -62,7 +66,7 @@ h3,
   color: var(--cb-muted);
 }
 
-/* Bootstrap buttons in brand colours */
+/* ---- Buttons ---- */
 .btn-primary {
   --bs-btn-bg: var(--cb-primary);
   --bs-btn-border-color: var(--cb-primary);
@@ -83,10 +87,15 @@ h3,
   --bs-btn-active-border-color: var(--cb-primary);
 }
 
-/* Card style used everywhere: <div class="cb-card p-3"> */
+/* ---- Cards ---- */
+/*
+ * The left accent (4 px Spiced Brown) represents the edge of a kueh lapis slice:
+ * looking at the card from the side, you see the layered stack.
+ */
 .cb-card {
   background: var(--cb-surface);
   border: 1px solid var(--cb-border);
+  border-left: 4px solid var(--cb-primary);
   border-radius: var(--cb-radius);
 }
 
@@ -98,9 +107,44 @@ h3,
 
 .cb-card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(35, 48, 45, 0.08);
+  box-shadow: 0 8px 24px rgba(92, 58, 33, 0.12);
 }
 
+/* ---- Kueh Lapis stripe — 3 layers: brown | gold | pandan ---- */
+/*
+ * Place <div class="lapis-stripe" aria-hidden="true"></div> wherever you need
+ * the visual layer motif (below NavBar, between sections, etc.).
+ */
+.lapis-stripe {
+  height: 5px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    to right,
+    var(--cb-primary)  0%,
+    var(--cb-primary)  33.33%,
+    var(--cb-accent)   33.33%,
+    var(--cb-accent)   66.67%,
+    var(--cb-pandan)   66.67%,
+    var(--cb-pandan)   100%
+  );
+}
+
+/* A thinner decorative stripe (8 px high, same 3 layers) for section dividers */
+.lapis-divider {
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(
+    to right,
+    var(--cb-primary)  0%,
+    var(--cb-primary)  33.33%,
+    var(--cb-accent)   33.33%,
+    var(--cb-accent)   66.67%,
+    var(--cb-pandan)   66.67%,
+    var(--cb-pandan)   100%
+  );
+}
+
+/* ---- Badges ---- */
 .badge-soft {
   background: var(--cb-primary-soft);
   color: var(--cb-primary-dark);
@@ -109,7 +153,13 @@ h3,
 
 .badge-accent {
   background: var(--cb-accent-soft);
-  color: #8a5d00;
+  color: #7a4a00;
+  font-weight: 700;
+}
+
+.badge-pandan {
+  background: var(--cb-pandan-soft);
+  color: #2f4d07;
   font-weight: 700;
 }
 
@@ -119,6 +169,7 @@ h3,
   font-weight: 700;
 }
 
+/* ---- Avatar circle ---- */
 .avatar {
   width: 48px;
   height: 48px;
@@ -135,7 +186,7 @@ h3,
   font-weight: 700;
 }
 
-/* Other Bootstrap components that default to blue */
+/* ---- Other Bootstrap components ---- */
 .progress {
   --bs-progress-bar-bg: var(--cb-primary);
 }
@@ -152,7 +203,7 @@ h3,
 .form-control:focus,
 .form-select:focus {
   border-color: var(--cb-primary);
-  box-shadow: 0 0 0 0.2rem rgba(47, 111, 98, 0.2);
+  box-shadow: 0 0 0 0.2rem rgba(92, 58, 33, 0.18);
 }
 
 .form-check-input:checked {

@@ -9,7 +9,7 @@ import { Child } from '../models/index.js'
 export function canAccessChild(user, child) {
   if (!child) return false
   switch (user.role) {
-    case 'coordinator':
+    case 'teacher':
       return true
     case 'volunteer':
       return child.volunteerIds.includes(user.id)
@@ -25,7 +25,7 @@ export function canAccessChild(user, child) {
 // The same rule written as a MongoDB filter, for Child.find(...)
 export function childFilterFor(user) {
   switch (user.role) {
-    case 'coordinator':
+    case 'teacher':
       return {}
     case 'volunteer':
       return { volunteerIds: user.id } // matches if the array contains user.id
