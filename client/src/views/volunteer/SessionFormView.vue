@@ -36,6 +36,7 @@ const dateString = today.toISOString() // convert to string
 const date = dateString.slice(0, 10) // format to yyyy-mm-dd
 
 const form = ref({
+  // academic
   date: date,
   subject: 'Math',
   topic: '',
@@ -46,6 +47,13 @@ const form = ref({
   nextStep: '',
   mood: 'okay',
   notes: '',
+
+  // social
+  activity: '',
+  interaction: '',
+  behaviour: '',
+  socialNotes: '',
+  photos: []
 })
 const newStruggle = ref('')
 const saving = ref(false) // track whether the form is currently saving
@@ -66,6 +74,10 @@ async function loadSession() {
     form.value.nextStep = session.nextStep
     form.value.mood = session.mood
     form.value.notes = session.notes
+    form.value.activity = session.activity
+    form.value.interaction = session.interaction
+    form.value.behaviour = session.behaviour
+    form.value.socialNotes = session.socialNotes
 
     childId.value = session.childId // retrieve childId
   } catch (err) {
@@ -106,6 +118,10 @@ async function handleSubmit() {
         nextStep: form.value.nextStep,
         mood: form.value.mood,
         notes: form.value.notes,
+        activity: form.value.activity,
+        interaction: form.value.interaction,
+        behaviour: form.value.behaviour,
+        socialNotes: form.value.socialNotes,
       })
 
       router.push({
@@ -125,6 +141,10 @@ async function handleSubmit() {
   } finally {
     saving.value = false // after submission
   }
+}
+
+function uploadPhotos(event) {
+  form.value.photos = Array.from(event.target.files)
 }
 
 function addStruggle() {
@@ -184,6 +204,8 @@ onMounted(() => { // autofill form if edit form
           -->
           <div v-if="error" class="alert alert-warning small">{{ error }}</div>
           <!-- alert: bootstrap alert box, alert-warning: set alert colour to yellow/orange-->
+
+          <h2 class="h5 mb-3">Academic</h2>
 
           <div class="row g-3">
             <div class="col-sm-4">
@@ -271,6 +293,51 @@ onMounted(() => { // autofill form if edit form
             <div class="col-12">
               <label class="form-label" for="notes">Other notes (optional)</label>
               <textarea id="notes" v-model="form.notes" rows="3" class="form-control"></textarea>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <h2 class="h5 mb-3">Social</h2>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="activity">Activity</label>
+              <input id="activity" v-model.trim="form.activity" class="form-control" placeholder="e.g. Board games">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label" for="interaction">Peer Interaction</label>
+              <select id="interaction" v-model="form.interaction" class="form-select">
+                <option value="">Select</option>
+                <option>Excellent</option>
+                <option>Good</option>
+                <option>Fair</option>
+                <option>Limited</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label" for="behaviour">Positive behaviour observed</label>
+              <input id="behaviour" v-model.trim="form.behaviour" class="form-control" placeholder="e.g. Helped another child">
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="socialNotes">Notes</label>
+              <textarea id="socialNotes" v-model.trim="form.socialNotes" rows="3" class="form-control"></textarea>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="photos">Photos</label>
+              <input id="photos" type="file" placeholder="Upload photos here"
+              multiple accept="image/*" class="form-control" @change="uploadPhotos">
+            </div>
+
+            <div v-if="form.photos.length > 0" class="mt-2">
+              <img v-for="photo in form.photos" :key="photo.name"
+                :src="URL.createObjectURL(photo)"
+                class="img-thumbnail me-2 mb-2"
+                style="width: 120px">
             </div>
           </div>
 
