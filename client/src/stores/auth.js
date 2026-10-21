@@ -16,7 +16,7 @@ import api from '@/services/api'
 // Where each role lands after logging in
 export const ROLE_HOME = {
   volunteer: '/volunteer',
-  coordinator: '/coordinator',
+  teacher: '/coordinator',
   parent: '/parent',
   child: '/child',
 }
@@ -62,5 +62,10 @@ export const useAuthStore = defineStore('auth', () => {
     clearSession()
   }
 
-  return { token, user, isLoggedIn, role, homePath, login, signup, logout, clearSession }
+  function patchUser(updated) {
+    user.value = { ...user.value, ...updated }
+    localStorage.setItem('cb_user', JSON.stringify(user.value))
+  }
+
+  return { token, user, isLoggedIn, role, homePath, login, signup, logout, clearSession, patchUser }
 })

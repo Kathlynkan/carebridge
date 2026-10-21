@@ -1,8 +1,8 @@
 // =============================================================
-// CareBridge API as a Cloudflare Worker (Express + Mongoose, the same routes as server/server.js)
+// Kids Lapis API as a Cloudflare Worker (Express + Mongoose, the same routes as server/server.js)
 // -------------------------------------------------------------
 // Differences from running on your own computer:
-//   - the database string comes from a Worker secret (named DB; set once with: npx wrangler secret put DB --name carebridge-api)
+//   - the database string comes from a Worker secret (named DB; set once with: npx wrangler secret put DB --name kids-lapis-api)
 //   - every request opens its own database connection and closes it afterwards (per-request-db.js)
 //   - logins use signed tokens (see auth.stateless.js) because memory does not last
 // =============================================================
@@ -17,6 +17,7 @@ import userRoutes from './routes/users.js'
 import childRoutes from './routes/children.js'
 import sessionRoutes from './routes/sessions.js'
 import homeworkRoutes from './routes/homework.js'
+import deckRoutes from './routes/decks.js'
 import messageRoutes from './routes/messages.js'
 import handoverRoutes from './routes/handover.js'
 import dashboardRoutes from './routes/dashboard.js'
@@ -31,7 +32,7 @@ app.use(express.json())
 app.use(connectForRequest(dbString))
 
 app.get('/', (req, res) => {
-  res.json({ status: 'ok', app: 'CareBridge API' })
+  res.json({ status: 'ok', app: 'Kids Lapis API' })
 })
 
 app.use('/auth', authRoutes)
@@ -41,6 +42,7 @@ app.use('/matchmaking', matchmakingRoutes)
 app.use('/dashboard', dashboardRoutes)
 app.use('/sessions', sessionRoutes)
 app.use('/homework', homeworkRoutes)
+app.use('/decks', deckRoutes)
 app.use('/handover', handoverRoutes)
 app.use('/messages', messageRoutes)
 app.use('/progress', progressRoutes)

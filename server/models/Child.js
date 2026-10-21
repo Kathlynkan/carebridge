@@ -2,6 +2,11 @@
 import mongoose from 'mongoose'
 import { newId, jsonOptions } from './helpers.js'
 
+const slotSchema = new mongoose.Schema(
+  { volunteerId: { type: String, required: true }, day: { type: String, required: true } },
+  { _id: false },
+)
+
 const childSchema = new mongoose.Schema(
   {
     _id: { type: String, default: () => newId('c') },
@@ -14,6 +19,7 @@ const childSchema = new mongoose.Schema(
     points: { type: Number, default: 0 }, // gamification (Jachin)
     avatar: { type: String, default: '🙂' },
     followUp: { type: Boolean, default: false }, // flagged by coordinator (Yu Xuan)
+    schedule: { type: [slotSchema], default: [] }, // which day each volunteer sees this child (Yu Xuan)
   },
   { toJSON: jsonOptions },
 )

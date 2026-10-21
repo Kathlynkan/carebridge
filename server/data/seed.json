@@ -7,15 +7,15 @@
     {
       "id": "u_coord",
       "name": "Tan Mei Ling",
-      "email": "coordinator@carebridge.sg",
+      "email": "teacher@kidslapis.sg",
       "password": "password123",
-      "role": "coordinator",
+      "role": "teacher",
       "createdAt": "2026-08-07T01:00:00.000Z"
     },
     {
       "id": "u_vol1",
       "name": "Aisha Rahman",
-      "email": "volunteer@carebridge.sg",
+      "email": "volunteer@kidslapis.sg",
       "password": "password123",
       "role": "volunteer",
       "skills": [
@@ -32,7 +32,7 @@
     {
       "id": "u_vol2",
       "name": "Daniel Lim",
-      "email": "volunteer2@carebridge.sg",
+      "email": "volunteer2@kidslapis.sg",
       "password": "password123",
       "role": "volunteer",
       "skills": [
@@ -49,7 +49,7 @@
     {
       "id": "u_vol3",
       "name": "Priya Nair",
-      "email": "volunteer3@carebridge.sg",
+      "email": "volunteer3@kidslapis.sg",
       "password": "password123",
       "role": "volunteer",
       "skills": [
@@ -65,8 +65,8 @@
     },
     {
       "id": "u_par1",
-      "name": "Grace Wong",
-      "email": "parent@carebridge.sg",
+      "name": "Ms Grace Wong",
+      "email": "parent@kidslapis.sg",
       "password": "password123",
       "role": "parent",
       "createdAt": "2026-08-07T01:00:00.000Z"
@@ -74,7 +74,7 @@
     {
       "id": "u_par2",
       "name": "Ravi Kumar",
-      "email": "parent2@carebridge.sg",
+      "email": "parent2@kidslapis.sg",
       "password": "password123",
       "role": "parent",
       "createdAt": "2026-08-07T01:00:00.000Z"
@@ -82,7 +82,7 @@
     {
       "id": "u_par3",
       "name": "Linda Lee",
-      "email": "parent3@carebridge.sg",
+      "email": "parent3@kidslapis.sg",
       "password": "password123",
       "role": "parent",
       "createdAt": "2026-08-07T01:00:00.000Z"
@@ -90,7 +90,7 @@
     {
       "id": "u_par4",
       "name": "Marcus Ong",
-      "email": "parent4@carebridge.sg",
+      "email": "parent4@kidslapis.sg",
       "password": "password123",
       "role": "parent",
       "createdAt": "2026-08-07T01:00:00.000Z"
@@ -98,7 +98,7 @@
     {
       "id": "u_kid1",
       "name": "Ethan",
-      "email": "child@carebridge.sg",
+      "email": "child@kidslapis.sg",
       "password": "password123",
       "role": "child",
       "childId": "c_1",
@@ -107,7 +107,7 @@
     {
       "id": "u_kid2",
       "name": "Meera",
-      "email": "child2@carebridge.sg",
+      "email": "child2@kidslapis.sg",
       "password": "password123",
       "role": "child",
       "childId": "c_2",
@@ -125,6 +125,16 @@
         "u_vol1",
         "u_vol2"
       ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol1",
+          "day": "Mon"
+        },
+        {
+          "volunteerId": "u_vol2",
+          "day": "Tue"
+        }
+      ],
       "needs": [
         "Primary Math",
         "Fractions"
@@ -141,6 +151,12 @@
       "parentId": "u_par2",
       "volunteerIds": [
         "u_vol2"
+      ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol2",
+          "day": "Thu"
+        }
       ],
       "needs": [
         "Problem Sums",
@@ -160,6 +176,16 @@
         "u_vol1",
         "u_vol3"
       ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol1",
+          "day": "Wed"
+        },
+        {
+          "volunteerId": "u_vol3",
+          "day": "Fri"
+        }
+      ],
       "needs": [
         "English Comprehension",
         "Spelling"
@@ -176,6 +202,12 @@
       "parentId": "u_par3",
       "volunteerIds": [
         "u_vol1"
+      ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol1",
+          "day": "Mon"
+        }
       ],
       "needs": [
         "Primary Math",
@@ -194,6 +226,12 @@
       "volunteerIds": [
         "u_vol2"
       ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol2",
+          "day": "Tue"
+        }
+      ],
       "needs": [
         "Problem Sums"
       ],
@@ -208,6 +246,7 @@
       "school": "Hillview Primary",
       "parentId": "u_par4",
       "volunteerIds": [],
+      "schedule": [],
       "needs": [
         "Spelling",
         "Primary Math"
@@ -215,6 +254,319 @@
       "points": 0,
       "avatar": "🐨",
       "followUp": false
+    },
+    {
+      "id": "c_7",
+      "name": "Mia Wong",
+      "level": "P2",
+      "school": "Riverside Primary",
+      "parentId": "u_par1",
+      "volunteerIds": [
+        "u_vol1"
+      ],
+      "schedule": [
+        {
+          "volunteerId": "u_vol1",
+          "day": "Wed"
+        }
+      ],
+      "needs": [
+        "Spelling",
+        "Primary Math"
+      ],
+      "points": 30,
+      "avatar": "🐰",
+      "followUp": false
+    }
+  ],
+  "decks": [
+    {
+      "id": "d_1",
+      "title": "Adding fractions (same bottom number)",
+      "subject": "Math",
+      "description": "Add the fractions. Write the answer like 3/4.",
+      "questions": [
+        {
+          "text": "1/4 + 2/4 = ? (write it like 3/4)",
+          "answer": "3/4"
+        },
+        {
+          "text": "1/5 + 3/5 = ?",
+          "answer": "4/5"
+        },
+        {
+          "text": "2/6 + 1/6 = ?",
+          "answer": "3/6"
+        },
+        {
+          "text": "1/3 + 1/3 = ?",
+          "answer": "2/3"
+        },
+        {
+          "text": "3/8 + 4/8 = ?",
+          "answer": "7/8"
+        }
+      ]
+    },
+    {
+      "id": "d_2",
+      "title": "7 times table",
+      "subject": "Math",
+      "description": "Answer the questions about the 7 times table.",
+      "questions": [
+        {
+          "text": "7 x 3 = ?",
+          "answer": "21"
+        },
+        {
+          "text": "7 x 4 = ?",
+          "answer": "28"
+        },
+        {
+          "text": "7 x 5 = ?",
+          "answer": "35"
+        },
+        {
+          "text": "7 x 6 = ?",
+          "answer": "42"
+        },
+        {
+          "text": "7 x 7 = ?",
+          "answer": "49"
+        }
+      ]
+    },
+    {
+      "id": "d_3",
+      "title": "Before-after problem sums",
+      "subject": "Math",
+      "description": "Read each problem and write the number.",
+      "questions": [
+        {
+          "text": "Ali had 12 marbles. He gave away 5. How many marbles are left?",
+          "answer": "7"
+        },
+        {
+          "text": "Mei had 9 stickers. She got 6 more. How many stickers does she have now?",
+          "answer": "15"
+        },
+        {
+          "text": "There were 20 birds. 8 flew away. How many birds are left?",
+          "answer": "12"
+        }
+      ]
+    },
+    {
+      "id": "d_4",
+      "title": "Area of rectangles and squares",
+      "subject": "Math",
+      "description": "Work out the area. Write only the number.",
+      "questions": [
+        {
+          "text": "A rectangle is 4 cm long and 3 cm wide. What is its area in square cm? (write the number)",
+          "answer": "12"
+        },
+        {
+          "text": "A square has sides of 5 cm. What is its area in square cm? (write the number)",
+          "answer": "25"
+        }
+      ]
+    },
+    {
+      "id": "d_5",
+      "title": "Percentages",
+      "subject": "Math",
+      "description": "Work out the percentage of each number.",
+      "questions": [
+        {
+          "text": "50% of 40 = ?",
+          "answer": "20"
+        },
+        {
+          "text": "10% of 90 = ?",
+          "answer": "9"
+        },
+        {
+          "text": "25% of 100 = ?",
+          "answer": "25"
+        }
+      ]
+    },
+    {
+      "id": "d_6",
+      "title": "6 and 8 times tables",
+      "subject": "Math",
+      "description": "Answer the questions about the 6 and 8 times tables.",
+      "questions": [
+        {
+          "text": "6 x 4 = ?",
+          "answer": "24"
+        },
+        {
+          "text": "6 x 7 = ?",
+          "answer": "42"
+        },
+        {
+          "text": "8 x 3 = ?",
+          "answer": "24"
+        },
+        {
+          "text": "8 x 6 = ?",
+          "answer": "48"
+        },
+        {
+          "text": "8 x 8 = ?",
+          "answer": "64"
+        }
+      ]
+    },
+    {
+      "id": "d_7",
+      "title": "3 and 4 times tables",
+      "subject": "Math",
+      "description": "Answer the questions about the 3 and 4 times tables.",
+      "questions": [
+        {
+          "text": "3 x 6 = ?",
+          "answer": "18"
+        },
+        {
+          "text": "3 x 9 = ?",
+          "answer": "27"
+        },
+        {
+          "text": "4 x 5 = ?",
+          "answer": "20"
+        },
+        {
+          "text": "4 x 8 = ?",
+          "answer": "32"
+        },
+        {
+          "text": "4 x 9 = ?",
+          "answer": "36"
+        }
+      ]
+    },
+    {
+      "id": "d_8",
+      "title": "Unscramble the words: fruit and school",
+      "subject": "English",
+      "description": "Put the letters in the right order to make a word.",
+      "questions": [
+        {
+          "text": "Unscramble the word: ELPPA",
+          "answer": "apple"
+        },
+        {
+          "text": "Unscramble the word: RIDEFN",
+          "answer": "friend"
+        },
+        {
+          "text": "Unscramble the word: EOHSU",
+          "answer": "house"
+        },
+        {
+          "text": "Unscramble the word: TRANI",
+          "answer": "train"
+        },
+        {
+          "text": "Unscramble the word: LOOHSC",
+          "answer": "school"
+        }
+      ]
+    },
+    {
+      "id": "d_9",
+      "title": "Unscramble the words: school things",
+      "subject": "English",
+      "description": "Put the letters in the right order to make a word.",
+      "questions": [
+        {
+          "text": "Unscramble the word: KOBO",
+          "answer": "book"
+        },
+        {
+          "text": "Unscramble the word: ERETSAH",
+          "answer": "teacher"
+        },
+        {
+          "text": "Unscramble the word: NIAR",
+          "answer": "rain"
+        }
+      ]
+    },
+    {
+      "id": "d_10",
+      "title": "Words that rhyme",
+      "subject": "English",
+      "description": "Write a word that rhymes. Use the word in brackets to help.",
+      "questions": [
+        {
+          "text": "Which word rhymes with cat? (hat, dog or cup)",
+          "answer": "hat"
+        },
+        {
+          "text": "Which word rhymes with light? (night, sun or tree)",
+          "answer": "night"
+        },
+        {
+          "text": "Which word rhymes with moon? (spoon, star or cake)",
+          "answer": "spoon"
+        },
+        {
+          "text": "Which word rhymes with king? (ring, queen or crown)",
+          "answer": "ring"
+        }
+      ]
+    },
+    {
+      "id": "d_11",
+      "title": "Parts of a plant",
+      "subject": "Science",
+      "description": "Answer the questions about the parts of a plant.",
+      "questions": [
+        {
+          "text": "Which part of the plant takes in water from the soil? (roots, stem, leaves or flower)",
+          "answer": "roots"
+        },
+        {
+          "text": "Which part uses sunlight to make food? (roots, stem, leaves or flower)",
+          "answer": "leaves"
+        },
+        {
+          "text": "Which part holds the plant up? (roots, stem, leaves or flower)",
+          "answer": "stem"
+        },
+        {
+          "text": "Which part makes the seeds? (roots, stem, leaves or flower)",
+          "answer": "flower"
+        }
+      ]
+    },
+    {
+      "id": "d_12",
+      "title": "The planets",
+      "subject": "Science",
+      "description": "Answer the questions about the planets.",
+      "questions": [
+        {
+          "text": "Which planet is closest to the Sun? (Mercury, Venus or Earth)",
+          "answer": "mercury"
+        },
+        {
+          "text": "Which planet do we live on? (Mars, Earth or Jupiter)",
+          "answer": "earth"
+        },
+        {
+          "text": "Which planet is the biggest? (Saturn, Jupiter or Mars)",
+          "answer": "jupiter"
+        },
+        {
+          "text": "Which planet is called the Red Planet? (Mars, Venus or Neptune)",
+          "answer": "mars"
+        }
+      ]
     }
   ],
   "sessions": [
@@ -268,7 +620,10 @@
       "whatWorked": "Visual diagrams",
       "nextStep": "Practise basic fraction addition",
       "mood": "happy",
-      "notes": ""
+      "notes": "",
+      "activity": "Drawing",
+      "interaction": "Good",
+      "behaviour": "Helped a classmate with colouring"
     },
     {
       "id": "s_4",
@@ -285,7 +640,10 @@
       "whatWorked": "Skip counting songs",
       "nextStep": "Timed times-table drill",
       "mood": "happy",
-      "notes": ""
+      "notes": "",
+      "activity": "Board games",
+      "interaction": "Excellent",
+      "behaviour": "Led a group game of Snakes and Ladders"
     },
     {
       "id": "s_5",
@@ -302,7 +660,10 @@
       "whatWorked": "Highlighting keywords",
       "nextStep": "Try one inference passage",
       "mood": "okay",
-      "notes": ""
+      "notes": "",
+      "activity": "Reading corner",
+      "interaction": "Good",
+      "socialNotes": "Spent some quiet time reading with a friend after the session."
     },
     {
       "id": "s_6",
@@ -319,7 +680,11 @@
       "whatWorked": "Visual diagrams",
       "nextStep": "Practise basic fraction addition",
       "mood": "happy",
-      "notes": "Much more confident today!"
+      "notes": "Much more confident today!",
+      "activity": "Outdoor play",
+      "interaction": "Excellent",
+      "behaviour": "Encouraged a friend who was finding it hard",
+      "socialNotes": "Really came out of his shell — very chatty and upbeat the whole session."
     },
     {
       "id": "s_7",
@@ -542,6 +907,55 @@
       "nextStep": "Percentage word problems",
       "mood": "okay",
       "notes": ""
+    },
+    {
+      "id": "s_20",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "date": "2026-09-25",
+      "subject": "English",
+      "topic": "Spelling",
+      "attempted": 8,
+      "correct": 4,
+      "struggles": [
+        "Mixing up b and d"
+      ],
+      "whatWorked": "Saying each word out loud",
+      "nextStep": "Practise school words",
+      "mood": "okay",
+      "notes": ""
+    },
+    {
+      "id": "s_21",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "date": "2026-10-02",
+      "subject": "Math",
+      "topic": "Counting and adding",
+      "attempted": 10,
+      "correct": 7,
+      "struggles": [
+        "Adding past 20"
+      ],
+      "whatWorked": "Using counters",
+      "nextStep": "Add numbers up to 30",
+      "mood": "happy",
+      "notes": ""
+    },
+    {
+      "id": "s_22",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "date": "2026-10-08",
+      "subject": "English",
+      "topic": "Spelling",
+      "attempted": 8,
+      "correct": 6,
+      "struggles": [],
+      "whatWorked": "Look, cover, write, check",
+      "nextStep": "Words that rhyme",
+      "mood": "happy",
+      "notes": ""
     }
   ],
   "homework": [
@@ -555,7 +969,30 @@
       "dueDate": "2026-10-08",
       "points": 20,
       "status": "assigned",
-      "completedAt": null
+      "completedAt": null,
+      "questions": [
+        {
+          "text": "1/4 + 2/4 = ? (write it like 3/4)",
+          "answer": "3/4"
+        },
+        {
+          "text": "1/5 + 3/5 = ?",
+          "answer": "4/5"
+        },
+        {
+          "text": "2/6 + 1/6 = ?",
+          "answer": "3/6"
+        },
+        {
+          "text": "1/3 + 1/3 = ?",
+          "answer": "2/3"
+        },
+        {
+          "text": "3/8 + 4/8 = ?",
+          "answer": "7/8"
+        }
+      ],
+      "deckId": "d_1"
     },
     {
       "id": "h_2",
@@ -567,7 +1004,30 @@
       "dueDate": "2026-10-02",
       "points": 10,
       "status": "verified",
-      "completedAt": "2026-10-01T11:00:00.000Z"
+      "completedAt": "2026-10-01T11:00:00.000Z",
+      "questions": [
+        {
+          "text": "7 x 3 = ?",
+          "answer": "21"
+        },
+        {
+          "text": "7 x 4 = ?",
+          "answer": "28"
+        },
+        {
+          "text": "7 x 5 = ?",
+          "answer": "35"
+        },
+        {
+          "text": "7 x 6 = ?",
+          "answer": "42"
+        },
+        {
+          "text": "7 x 7 = ?",
+          "answer": "49"
+        }
+      ],
+      "deckId": "d_2"
     },
     {
       "id": "h_3",
@@ -579,7 +1039,8 @@
       "dueDate": "2026-10-05",
       "points": 10,
       "status": "submitted",
-      "completedAt": "2026-10-05T11:00:00.000Z"
+      "completedAt": "2026-10-05T11:00:00.000Z",
+      "questions": []
     },
     {
       "id": "h_4",
@@ -591,7 +1052,22 @@
       "dueDate": "2026-10-09",
       "points": 20,
       "status": "assigned",
-      "completedAt": null
+      "completedAt": null,
+      "questions": [
+        {
+          "text": "Ali had 12 marbles. He gave away 5. How many marbles are left?",
+          "answer": "7"
+        },
+        {
+          "text": "Mei had 9 stickers. She got 6 more. How many stickers does she have now?",
+          "answer": "15"
+        },
+        {
+          "text": "There were 20 birds. 8 flew away. How many birds are left?",
+          "answer": "12"
+        }
+      ],
+      "deckId": "d_3"
     },
     {
       "id": "h_5",
@@ -603,7 +1079,22 @@
       "dueDate": "2026-10-07",
       "points": 15,
       "status": "assigned",
-      "completedAt": null
+      "completedAt": null,
+      "questions": [
+        {
+          "text": "Unscramble the word: KOBO",
+          "answer": "book"
+        },
+        {
+          "text": "Unscramble the word: ERETSAH",
+          "answer": "teacher"
+        },
+        {
+          "text": "Unscramble the word: NIAR",
+          "answer": "rain"
+        }
+      ],
+      "deckId": "d_9"
     },
     {
       "id": "h_6",
@@ -615,7 +1106,18 @@
       "dueDate": "2026-09-30",
       "points": 15,
       "status": "assigned",
-      "completedAt": null
+      "completedAt": null,
+      "questions": [
+        {
+          "text": "A rectangle is 4 cm long and 3 cm wide. What is its area in square cm? (write the number)",
+          "answer": "12"
+        },
+        {
+          "text": "A square has sides of 5 cm. What is its area in square cm? (write the number)",
+          "answer": "25"
+        }
+      ],
+      "deckId": "d_4"
     },
     {
       "id": "h_7",
@@ -627,7 +1129,159 @@
       "dueDate": "2026-10-10",
       "points": 20,
       "status": "assigned",
+      "completedAt": null,
+      "questions": [
+        {
+          "text": "50% of 40 = ?",
+          "answer": "20"
+        },
+        {
+          "text": "10% of 90 = ?",
+          "answer": "9"
+        },
+        {
+          "text": "25% of 100 = ?",
+          "answer": "25"
+        }
+      ],
+      "deckId": "d_5"
+    },
+    {
+      "id": "h_8",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "title": "Spelling list 3",
+      "subject": "English",
+      "details": "Write each word 3 times, then cover the list and test yourself.",
+      "dueDate": "2026-10-09",
+      "points": 10,
+      "status": "assigned",
+      "completedAt": null,
+      "questions": [
+        {
+          "text": "Unscramble the word: ELPPA",
+          "answer": "apple"
+        },
+        {
+          "text": "Unscramble the word: RIDEFN",
+          "answer": "friend"
+        },
+        {
+          "text": "Unscramble the word: EOHSU",
+          "answer": "house"
+        },
+        {
+          "text": "Unscramble the word: TRANI",
+          "answer": "train"
+        },
+        {
+          "text": "Unscramble the word: LOOHSC",
+          "answer": "school"
+        }
+      ],
+      "deckId": "d_8"
+    },
+    {
+      "id": "h_9",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "title": "6 and 8 times tables",
+      "subject": "Math",
+      "details": "Say the 6 and 8 times tables out loud, then write them out.",
+      "dueDate": "2026-10-10",
+      "points": 15,
+      "status": "assigned",
+      "completedAt": null,
+      "questions": [
+        {
+          "text": "6 x 4 = ?",
+          "answer": "24"
+        },
+        {
+          "text": "6 x 7 = ?",
+          "answer": "42"
+        },
+        {
+          "text": "8 x 3 = ?",
+          "answer": "24"
+        },
+        {
+          "text": "8 x 6 = ?",
+          "answer": "48"
+        },
+        {
+          "text": "8 x 8 = ?",
+          "answer": "64"
+        }
+      ],
+      "deckId": "d_6"
+    },
+    {
+      "id": "h_10",
+      "childId": "c_1",
+      "volunteerId": "u_vol1",
+      "title": "Parts of a plant",
+      "subject": "Science",
+      "details": "Draw a plant and label the roots, stem, leaves and flower.",
+      "dueDate": "2026-10-11",
+      "points": 15,
+      "status": "assigned",
+      "completedAt": null,
+      "questions": [
+        {
+          "text": "Which part of the plant takes in water from the soil? (roots, stem, leaves or flower)",
+          "answer": "roots"
+        },
+        {
+          "text": "Which part uses sunlight to make food? (roots, stem, leaves or flower)",
+          "answer": "leaves"
+        },
+        {
+          "text": "Which part holds the plant up? (roots, stem, leaves or flower)",
+          "answer": "stem"
+        },
+        {
+          "text": "Which part makes the seeds? (roots, stem, leaves or flower)",
+          "answer": "flower"
+        }
+      ],
+      "deckId": "d_11"
+    },
+    {
+      "id": "h_11",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "title": "Unscramble the words: school things",
+      "subject": "English",
+      "details": "Put the letters in the right order to make a word.",
+      "dueDate": "2026-10-14",
+      "points": 10,
+      "status": "assigned",
       "completedAt": null
+    },
+    {
+      "id": "h_12",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "title": "Words that rhyme",
+      "subject": "English",
+      "details": "Write a word that rhymes. Use the word in brackets to help.",
+      "dueDate": "2026-10-09",
+      "points": 10,
+      "status": "submitted",
+      "completedAt": "2026-10-08T15:20:00.000Z"
+    },
+    {
+      "id": "h_13",
+      "childId": "c_7",
+      "volunteerId": "u_vol1",
+      "title": "3 and 4 times tables",
+      "subject": "Math",
+      "details": "Answer the questions about the 3 and 4 times tables.",
+      "dueDate": "2026-10-05",
+      "points": 10,
+      "status": "verified",
+      "completedAt": "2026-10-04T16:00:00.000Z"
     }
   ],
   "messages": [
@@ -671,6 +1325,16 @@
       "sentAt": "2026-10-05T10:00:00.000Z",
       "readBy": [
         "u_vol3"
+      ]
+    },
+    {
+      "id": "m_5",
+      "childId": "c_7",
+      "fromId": "u_vol1",
+      "text": "Hi Mrs Wong! Mia is getting better at her spelling - 6 out of 8 today.",
+      "sentAt": "2026-10-08T09:30:00.000Z",
+      "readBy": [
+        "u_vol1"
       ]
     }
   ]

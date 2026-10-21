@@ -36,7 +36,7 @@ const roles = [
             When the volunteer changes, the child's progress shouldn't reset.
           </h1>
           <p class="lead text-muted-cb mb-4">
-            CareBridge keeps every child's learning history in one place and turns past session
+            Kids Lapis keeps every child's learning history in one place and turns past session
             notes into a short handover for the next volunteer.
           </p>
           <div class="d-flex flex-wrap gap-2">
@@ -97,20 +97,25 @@ const roles = [
 
 <style scoped>
 .hero {
-  background: linear-gradient(180deg, var(--cb-primary-soft), var(--cb-bg));
+  background: transparent; /* lapis bands show through from body */
 }
+
 .handover-demo {
-  border-left: 6px solid var(--cb-accent);
+  border-left: 6px solid var(--lapis-orange);
 }
+
 .step-num {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: var(--cb-accent);
-  color: #3d2a00;
-  font-weight: 800;
+  background: var(--lapis-pink);
+  color: var(--lapis-cream);
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  flex-shrink: 0;
 }
 </style>

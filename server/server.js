@@ -1,5 +1,5 @@
 // =============================================================
-// CareBridge API server  (Express + MongoDB/Mongoose, like the IS113 / Week 5 blog-with-mongodb service)
+// Kids Lapis API server  (Express + MongoDB/Mongoose, like the IS113 / Week 5 blog-with-mongodb service)
 // Run:  pnpm dev   ->  http://localhost:8000
 // =============================================================
 import express from 'express'
@@ -11,6 +11,7 @@ import userRoutes from './routes/users.js'
 import childRoutes from './routes/children.js'
 import sessionRoutes from './routes/sessions.js'
 import homeworkRoutes from './routes/homework.js'
+import deckRoutes from './routes/decks.js'
 import messageRoutes from './routes/messages.js'
 import handoverRoutes from './routes/handover.js'
 import dashboardRoutes from './routes/dashboard.js'
@@ -25,7 +26,7 @@ app.use(express.json())
 
 // Health check - handy for deployment platforms and E2E tests
 app.get('/', (req, res) => {
-  res.json({ status: 'ok', app: 'CareBridge API' })
+  res.json({ status: 'ok', app: 'Kids Lapis API' })
 })
 
 //          URL prefix        Owner
@@ -36,6 +37,7 @@ app.use('/matchmaking', matchmakingRoutes) // Yu Xuan
 app.use('/dashboard', dashboardRoutes) // Yu Xuan
 app.use('/sessions', sessionRoutes) // Ning Xuan
 app.use('/homework', homeworkRoutes) // Ning Xuan (assign) + Jachin (complete / rewards)
+app.use('/decks', deckRoutes) // Jachin (the decks of questions)
 app.use('/handover', handoverRoutes) // Yuqi
 app.use('/messages', messageRoutes) // Kat
 app.use('/progress', progressRoutes) // Jachin
@@ -49,5 +51,5 @@ app.use((err, req, res, next) => {
 
 await connectDb()
 app.listen(PORT, () => {
-  console.log(`CareBridge API running at http://localhost:${PORT}`)
+  console.log(`Kids Lapis API running at http://localhost:${PORT}`)
 })

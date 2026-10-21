@@ -1,15 +1,20 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import NavBar from './components/NavBar.vue'
+
+const route = useRoute()
 </script>
 
 <template>
   <NavBar />
-  <main class="app-main"> <!--main content area-->
-    <RouterView />
+  <main class="app-main">
+    <RouterView v-slot="{ Component }">
+      <Transition name="page-peel" mode="out-in">
+        <component :is="Component" :key="route.path" />
+      </Transition>
+    </RouterView>
   </main>
-  <footer class="app-footer text-center small py-4">
-    <!--displays footer at the bottom of every page-->
-    CareBridge &middot; IS216 WAD2 Group Project
+  <footer class="app-footer text-center py-3">
+    Kids Lapis &middot; IS216 WAD2 Group Project
   </footer>
 </template>

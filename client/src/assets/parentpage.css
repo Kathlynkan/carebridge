@@ -1,0 +1,436 @@
+/* Styles for the parent home page (ParentHomeView.vue).
+   Every rule starts with .parentpage so it only affects that page.
+   All colours use lapis design tokens from main.css. */
+
+/* ---------- top summary sentence ---------- */
+
+.parentpage .top-summary {
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  border: 1px solid var(--lapis-shadow);
+  border-left: 8px solid var(--lapis-apricot);
+  border-radius: 16px;
+  background: var(--lapis-orange);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 32px;
+  color: var(--lapis-plum);
+  font-size: 20px;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+}
+
+.parentpage .top-extra {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.parentpage .top-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lapis-plum);
+  opacity: 0.7;
+}
+
+/* ---------- notice board ---------- */
+
+.parentpage .notice-board {
+  padding: 20px;
+  padding-top: 28px;
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 16px;
+  background: var(--lapis-apricot);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.parentpage .notice-board::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(to right,
+    var(--lapis-pink)   0 25%,
+    var(--lapis-lime)   25% 50%,
+    var(--lapis-yellow) 50% 75%,
+    var(--lapis-orange) 75% 100%
+  );
+}
+
+.parentpage .board-title {
+  display: inline-block;
+  margin: 0 0 16px;
+  padding: 6px 16px;
+  background: var(--lapis-cream);
+  color: var(--lapis-plum);
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 18px;
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+.parentpage .notice-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.parentpage .notice-tab {
+  padding: 6px 16px;
+  border: 1px solid var(--lapis-shadow);
+  background: var(--lapis-cream);
+  color: var(--lapis-plum);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.78rem;
+  cursor: pointer;
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.parentpage .notice-tab:hover {
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+}
+
+.parentpage .notice-tab.active {
+  background: var(--lapis-yellow);
+  border-color: var(--lapis-shadow);
+  color: var(--lapis-plum);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+/* Post-it note: yellow paper with a pink pin */
+.parentpage .note {
+  position: relative;
+  margin-bottom: 12px;
+  padding: 18px 12px 12px;
+  background: var(--lapis-yellow);
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  color: var(--lapis-plum);
+}
+
+.parentpage .note::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--lapis-pink);
+  border: 2px solid var(--lapis-shadow);
+}
+
+.parentpage .note summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--lapis-plum);
+}
+
+.parentpage .note-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lapis-plum);
+  opacity: 0.65;
+}
+
+/* ---------- session card ---------- */
+
+.parentpage .parent-session-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 24px 16px 16px;
+  background: var(--lapis-cream);
+}
+
+.parentpage .session-pic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 160px;
+  min-height: 160px;
+}
+
+.parentpage .session-pic img {
+  width: 120px;
+  height: 160px;
+  object-fit: cover;
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+.parentpage .pic-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 160px;
+  border: 1px dashed var(--lapis-purple);
+  border-radius: 8px;
+  background: var(--lapis-cream);
+  color: var(--cb-muted);
+}
+
+.parentpage .pic-arrow {
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+  color: var(--lapis-pink);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.parentpage .pic-arrow:hover { transform: scale(1.2); }
+
+.parentpage .session-info {
+  flex: 1;
+  min-width: 200px;
+  color: var(--lapis-plum);
+}
+
+.parentpage .session-kind {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--lapis-plum);
+}
+
+.parentpage .session-details {
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: var(--lapis-plum);
+}
+
+.parentpage .session-homework {
+  padding: 8px 12px;
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 8px;
+  background: var(--lapis-lime);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  color: var(--lapis-plum);
+  font-weight: 600;
+}
+
+/* ---------- homework status boxes ---------- */
+
+.parentpage .homework-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.parentpage .status-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 96px;
+  padding: 8px 12px;
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 10px;
+  background: var(--lapis-cream);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  color: var(--lapis-plum);
+  font-weight: 700;
+}
+
+.parentpage .status-box.late {
+  background: var(--lapis-pink);
+  color: var(--lapis-plum);
+}
+
+/* ---------- session timeline ---------- */
+
+.parentpage .timeline {
+  border-left: 4px solid var(--lapis-yellow);
+  margin-left: 6px;
+}
+
+.parentpage .timeline-item {
+  position: relative;
+  padding: 0 0 16px 20px;
+}
+
+.parentpage .timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background: var(--lapis-pink);
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+/* ---------- kueh lapis pastel tiles ---------- */
+
+/* the layered edge along the bottom of the big tiles: pink, cream, apricot, cream, pandan */
+.parentpage .top-summary::after,
+.parentpage .notice-board::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 12px;
+  background: linear-gradient(
+    to bottom,
+    var(--lapis-pink) 0 20%,
+    var(--lapis-cream) 20% 40%,
+    var(--lapis-apricot) 40% 60%,
+    var(--lapis-cream) 60% 80%,
+    var(--lapis-lime) 80% 100%
+  );
+}
+.parentpage .notice-board {
+  padding-bottom: 32px;
+}
+
+/* the child card is sky blue, the timeline card is lavender */
+.parentpage .tile-sky {
+  background: var(--lapis-sky);
+}
+.parentpage .tile-lav {
+  background: var(--lapis-purple);
+}
+
+/* ---------- the kueh lapis cake (homework tab) ---------- */
+
+.parentpage .cake-box {
+  margin-bottom: 16px;
+  padding: 10px 14px 12px;
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 12px;
+  background: var(--lapis-cream);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+.parentpage .cake {
+  display: flex;
+  gap: 3px;
+  margin: 6px 0;
+}
+
+/* one layer: empty (dashed) until it is baked */
+.parentpage .cake i {
+  flex: 1;
+  height: 18px;
+  border-radius: 5px;
+  border: 2px dashed var(--lapis-shadow);
+  background: var(--lapis-cream);
+}
+.parentpage .cake i.baked {
+  border-style: solid;
+}
+.parentpage .cake i:nth-child(1).baked { background: var(--lapis-pink); }
+.parentpage .cake i:nth-child(2).baked { background: var(--lapis-yellow); }
+.parentpage .cake i:nth-child(3).baked { background: var(--lapis-lime); }
+.parentpage .cake i:nth-child(4).baked { background: var(--lapis-orange); }
+.parentpage .cake i:nth-child(5).baked { background: var(--lapis-purple); }
+.parentpage .cake i:nth-child(6).baked { background: var(--lapis-pink); }
+.parentpage .cake i:nth-child(7).baked { background: var(--lapis-yellow); }
+.parentpage .cake i:nth-child(8).baked { background: var(--lapis-lime); }
+.parentpage .cake i:nth-child(9).baked { background: var(--lapis-orange); }
+
+/* ---------- topic colours on the parent page ---------- */
+/* academic = pink, social = blue, homework = lavender, schedule = apricot, highlights = yellow */
+
+/* today at a glance: the yellow highlight; the next session line is the schedule colour */
+.parentpage .top-summary {
+  background: var(--topic-highlight);
+}
+.parentpage .top-next {
+  display: inline-block;
+  padding: 2px 12px;
+  background: var(--topic-schedule);
+}
+
+/* the notice board takes the colour of the open tab */
+.parentpage .notice-board.board-social { background: var(--topic-social); }
+.parentpage .notice-board.board-latest { background: var(--topic-academic); }
+.parentpage .notice-board.board-homework { background: var(--topic-homework); }
+
+/* the tabs: each one has its topic colour underneath, and is filled when open */
+.parentpage .notice-tab.tab-social { border-bottom: 8px solid var(--topic-social); }
+.parentpage .notice-tab.tab-latest { border-bottom: 8px solid var(--topic-academic); }
+.parentpage .notice-tab.tab-homework { border-bottom: 8px solid var(--topic-homework); }
+.parentpage .notice-tab.tab-social.active { background: var(--topic-social); }
+.parentpage .notice-tab.tab-latest.active { background: var(--topic-academic); }
+.parentpage .notice-tab.tab-homework.active { background: var(--topic-homework); }
+
+/* the notes on the board are the soft version of the board colour */
+.parentpage .board-social .note { background: var(--topic-social-soft); }
+.parentpage .board-latest .note { background: var(--topic-academic-soft); }
+.parentpage .board-homework .note { background: var(--topic-homework-soft); }
+
+/* the session card: academic = pink, social = blue */
+.parentpage .parent-session-card.kind-academic {
+  background: var(--topic-academic-soft);
+  border-top: 8px solid var(--topic-academic);
+}
+.parentpage .parent-session-card.kind-social {
+  background: var(--topic-social-soft);
+  border-top: 8px solid var(--topic-social);
+}
+.parentpage .kind-social .note { background: var(--lapis-cream); }
+
+/* homework is lavender everywhere: the box in the card, the status boxes and the cake */
+.parentpage .session-homework { background: var(--topic-homework); }
+.parentpage .status-box { background: var(--topic-homework-soft); }
+.parentpage .status-box.late { background: var(--topic-alert); color: var(--lapis-plum); }
+.parentpage .cake-box { background: var(--topic-homework-soft); }
+
+/* the timeline is about sessions, so it is pink */
+.parentpage .timeline { border-left-color: var(--topic-academic); }
+.parentpage .timeline-item::before { background: var(--topic-academic); }
+
+/* ---------- a calmer look for the parent page ---------- */
+
+/* the banner is a light blush panel with a rose edge, not a block of colour */
+.parentpage .top-summary {
+  background: var(--topic-highlight-soft);
+  border-left: 4px solid var(--lapis-pink);
+}
+
+/* the notice board is a cream panel; its topic colour is a bar on top and the open tab */
+.parentpage .notice-board.board-social { background: var(--lapis-cream); border-top: 6px solid var(--topic-social); }
+.parentpage .notice-board.board-latest { background: var(--lapis-cream); border-top: 6px solid var(--topic-academic); }
+.parentpage .notice-board.board-homework { background: var(--lapis-cream); border-top: 6px solid var(--topic-homework); }
+
+/* tabs: a thin coloured line underneath instead of a thick block */
+.parentpage .notice-tab.tab-social { border-bottom: 3px solid var(--topic-social); }
+.parentpage .notice-tab.tab-latest { border-bottom: 3px solid var(--topic-academic); }
+.parentpage .notice-tab.tab-homework { border-bottom: 3px solid var(--topic-homework); }
+
+/* the tinted notes read as a quiet card with a coloured edge */
+.parentpage .board-social .note { background: var(--topic-social-soft); }
+.parentpage .board-latest .note { background: var(--topic-academic-soft); }
+.parentpage .board-homework .note { background: var(--topic-homework-soft); }

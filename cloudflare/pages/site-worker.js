@@ -1,4 +1,4 @@
-// The front door of the web link. Anything under /api goes to the CareBridge API Worker (with "/api" taken off);
+// The front door of the web link. Anything under /api goes to the Kids Lapis API Worker (with "/api" taken off);
 // everything else is the website itself.
 export default {
   async fetch(request, env) {

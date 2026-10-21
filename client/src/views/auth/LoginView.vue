@@ -21,10 +21,10 @@ const loading = ref(false)
 const error = ref('')
 
 const demoAccounts = [
-  { role: 'Volunteer', email: 'volunteer@carebridge.sg' },
-  { role: 'Coordinator', email: 'coordinator@carebridge.sg' },
-  { role: 'Parent', email: 'parent@carebridge.sg' },
-  { role: 'Child', email: 'child@carebridge.sg' },
+  { role: 'Volunteer', email: 'volunteer@kidslapis.sg' },
+  { role: 'Teacher', email: 'teacher@kidslapis.sg' },
+  { role: 'Parent', email: 'parent@kidslapis.sg' },
+  { role: 'Child', email: 'child@kidslapis.sg' },
 ]
 
 function fillDemo(account) {
@@ -53,7 +53,7 @@ async function handleLogin() {
       <div class="col-sm-10 col-md-7 col-lg-5">
         <div class="cb-card p-4 p-md-5">
           <h1 class="h3 mb-1">Welcome back</h1>
-          <p class="text-muted-cb mb-4">Log in to continue to CareBridge.</p>
+          <p class="text-muted-cb mb-4">Log in to continue to Kids Lapis.</p>
 
           <div v-if="route.query.expired" class="alert alert-warning small">
             Your session expired. Please log in again.

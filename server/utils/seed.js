@@ -8,8 +8,9 @@
 // (otherwise every child would trigger "no session in 7 days").
 // =============================================================
 import { readFile } from 'node:fs/promises'
+import bcrypt from 'bcryptjs'
 import { connectDb, disconnectDb } from './db.js'
-import { User, Child, Session, Homework, Message } from '../models/index.js'
+import { User, Child, Session, Homework, Message, Handover, Deck } from '../models/index.js'
 
 const DATE_FIELDS = ['date', 'dueDate', 'sentAt', 'createdAt', 'completedAt']
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -37,10 +38,17 @@ const seedFile = new URL('../data/seed.json', import.meta.url)
 const seed = shiftSeedDates(JSON.parse(await readFile(seedFile, 'utf-8')))
 
 await connectDb()
+
+// Hash all seed passwords so demo accounts work after seeding
+const hashedUsers = await Promise.all(
+  seed.users.map(async (u) => ({ ...u, password: await bcrypt.hash(u.password, 10) })),
+)
+
 const collections = [
-  [User, seed.users],
+  [User, hashedUsers],
   [Child, seed.children],
   [Session, seed.sessions],
+  [Deck, seed.decks],
   [Homework, seed.homework],
   [Message, seed.messages],
 ]
@@ -49,5 +57,10 @@ for (const [Model, rows] of collections) {
   await Model.insertMany(toDocs(rows))
   console.log(`  ${Model.modelName}: ${rows.length}`)
 }
+
+// clear saved AI summaries so they are made again from the fresh demo sessions
+await Handover.deleteMany({})
+console.log('  Handover: cleared')
+
 await disconnectDb()
 console.log('Database reset with demo data ✅')

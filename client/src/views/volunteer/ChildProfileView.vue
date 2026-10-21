@@ -3,11 +3,9 @@
   (Session history list + homework section: Ning Xuan's components)
   (Charts: Jachin's components)
   -------------------------------------------------------------
-  Already loads: child, sessions, homework, handover (fallback summary).
+  Already loads: child, sessions, homework, handover (AI summary, cached, with fallback)
   TODO (Yuqi):
-    [ ] "At a glance" cards: recent topics, recurring struggles, best methods
-    [ ] HandoverCard refresh -> POST /handover/:id again (after Gemini is wired up)
-    [ ] tabs (Overview / History / Homework) on mobile so the page isn't too long
+   [x] HandoverCard: POST /handover/:id (auto-updates, no refresh button)
   TODO (Ning Xuan):
     [done] wire SessionCard @edit / @delete (DELETE /sessions/:id, then reload)
 ============================================================= -->
@@ -43,13 +41,12 @@ const pendingHomework = computed(() => homework.value.filter((h) => h.status !==
 async function loadHandover() {
   handoverLoading.value = true
   try {
-    const res = await api.post(`/handover/${childId}`, { audience: 'volunteer' })
-    handover.value = res.data
+    const response = await api.post(`/handover/${childId}`, { audience: 'volunteer' })
+    handover.value = response.data
   } catch (err) {
-    console.error(errorMessage(err))
-  } finally {
-    handoverLoading.value = false
+    handover.value = null // the rest of the page still works without the summary
   }
+  handoverLoading.value = false
 }
 
 async function loadData() {
@@ -72,6 +69,21 @@ async function loadData() {
 
 function editSession(sessionId) {
   router.push({ name: 'session-edit', params: { sessionId } })
+}
+
+// The child handed a quest in; the volunteer checks it and the child is paid the berries (PUT /homework/:id/verify)
+const checkingQuestId = ref(null)
+async function verifyQuest(homeworkId) {
+  checkingQuestId.value = homeworkId
+  try {
+    await api.put(`/homework/${homeworkId}/verify`)
+    const h = await api.get('/homework', { params: { childId } })
+    homework.value = h.data
+  } catch (err) {
+    error.value = errorMessage(err)
+  } finally {
+    checkingQuestId.value = null
+  }
 }
 
 async function deleteSession(sessionId) {
@@ -132,7 +144,7 @@ onMounted(() => {
 
       <div class="row g-4">
         <div class="col-lg-7">
-          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" @refresh="loadHandover" />
+          <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" />
 
           <h2 class="h5 mb-3">Session history</h2>
           <StateMessage v-if="sessions.length === 0" message="No sessions recorded yet." />
@@ -141,7 +153,7 @@ onMounted(() => {
               v-for="s in sessions"
               :key="s.id"
               :session="s"
-              :can-edit="s.volunteerId === auth.user.id || auth.role === 'coordinator'"
+              :can-edit="s.volunteerId === auth.user?.id || auth.role === 'teacher'"
               @edit="editSession"
               @delete="deleteSession"
             />
@@ -155,7 +167,14 @@ onMounted(() => {
           <div>
             <h2 class="h5 mb-3">Homework ({{ pendingHomework.length }} pending)</h2>
             <div class="d-flex flex-column gap-2">
-              <HomeworkQuestCard v-for="h in homework" :key="h.id" :homework="h" mode="volunteer" />
+              <HomeworkQuestCard
+                v-for="h in homework"
+                :key="h.id"
+                :homework="h"
+                mode="volunteer"
+                :busy="checkingQuestId !== null"
+                @verify="verifyQuest"
+              />
             </div>
           </div>
         </div>

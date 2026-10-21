@@ -1,9 +1,8 @@
-# CareBridge — Workload Split (6 members)
+# Kids Lapis — Workload Split (6 members)
 
-> **One-line pitch:** CareBridge is a continuity and handover system for student-care volunteers. It is **not** an online learning platform.
-> The question books stay. CareBridge makes sure that when the helper changes, what we know about the child is not lost.
+> **One-line pitch:** Kids Lapis gives parents clearer visibility into their child's development at student care by turning volunteer session notes into a personalised, regularly-updated picture — academic progress, mood, recurring struggles, and what approaches are helping.
 >
-> **Core flow:** Child practises → Volunteer records session → App stores history → API summarises handover → Next volunteer continues
+> **Core flow:** Volunteer records session (academic progress, mood, struggles, what worked) → App stores history → Gemini AI summarises in plain language → Parent sees a personalised update, charts, and mood timeline → Next volunteer is briefed and continues without losing context
 
 Each member owns **one vertical slice**: their screens (Vue views + components), their backend routes (Express), and their tests.
 Owning the whole slice end to end means:
@@ -23,12 +22,12 @@ Owning the whole slice end to end means:
 | 3 | **Kat** | Parent portal & messaging | Parent Home, Messages (shared by volunteers, parents and coordinators) | `routes/messages.js` | Parent sees "today at student care" + chats with the volunteer |
 | 4 | **Kai Sen** | Coordinator A: accounts, children & platform lead | Landing, Login, Sign up, NavBar, Manage Children | `routes/auth.js`, `routes/children.js`, `middleware/auth.js` | Role-based access (4 roles) + **deployment & integration lead** |
 | 5 | **Yu Xuan** | Coordinator B: dashboard & matchmaking | Coordinator Dashboard, Volunteers, Matchmaking | `routes/dashboard.js`, `routes/matchmaking.js`, `routes/users.js` | "Needs attention" alerts + skills-based volunteer matching |
-| 6 | **Jachin** | Data visualisation & child gamification | Charts (used on 3 pages), Child "My Quests", Leaderboard | `routes/progress.js`, homework submit/verify/leaderboard | Chart.js progress charts + stars, levels and badges |
+| 6 | **Jachin** | Data visualisation & child gamification | Charts (on 3 pages), Child Home (quests, badges, level), Leaderboard | `routes/progress.js`, `routes/decks.js`, homework submit/verify/leaderboard in `routes/homework.js` | Interactive question-answer homework quests + Chart.js progress charts + berry-based levels, badges, and leaderboard |
 
 **What changed from your first split, and why**
 
 - **Kat** keeps **Parent** and also gets **Messaging**. Parents and volunteers talking is one feature, so one person owns both ends.
-- The **Child** screen moves from Kat to **Jachin**. The child page is mostly visual progress (stars, levels, badges), which fits data viz. Data viz alone was the lightest role.
+- The **Child** screen moves from Kat to **Jachin**. The child page is mostly visual progress (berries, levels, badges), which fits data viz. Data viz alone was the lightest role.
 - The two **volunteer** people split by *before the session* (Yuqi: read and brief) and *after the session* (Ning Xuan: record).
 - The two **coordinator** people split by *setting up the centre* (Kai Sen: accounts and children) and *watching the centre* (Yu Xuan: dashboard and matching).
 - **Kai Sen** is also the **integration lead**: he merges pull requests, keeps `main` working and deploys. He has a lighter feature list so he has time for this.
@@ -51,16 +50,16 @@ Every page in the running app shows a yellow **"Owner / to build"** panel (`<Tod
 
 | Priority | Task |
 |---|---|
-| Must | Gemini API call in `callLLM()` (server-side, key in `config.env`). Show the AI handover in `HandoverCard` with the "AI summary" badge. |
-| Must | Safe fallback: if the API fails or there is no key, use `buildFallbackHandover()` (already written). |
-| Should | Prompt design: last 5 sessions → JSON `{continueTopic, struggle, whatWorked, lastResult, nextStep}`. Parse safely. |
-| Should | `audience: 'parent'` version in friendly, non-jargon wording (Kat uses this). |
-| Should | Cache the summary per child until a new session is added. This saves quota, since graders test about 5–6 times a day. |
-| Should | "At a glance" cards on the profile: recent topics, **recurring struggles**, best teaching methods. |
-| Should | My Children: search, filter by level, sort by "longest since last session". |
-| Stretch | "Today" strip showing who you are seeing today, based on volunteer availability. |
+| ✅ Must | Gemini API call in `callLLM()` (server-side, key in `config.env`). Show the AI handover in `HandoverCard` with the "AI summary" badge. |
+| ✅ Must | Safe fallback: if the API fails or there is no key, use `buildFallbackHandover()` (already written). |
+| ✅ Should | Prompt design: last 5 sessions → JSON `{continueTopic, struggle, whatWorked, lastResult, nextStep}`. Parse safely. |
+| ✅ Should | `audience: 'parent'` version in friendly, non-jargon wording (Kat uses this). |
+| ✅ Should | Cache the summary per child until a new session is added. This saves quota, since graders test about 5–6 times a day. |
+| ✅ Should | "At a glance" cards on the profile: recent topics, **recurring struggles**, best teaching methods. |
+| ✅ Should | My Children: search, filter by level, sort by "longest since last session". |
+| ✅ Stretch | "Today" strip showing who you are seeing today, based on volunteer availability. |
 
-**Tests:** E2E `e2e/volunteer.spec.js` (already started: handover shows, history shows). Unit: test the fallback/recurring-struggle logic.
+**Tests:** E2E `e2e/volunteer.spec.js` (handover shows, history shows, recurring badge). Unit: test the fallback/recurring-struggle logic.
 **Q&A angle:** why the API is called from the server (key secrecy), async/await + try/catch, prompt design, fallback strategy.
 
 ### 2) Ning Xuan — Volunteer B: Session logging & homework
@@ -69,11 +68,11 @@ Every page in the running app shows a yellow **"Owner / to build"** panel (`<Tod
 
 | Priority | Task |
 |---|---|
-| Must | `POST /sessions` + submit the form (fields are already bound with `v-model`). After saving, go back to the child profile. The new session should appear and the handover should update. |
-| Should | Edit mode: `GET /sessions/:id` → pre-fill → `PUT /sessions/:id`. Delete with a confirm modal → `DELETE /sessions/:id`. |
-| Should | Validation on client **and** server: topic required, `correct ≤ attempted`, date not in the future. Use Bootstrap `.is-invalid`. |
-| Should | "Struggles" as tags: type + Enter to add, × to remove (the Week 5 list exercise). Quick-pick chips from the child's previous struggles. |
-| Should | `POST /homework` + Give Homework form (validation, due date). |
+| ✅ Must | `POST /sessions` + submit the form. After saving, go back to the child profile. The new session appears and the handover updates. |
+| ✅ Should | Edit mode: `GET /sessions/:id` → pre-fill → `PUT /sessions/:id`. Delete with a confirm modal → `DELETE /sessions/:id`. |
+| ✅ Should | Validation on client **and** server: topic required, `correct ≤ attempted`, date not in the future. Use Bootstrap `.is-invalid`. |
+| ✅ Should | "Struggles" as tags: type + Enter to add, × to remove. Quick-pick chips from the child's previous struggles. |
+| ✅ Should | `POST /homework` + Give Homework form (validation, due date, optional deck picker). |
 | Stretch | Pre-fill the homework title from the latest session's "next step". |
 
 **Tests:** E2E: record a session → it appears in history. Edit → changes. Delete → removed. Assign homework → it appears on the child's page. Unit: validation function.
@@ -85,11 +84,11 @@ Every page in the running app shows a yellow **"Owner / to build"** panel (`<Tod
 
 | Priority | Task |
 |---|---|
-| Must | `POST /messages` + send from `ChatThread` (emit `send` → parent view posts → message appears). |
-| Should | Parent home: child switcher (the demo parent Ravi Kumar has 2 kids), "Today at student care" card (reuse `HandoverCard` with `audience: 'parent'`), recent session timeline, homework status. |
-| Should | Mark as read (`PUT /messages/read`) + unread counts (`GET /messages/unread`). Give the counts to Kai Sen for the navbar badge. |
-| Should | Polling every 10 s with `setInterval`, cleared in `onUnmounted`. Auto-scroll to the newest message. |
-| Should | Mobile: show the child list **or** the chat, with a back button. |
+| ⏳ Must | `POST /messages` + send from `ChatThread` (emit `send` → parent view posts → message appears). |
+| ✅ Should | Parent home: child switcher (Ravi has 2 kids), "Today at student care" card (HandoverCard with `audience: 'parent'`), recent session timeline with mood, homework status. |
+| ⏳ Should | Mark as read (`PUT /messages/read`) + unread counts (`GET /messages/unread`). Give counts to Kai Sen for the navbar badge. |
+| ⏳ Should | Polling every 10 s with `setInterval`, cleared in `onUnmounted`. Auto-scroll to the newest message. |
+| ⏳ Should | Mobile: show the child list **or** the chat, with a back button. |
 | Stretch | Quick replies ("Thank you!", "Will remind them"), day separators ("Today", "Yesterday"). |
 
 **Tests:** E2E: parent logs in → sees the latest session. Parent sends a message → volunteer sees it. Unit: group-messages-by-day helper.
@@ -101,17 +100,17 @@ Every page in the running app shows a yellow **"Owner / to build"** panel (`<Tod
 
 | Priority | Task |
 |---|---|
-| Must | `POST /children` + "Add child" Bootstrap modal on Manage Children. |
+| ✅ Must | `POST /children` + "Add child" Bootstrap modal on Manage Children. |
 | Should | `PUT` / `DELETE /children/:id` (decide what happens to that child's sessions). |
-| Should | Hash passwords with `bcryptjs`. Better validation on sign up (email format, password ≥ 8, confirm password). |
+| ⏳ Should | Hash passwords with `bcryptjs`. Better validation on sign up (email format, password ≥ 8, confirm password). |
 | Should | Sign up extras: volunteers pick skills + days, parents enter a **child code** from the centre to link their child. |
 | Should | Navbar unread-message badge (using Kat's endpoint). Landing page polish. Remove the demo-account box before submission (keep the accounts in the README). |
-| Must | **MongoDB Atlas setup** for the team: one free cluster, one database user, Network Access `0.0.0.0/0`. Share the connection string privately. Everyone uses their own database name for development (see README, Step 0). |
-| Should | **Deployment:** API on Render (or similar) with `DB=` pointing at the shared `carebridge` database + Vue on Netlify/Vercel with `VITE_API_URL`. |
-| Should | **Integration lead:** review/merge PRs, keep `main` green (run all tests before merging), final README. |
-| Stretch | Swap the in-memory tokens for JWT, so logins survive server restarts on Render. |
+| ✅ Must | **MongoDB Atlas setup** for the team: one free cluster, one database user, Network Access `0.0.0.0/0`. Share the connection string privately. Everyone uses their own database name for development (see README, Step 0). |
+| Should | **Deployment:** API worker on Cloudflare with `DB=` pointing at the shared database + Vue on Cloudflare Pages. |
+| ✅ Should | **Integration lead:** review/merge PRs, keep `main` green (run all tests before merging), final README. |
+| Stretch | Swap the in-memory tokens for JWT, so logins survive server restarts on deployment. |
 
-**Tests:** E2E `e2e/auth.spec.js` (already started: each role lands on the right page, guards). Add: sign up, add child. Unit: auth store.
+**Tests:** E2E `e2e/auth.spec.js` (each role lands on the right page, guards, sign-up). Unit: auth store.
 **Q&A angle:** route guards with `meta.roles`, Pinia store + localStorage, Authorization header, why passwords are hashed, server-side role checks, Mongoose schemas + connection.
 
 ### 5) Yu Xuan — Coordinator dashboard & skills-based matchmaking
@@ -120,10 +119,10 @@ Every page in the running app shows a yellow **"Owner / to build"** panel (`<Tod
 
 | Priority | Task |
 |---|---|
-| Must | `GET /dashboard/alerts`: **no session in 7 days** (Chloe in the demo data) and **unassigned child** (Sofia). Show them in a "Needs attention" table. |
-| Should | More alert rules: the same struggle in 3+ of the last 5 sessions (Ethan: common denominators), overdue homework. Severity colours + filter by type. Click a row to open the child. |
-| Should | "Flag for follow-up" toggle per child (`child.followUp`). |
-| Should | Matchmaking: `GET /matchmaking/:childId` → volunteers ranked by score (+2 per matched skill, +1 per shared day, −1 per child already assigned). Show *why* each one matches. `PUT …/assign` to assign or unassign. |
+| ✅ Must | `GET /dashboard/alerts`: **no session in 7 days** (Chloe) and **unassigned child** (Sofia). Show in a "Needs attention" table. |
+| ✅ Should | More alert rules: the same struggle in 3+ of the last 5 sessions (Ethan: common denominators), overdue homework. Severity colours + filter by type. Click a row to open the child. |
+| ✅ Should | "Flag for follow-up" toggle per child (`child.followUp`). |
+| ✅ Should | Matchmaking: `GET /matchmaking/:childId` → volunteers ranked by score (+2 per matched skill, +1 per shared day, −1 per child already assigned). Show *why* each one matches. `PUT …/assign` to assign or unassign. |
 | Should | Volunteers page: edit skills/days with checkboxes → `PUT /users/:id`. Show each volunteer's workload. |
 | Stretch | Recent-activity feed across the centre. Export the alert list (CSV). |
 
@@ -132,19 +131,35 @@ Every page in the running app shows a yellow **"Owner / to build"** panel (`<Tod
 
 ### 6) Jachin — Data visualisation & child gamification
 
-**Files:** `components/charts/SkillProgressChart.vue`, `components/charts/TopicSummaryChart.vue`, `views/child/ChildHomeView.vue`, `views/child/LeaderboardView.vue`, `components/HomeworkQuestCard.vue`, `utils/gamification.js`, `server/routes/progress.js`, homework submit/verify/leaderboard in `server/routes/homework.js`
+**Files:**
+- `components/charts/SkillProgressChart.vue` — Chart.js line chart (topic accuracy over time)
+- `components/charts/TopicSummaryChart.vue` — Bar chart coloured by status (needs help / steady / strong)
+- `views/child/ChildHomeView.vue` — Quests, badges, level progress, pirate theme
+- `views/child/LeaderboardView.vue` — All-time and weekly leaderboard
+- `components/HomeworkQuestCard.vue` — Quest card with question-answer interaction and submit
+- `utils/gamification.js` — `levelFor()`, `earnedBadges()` (6 badge conditions)
+- `server/models/Deck.js` — Question bank model (title, subject, questions with answers)
+- `server/routes/decks.js` — `GET /decks` for the homework assignment form
+- `server/routes/progress.js` — `GET /progress/:childId`, `GET /progress/overview`
+- `server/routes/homework.js` — submit, verify, leaderboard endpoints (+ deck support in POST)
 
 | Priority | Task |
 |---|---|
-| Must | Replace the placeholder in `SkillProgressChart` with a **Chart.js line chart** (`vue-chartjs` is already installed). It appears automatically on the Child Profile and Parent pages. |
-| Should | `TopicSummaryChart` as a bar chart coloured by status (needs help / steady / strong). It is used on the profile and on the coordinator dashboard. |
-| Should | `GET /progress/:childId`: per-topic accuracy, trend (improving/steady/needs help), recurring struggles. `GET /progress/overview` for Yu Xuan's dashboard. |
-| Should | Child "My Quests": "I'm done!" → `PUT /homework/:id/submit`. Volunteer "Verify" → `PUT /homework/:id/verify` awards points. |
-| Should | Levels + progress bar (`levelFor`), badge shelf (`earnedBadges`) with locked badges greyed out, celebration animation. |
-| Stretch | Leaderboard (first names only). Consider "most improved" so it is fair for weaker students. |
+| ✅ Must | `SkillProgressChart`: Chart.js line chart showing topic accuracy over sessions. Used on Child Profile and Parent Home. |
+| ✅ Should | `TopicSummaryChart`: bar chart coloured by trend (needs help / steady / strong). Used on Child Profile and Coordinator Dashboard. |
+| ✅ Should | `GET /progress/:childId`: per-topic accuracy, trend, recurring struggles. `GET /progress/overview` for coordinator dashboard. |
+| ✅ Should | Child "My Quests": `PUT /homework/:id/submit` when child presses "I'm done!". Volunteer "Verify" → `PUT /homework/:id/verify` awards berries. |
+| ✅ Should | Levels + progress bar (`levelFor`), badge shelf (`earnedBadges`) with 6 badges — locked badges greyed, celebration animation on submit. |
+| ✅ Should | Deck quiz system: `server/models/Deck.js` with 11 question banks (Math, English, Science). Homework form includes a deck picker; selected deck's questions are copied into the quest so children answer interactively. |
+| ✅ Stretch | Leaderboard with two tabs: all-time berry total and weekly earned. Podium for top 3, table for the rest. Highlights the logged-in child. |
 
-**Tests:** E2E: child marks homework done → status changes. Volunteer verifies → points go up. Unit: `earnedBadges`, `levelFor`, the progress aggregation.
-**Q&A angle:** computed properties to reshape data for charts, component props contract (`sessions` in → chart out), responsive charts, motivation design for kids.
+**Tests:**
+- `e2e/child.spec.js`: child marks quest done → status changes, badge shelf renders, leaderboard loads and tab switch works. ✅
+- `e2e/parent.spec.js`: parent home shows handover card, session timeline with mood, SkillProgressChart. ✅
+- `src/utils/__tests__/gamification.spec.js`: `levelFor()` and all 6 `earnedBadges()` conditions with edge cases. ✅
+- `src/utils/__tests__/format.spec.js`: accuracy, daysSince, relativeDay, firstName. ✅
+
+**Q&A angle:** computed properties to reshape data for charts, component props contract (`sessions` array in → chart rendered), deck quiz data flow (deck → questions copied to homework → child sees interactive quest), motivation design for kids (berries, levels, badges), responsive charts.
 
 ---
 
@@ -193,6 +208,6 @@ Jachin (chart components) ────────► Yuqi, Kat, Yu Xuan (drop-i
 Kat (unread counts) ──────────────► Kai Sen (navbar badge)
 ```
 
-**Each member owns the Mongoose model their feature writes to.** Ning Xuan owns `Session` and `Homework` (with Jachin), Kat owns `Message`, and Kai Sen owns `User` and `Child`. Adding a field to a model is fine. Renaming or removing one needs a heads-up in the chat.
+**Each member owns the Mongoose model their feature writes to.** Ning Xuan owns `Session` and `Homework` (with Jachin), Kat owns `Message`, Kai Sen owns `User` and `Child`, and Jachin owns `Deck` and `Handover` (cache invalidation is in sessions.js but the model belongs here). Adding a field to a model is fine. Renaming or removing one needs a heads-up in the chat.
 
-**Nobody needs to wait.** The demo data in `server/data/seed.json` (loaded into MongoDB with `pnpm seed`) already has 19 sessions, 7 homework, and messages across 6 children. The `GET` endpoints work, and the handover has a working non-AI fallback. Build against the demo data now and connect to each other's `POST` endpoints when they are ready.
+**Nobody needs to wait.** The demo data in `server/data/seed.json` (loaded into MongoDB with `pnpm seed`) already has sessions, homework with question banks, messages, and handovers across 6 children. The `GET` endpoints work, and the handover has a working non-AI fallback. Build against the demo data now and connect to each other's `POST` endpoints when they are ready.

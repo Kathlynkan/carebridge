@@ -1,11 +1,10 @@
 /* =============================================================
-   Global styles - shared design tokens for the whole team.
-   Use these variables (and Bootstrap classes) instead of random
-   hex codes so every page looks like ONE app.
-   Owner of the overall look: Kai Sen (but anyone can propose changes)
+   Kids Lapis — Kueh Lapis design system.
+   The background IS the theme: horizontal colour bands,
+   edge-to-edge, top-to-bottom — like a steamed kueh lapis.
    ============================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap');
 
 /* =============================================================
    Kids Lapis — Kueh Lapis design system.
@@ -61,6 +60,69 @@
   --bs-border-color:      var(--lapis-shadow);
   --bs-border-radius:     12px;
   --bs-border-width:      3px;
+  --lapis-pink:   #D989A5; /* pink */
+  --lapis-cream:  #FBF8F3; /* coconut white */
+  --lapis-lime:   #AACCA2; /* pandan green */
+  --lapis-yellow: #F6E3E9; /* butter yellow */
+  --lapis-orange: #8EC3D7; /* peach */
+  --lapis-purple: #AF99CA; /* lavender */
+  --lapis-plum:   #4A3F3A; /* warm brown ink, for text */
+  --lapis-shadow: #B9A99B; /* soft taupe, for borders and shadows */
+  --lapis-apricot: #EBCDB2;
+  --lapis-mint:    #C5DDB9;
+  --lapis-sky:     #B9D9E6; /* sky blue */
+
+  /* ── One colour per topic, used everywhere in the app ──
+     academic = pink, social = blue, homework = lavender,
+     schedule = lime, messages = peach, highlights = blush */
+  --topic-academic:       #E9B9CB;
+  --topic-academic-soft:  #F8EBF0;
+  --topic-social:         #B9D9E6;
+  --topic-social-soft:    #EDF5F9;
+  --topic-homework:       #CDBFE0;
+  --topic-homework-soft:  #F3EFF8;
+  --topic-schedule:       #C5DDB9;
+  --topic-schedule-soft:  #F1F6EC;
+  --topic-messages:       #EBCDB2;
+  --topic-messages-soft:  #F8F0E8;
+  --topic-highlight:      #F4DEE5;
+  --topic-highlight-soft: #FAF1F4;
+  --topic-alert:          #E58E86;
+  --topic-alert-soft:     #FBE9E7;
+
+  /* Legacy cb tokens — remapped so existing templates keep working */
+  --cb-primary:      var(--lapis-lime);
+  --cb-primary-dark: #6E9A63;
+  --cb-primary-soft: #E8F0E3;
+  --cb-accent:       var(--lapis-yellow);
+  --cb-accent-soft:  #FAF1F4;
+  --cb-ruby:         var(--lapis-pink);
+  --cb-ruby-soft:    #FDE3EE;
+  --cb-danger-soft:  #FFE1DE;
+  --cb-bg:           var(--lapis-cream);
+  --cb-surface:      var(--lapis-cream);
+  --cb-text:         var(--lapis-plum);
+  --cb-muted:        #8D7F77;
+  --cb-border:       var(--lapis-shadow);
+  --cb-radius:       0px;
+
+  /* Bootstrap colour overrides */
+  --bs-primary:           var(--lapis-pink);
+  --bs-primary-rgb:       217, 137, 165;
+  --bs-success:           var(--lapis-lime);
+  --bs-success-rgb:       170, 204, 162;
+  --bs-warning:           var(--lapis-yellow);
+  --bs-warning-rgb:       246, 227, 233;
+  --bs-danger:            var(--topic-alert);
+  --bs-danger-rgb:        255, 138, 128;
+  --bs-link-color:        #7A4FB8;
+  --bs-link-hover-color:  #C93A74;
+  --bs-body-font-family:  'Inter', system-ui, 'Segoe UI', sans-serif;
+  --bs-body-color:        var(--lapis-plum);
+  --bs-body-bg:           var(--lapis-cream);
+  --bs-border-color:      var(--lapis-shadow);
+  --bs-border-radius:     0px;
+  --bs-border-width: 1px;
 }
 
 /* 16px bands look great on all screen sizes — no override needed */
@@ -82,6 +144,10 @@ html, body {
   );
   background-attachment: fixed;
   background-size: 100% calc(var(--band) * 8);
+/* ── Plain cream background — theme lives in the cards and nav ── */
+html, body {
+  min-height: 100%;
+  background-color: var(--lapis-cream);
   font-size: 16px;
   line-height: 1.5;
   font-weight: 500;
@@ -734,88 +800,360 @@ body {
   color: var(--cb-text);
 }
 
+
+/* ── App shell — no backgrounds: body stripes must show through ─ */
 #app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
 }
 
 .app-main {
   flex: 1;
+  background: transparent !important;
 }
 
-.app-footer {
-  color: var(--cb-muted);
+/* ── Typography ─────────────────────────────────────────────── */
+h1, h2, h3, .fw-heavy {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--lapis-plum);
 }
 
-h1,
-h2,
-h3,
-.fw-heavy {
-  font-weight: 800;
+h4, h5, h6 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  color: var(--lapis-plum);
 }
 
-.text-muted-cb {
-  color: var(--cb-muted);
-}
+.text-muted-cb { color: var(--cb-muted); }
 
-/* Bootstrap buttons in brand colours */
-.btn-primary {
-  --bs-btn-bg: var(--cb-primary);
-  --bs-btn-border-color: var(--cb-primary);
-  --bs-btn-hover-bg: var(--cb-primary-dark);
-  --bs-btn-hover-border-color: var(--cb-primary-dark);
-  --bs-btn-active-bg: var(--cb-primary-dark);
-  --bs-btn-active-border-color: var(--cb-primary-dark);
-  --bs-btn-disabled-bg: var(--cb-primary);
-  --bs-btn-disabled-border-color: var(--cb-primary);
-}
-
-.btn-outline-primary {
-  --bs-btn-color: var(--cb-primary);
-  --bs-btn-border-color: var(--cb-primary);
-  --bs-btn-hover-bg: var(--cb-primary);
-  --bs-btn-hover-border-color: var(--cb-primary);
-  --bs-btn-active-bg: var(--cb-primary);
-  --bs-btn-active-border-color: var(--cb-primary);
-}
-
-/* Card style used everywhere: <div class="cb-card p-3"> */
+/* ── Cards ──────────────────────────────────────────────────── */
+/*
+ * Card = a slice of kueh lapis.
+ *   Left edge  → the cut cross-section: same repeating bands as the page background
+ *                reveals what the "inside" of the cake looks like.
+ *   Card body  → slightly translucent cream so the page bands bleed through
+ *                subtly — the card feels part of the cake, not a slab on top.
+ *   Border     → 3px plum  |  shadow → 6×6 hard (no blur)
+ */
 .cb-card {
-  background: var(--cb-surface);
-  border: 1px solid var(--cb-border);
+  position: relative;
+  background: var(--lapis-cream);
+  border: 1px solid var(--lapis-shadow);
   border-radius: var(--cb-radius);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-.cb-card-hover {
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+/* Left edge: the kueh cross-section — thin vertical strip of stacked colour bands */
+.cb-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  border-radius: calc(var(--cb-radius) - 3px) 0 0 calc(var(--cb-radius) - 3px);
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--lapis-pink)   0                     calc(var(--band) * 1),
+    var(--lapis-cream)  calc(var(--band) * 1)  calc(var(--band) * 2),
+    var(--lapis-lime)   calc(var(--band) * 2)  calc(var(--band) * 3),
+    var(--lapis-cream)  calc(var(--band) * 3)  calc(var(--band) * 4),
+    var(--lapis-yellow) calc(var(--band) * 4)  calc(var(--band) * 5),
+    var(--lapis-cream)  calc(var(--band) * 5)  calc(var(--band) * 6),
+    var(--lapis-orange) calc(var(--band) * 6)  calc(var(--band) * 7),
+    var(--lapis-cream)  calc(var(--band) * 7)  calc(var(--band) * 8)
+  );
+  box-shadow: inset -1px 0 0 rgba(255, 248, 240, 0.4);
 }
+
+.cb-card-hover { cursor: pointer; }
 
 .cb-card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(35, 48, 45, 0.08);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+}
+
+/* Section dividers: 4-colour strip (replaces 1px grey hairlines) */
+.lapis-stripe,
+.lapis-divider {
+  height: 8px;
+  flex-shrink: 0;
+  background: linear-gradient(to right,
+    var(--lapis-pink)   0 25%,
+    var(--lapis-lime)   25% 50%,
+    var(--lapis-yellow) 50% 75%,
+    var(--lapis-orange) 75% 100%
+  );
+  border: none;
+  border-radius: 0;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 6px;
+  border-width: 3px;
+  border-style: solid;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* Primary — pink with purple hard shadow */
+.btn-primary {
+  --bs-btn-bg:                  var(--lapis-pink);
+  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-color:               var(--lapis-cream);
+  --bs-btn-hover-bg:            #B0446A;
+  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-color:         var(--lapis-cream);
+  --bs-btn-active-bg:           #B0446A;
+  --bs-btn-active-border-color: var(--lapis-shadow);
+  --bs-btn-disabled-bg:         var(--lapis-pink);
+  --bs-btn-disabled-border-color: var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+}
+
+.btn-primary:active {
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10) !important;
+}
+
+/* Outline primary — cream bg, pink on hover */
+.btn-outline-primary {
+  --bs-btn-color:               var(--lapis-plum);
+  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-bg:                  var(--lapis-cream);
+  --bs-btn-hover-bg:            var(--lapis-pink);
+  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-color:         var(--lapis-cream);
+  --bs-btn-active-bg:           var(--lapis-pink);
+  --bs-btn-active-border-color: var(--lapis-shadow);
+  background: var(--lapis-cream);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+.btn-outline-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+}
+
+.btn-outline-primary:active {
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10) !important;
+}
+
+/* Secondary — orange, shadow in plum */
+.btn-secondary {
+  --bs-btn-bg:                  var(--lapis-orange);
+  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-color:               var(--lapis-plum);
+  --bs-btn-hover-bg:            #488CA8;
+  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-color:         var(--lapis-plum);
+  --bs-btn-active-bg:           #488CA8;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+}
+
+.btn-secondary:active {
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10) !important;
+}
+
+/* Outline secondary */
+.btn-outline-secondary {
+  --bs-btn-color:               var(--lapis-plum);
+  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-hover-bg:            var(--lapis-orange);
+  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-color:         var(--lapis-plum);
+  background: var(--lapis-cream);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+}
+
+/* Danger — pink */
+.btn-danger {
+  --bs-btn-bg:                  var(--lapis-pink);
+  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-color:               var(--lapis-cream);
+  --bs-btn-hover-bg:            #B0446A;
+  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-color:         var(--lapis-cream);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+.btn-danger:hover:not(:disabled) {
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+}
+
+.btn-danger:active {
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10) !important;
+}
+
+/* Outline danger */
+.btn-outline-danger {
+  --bs-btn-color:               var(--lapis-pink);
+  --bs-btn-border-color:        var(--lapis-pink);
+  --bs-btn-hover-bg:            var(--lapis-pink);
+  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-color:         var(--lapis-cream);
+  background: var(--lapis-cream);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+/* Link buttons */
+.btn-link {
+  color: var(--lapis-purple);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  border-width: 0;
+  box-shadow: none;
+}
+
+.btn-link:hover { color: var(--lapis-pink); }
+
+/* ── Forms ──────────────────────────────────────────────────── */
+.form-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+  color: var(--lapis-plum);
+}
+
+.form-control,
+.form-select {
+  background-color: var(--lapis-cream);
+  border: 1px solid var(--lapis-plum);
+  border-radius: 6px;
+  color: var(--lapis-plum);
+  font-weight: 500;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--lapis-cream);
+  border-color: var(--lapis-pink);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  color: var(--lapis-plum);
+  outline: none;
+}
+
+.form-control::placeholder { color: var(--cb-muted); }
+
+.form-check-input:checked {
+  background-color: var(--lapis-lime);
+  border-color: var(--lapis-shadow);
+}
+
+.form-check-input:focus {
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  border-color: var(--lapis-lime);
+}
+
+.input-group-text {
+  background: var(--lapis-yellow);
+  border: 1px solid var(--lapis-plum);
+  color: var(--lapis-plum);
+  font-weight: 700;
+}
+
+/* ── Badges / pills ─────────────────────────────────────────── */
+.badge {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  border-radius: 4px;
 }
 
 .badge-soft {
-  background: var(--cb-primary-soft);
-  color: var(--cb-primary-dark);
-  font-weight: 700;
+  background: var(--lapis-lime);
+  color: var(--lapis-plum);
 }
 
 .badge-accent {
-  background: var(--cb-accent-soft);
-  color: #8a5d00;
-  font-weight: 700;
+  background: var(--lapis-yellow);
+  color: var(--lapis-plum);
+}
+
+.badge-ruby {
+  background: var(--lapis-pink);
+  color: var(--lapis-cream);
 }
 
 .badge-danger-soft {
-  background: var(--cb-danger-soft);
-  color: #a3341f;
-  font-weight: 700;
+  background: var(--lapis-orange);
+  color: var(--lapis-plum);
 }
 
+/* Bootstrap semantic badge overrides */
+.text-bg-primary {
+  background-color: var(--lapis-pink) !important;
+  color: var(--lapis-cream) !important;
+}
+
+.text-bg-success {
+  background-color: var(--lapis-lime) !important;
+  color: var(--lapis-plum) !important;
+}
+
+.text-bg-warning {
+  background-color: var(--lapis-yellow) !important;
+  color: var(--lapis-plum) !important;
+}
+
+.text-bg-danger {
+  background-color: var(--lapis-pink) !important;
+  color: var(--lapis-cream) !important;
+}
+
+.text-bg-secondary {
+  background-color: var(--lapis-orange) !important;
+  color: var(--lapis-plum) !important;
+}
+
+/* ── Alerts ─────────────────────────────────────────────────── */
+.alert {
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 6px;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+}
+
+.alert-success {
+  background: var(--lapis-lime);
+  color: var(--lapis-plum);
+}
+
+.alert-danger {
+  background: var(--lapis-pink);
+  color: var(--lapis-cream);
+}
+
+.alert-warning {
+  background: var(--lapis-yellow);
+  color: var(--lapis-plum);
+}
+
+/* ── Avatar circle ──────────────────────────────────────────── */
 .avatar {
   width: 48px;
   height: 48px;
@@ -824,35 +1162,278 @@ h3,
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
-  background: var(--cb-accent-soft);
+  background: var(--lapis-yellow);
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   flex-shrink: 0;
 }
 
-.form-label {
-  font-weight: 700;
-}
-
-/* Other Bootstrap components that default to blue */
+/* ── Progress bars ──────────────────────────────────────────── */
 .progress {
-  --bs-progress-bar-bg: var(--cb-primary);
+  background: var(--lapis-cream);
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  overflow: hidden;
 }
 
+.progress-bar {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--lapis-pink)   0      20%,
+    var(--lapis-lime)   20%    40%,
+    var(--lapis-yellow) 40%    60%,
+    var(--lapis-orange) 60%    80%,
+    var(--lapis-purple) 80%   100%
+  );
+  background-size: 200px 100%;
+  color: var(--lapis-cream);
+}
+
+/* ── List groups ────────────────────────────────────────────── */
 .list-group {
-  --bs-list-group-active-bg: var(--cb-primary);
-  --bs-list-group-active-border-color: var(--cb-primary);
+  --bs-list-group-active-bg:            var(--lapis-pink);
+  --bs-list-group-active-border-color:  var(--lapis-shadow);
+  --bs-list-group-active-color:         var(--lapis-cream);
+  border: 1px solid var(--lapis-shadow);
+  border-radius: var(--cb-radius);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  overflow: hidden;
 }
 
-.nav-pills {
-  --bs-nav-pills-link-active-bg: var(--cb-primary);
+.list-group-item {
+  background: var(--lapis-cream);
+  border: 0;
+  border-bottom: 1px solid var(--lapis-shadow);
+  color: var(--lapis-plum);
+  font-weight: 500;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--cb-primary);
-  box-shadow: 0 0 0 0.2rem rgba(47, 111, 98, 0.2);
+.list-group-item:last-child { border-bottom: 0; }
+
+.list-group-item-action:hover {
+  background: var(--lapis-yellow);
+  color: var(--lapis-plum);
 }
 
-.form-check-input:checked {
-  background-color: var(--cb-primary);
-  border-color: var(--cb-primary);
+/* ── Nav pills ──────────────────────────────────────────────── */
+.nav-pills { --bs-nav-pills-link-active-bg: var(--lapis-pink); }
+
+.nav-pills .nav-link {
+  color: var(--lapis-plum);
+  font-weight: 700;
+  border: 2px solid transparent;
+}
+
+.nav-pills .nav-link:hover {
+  background: var(--lapis-yellow);
+  color: var(--lapis-plum);
+  border-color: var(--lapis-shadow);
+}
+
+.nav-pills .nav-link.active {
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  color: var(--lapis-cream);
+}
+
+/* ── Modals ─────────────────────────────────────────────────── */
+.modal-content {
+  background: var(--lapis-cream);
+  border: 1px solid var(--lapis-shadow);
+  border-radius: var(--cb-radius);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+  overflow: hidden;
+}
+
+/* Kueh left-edge cross-section on modals */
+.modal-content::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  border-radius: calc(var(--cb-radius) - 3px) 0 0 calc(var(--cb-radius) - 3px);
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--lapis-pink)   0                     calc(var(--band) * 1),
+    var(--lapis-cream)  calc(var(--band) * 1)  calc(var(--band) * 2),
+    var(--lapis-lime)   calc(var(--band) * 2)  calc(var(--band) * 3),
+    var(--lapis-cream)  calc(var(--band) * 3)  calc(var(--band) * 4),
+    var(--lapis-yellow) calc(var(--band) * 4)  calc(var(--band) * 5),
+    var(--lapis-cream)  calc(var(--band) * 5)  calc(var(--band) * 6),
+    var(--lapis-orange) calc(var(--band) * 6)  calc(var(--band) * 7),
+    var(--lapis-cream)  calc(var(--band) * 7)  calc(var(--band) * 8)
+  );
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--lapis-shadow);
+  background: var(--lapis-cream);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--lapis-shadow);
+  background: var(--lapis-cream);
+}
+
+.modal-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  color: var(--lapis-plum);
+}
+
+/* Purple overlay (not black) */
+.modal-backdrop {
+  background-color: var(--lapis-purple) !important;
+  opacity: 0.55 !important;
+}
+
+/* ── Tables ─────────────────────────────────────────────────── */
+.table {
+  color: var(--lapis-plum);
+  --bs-table-bg: var(--lapis-cream);
+  --bs-table-striped-bg: var(--lapis-cream);
+  border: 1px solid var(--lapis-shadow);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table th {
+  background: var(--lapis-plum);
+  color: var(--lapis-cream);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--lapis-shadow) !important;
+  border-color: var(--lapis-shadow) !important;
+}
+
+.table td {
+  border-color: rgba(42, 6, 24, 0.2);
+  font-weight: 500;
+}
+
+/* Alternating left-stripe rows — kueh layers, not grey zebra */
+.table tbody tr:nth-child(4n+1) td:first-child { border-left: 6px solid var(--lapis-pink); }
+.table tbody tr:nth-child(4n+2) td:first-child { border-left: 6px solid var(--lapis-lime); }
+.table tbody tr:nth-child(4n+3) td:first-child { border-left: 6px solid var(--lapis-yellow); }
+.table tbody tr:nth-child(4n+0) td:first-child { border-left: 6px solid var(--lapis-orange); }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.app-footer {
+  background: linear-gradient(to right,
+    var(--lapis-pink)   0 25%,
+    var(--lapis-lime)   25% 50%,
+    var(--lapis-yellow) 50% 75%,
+    var(--lapis-orange) 75% 100%
+  );
+  border-top: 1px solid var(--lapis-shadow);
+  color: var(--lapis-plum);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────── */
+.spinner-border {
+  --bs-spinner-border-width: 3px;
+  border-color: var(--lapis-pink);
+  border-right-color: transparent;
+}
+
+/* ── Scrollbar (webkit) ──────────────────────────────────────── */
+::-webkit-scrollbar              { width: 10px; }
+::-webkit-scrollbar-track        { background: var(--lapis-cream); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom,
+    var(--lapis-pink),
+    var(--lapis-lime),
+    var(--lapis-yellow),
+    var(--lapis-orange)
+  );
+  border-radius: 999px;
+  border: 2px solid var(--lapis-cream);
+}
+::-webkit-scrollbar-thumb:hover  { border-color: var(--lapis-shadow); }
+
+/* ── Nav tabs ───────────────────────────────────────────────── */
+.nav-tabs {
+  border-bottom: 1px solid var(--lapis-shadow);
+  gap: 4px;
+}
+
+.nav-tabs .nav-link {
+  border: 1px solid transparent;
+  border-radius: 12px 12px 0 0;
+  color: var(--lapis-plum);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+  background: var(--lapis-cream);
+}
+
+.nav-tabs .nav-link:hover {
+  background: var(--lapis-yellow);
+  border-color: var(--lapis-shadow) var(--lapis-shadow) transparent;
+  color: var(--lapis-plum);
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active.bg-primary {
+  background: var(--lapis-pink) !important;
+  border-color: var(--lapis-shadow) var(--lapis-shadow) var(--lapis-pink);
+  color: var(--lapis-cream) !important;
+  box-shadow: none;
+}
+
+/* text-bg-light → cream pill (used in badge variants) */
+.text-bg-light {
+  background-color: var(--lapis-cream) !important;
+  color: var(--lapis-plum) !important;
+  border: 2px solid var(--lapis-shadow);
+}
+
+/* ── Page peel transition ────────────────────────────────────── */
+.page-peel-enter-from {
+  opacity: 0;
+  transform: translateY(14px) scale(0.99);
+}
+.page-peel-enter-active {
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.page-peel-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.page-peel-leave-active {
+  transition: all 0.18s ease-in;
+}
+
+/* ---------- topic colours: the same colour for the same kind of information, everywhere ---------- */
+
+/* soft tinted block with a strong left edge */
+.topic-academic { background: var(--topic-academic-soft); border-left: 8px solid var(--topic-academic); }
+.topic-social   { background: var(--topic-social-soft);   border-left: 8px solid var(--topic-social); }
+.topic-homework { background: var(--topic-homework-soft); border-left: 8px solid var(--topic-homework); }
+.topic-schedule { background: var(--topic-schedule-soft); border-left: 8px solid var(--topic-schedule); }
+.topic-messages { background: var(--topic-messages-soft); border-left: 8px solid var(--topic-messages); }
+
+/* small coloured tags: <span class="chip chip-social">Happy</span> */
+.chip { display: inline-block; padding: 2px 10px; font-size: 0.8rem; font-weight: 700; color: var(--lapis-plum); }
+.chip-academic { background: var(--topic-academic); }
+.chip-social   { background: var(--topic-social); }
+.chip-homework { background: var(--topic-homework); }
+.chip-schedule { background: var(--topic-schedule); }
+.chip-messages { background: var(--topic-messages); }
+.chip-alert    { background: var(--topic-alert); }
+
+/* ---------- narrow screens: tags wrap inside their box ---------- */
+.badge {
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }

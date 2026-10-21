@@ -1,29 +1,24 @@
 <!-- =============================================================
   ChatThread - chat bubbles + send box.               Owner: Kat
-  Props:  messages (Array), currentUserId (String), sending (Boolean)
-  Emits:  send(text)
-  TODO (Kat):
-    [ ] emit('send', text) when the form is submitted, then clear the box
-    [ ] Enter to send (Week 5: @keyup.enter), disable when empty
-    [ ] auto-scroll to the newest message (watch + nextTick)
-    [ ] group messages by day ("Today", "Yesterday")
 ============================================================= -->
 <script setup>
 import { ref } from 'vue'
 import { formatDate } from '@/utils/format'
 
 defineProps({
-  messages: { type: Array, default: () => [] },
+  messages:      { type: Array, default: () => [] },
   currentUserId: { type: String, required: true },
-  sending: { type: Boolean, default: false },
+  sending:       { type: Boolean, default: false },
 })
-// eslint-disable-next-line no-unused-vars
 const emit = defineEmits(['send'])
 
 const draft = ref('')
 
 function submit() {
-  // TODO (Kat): emit the message to the parent page
+  const text = draft.value.trim()
+  if (!text) return
+  emit('send', text)
+  draft.value = ''
 }
 
 function time(iso) {
@@ -32,9 +27,9 @@ function time(iso) {
 </script>
 
 <template>
-  <div class="cb-card d-flex flex-column chat">
+  <div class="cb-card d-flex flex-column chat" style="padding-top: 0.5rem !important;">
     <div class="flex-grow-1 overflow-auto p-3" data-test="chat-messages">
-      <p v-if="messages.length === 0" class="text-muted-cb text-center mt-4">
+      <p v-if="messages.length === 0" class="empty-chat text-center mt-4">
         No messages yet. Say hello!
       </p>
       <div
@@ -44,21 +39,22 @@ function time(iso) {
         :class="m.fromId === currentUserId ? 'justify-content-end' : 'justify-content-start'"
       >
         <div class="bubble" :class="m.fromId === currentUserId ? 'mine' : 'theirs'">
-          <div class="small fw-bold">{{ m.fromName }}</div>
-          <div>{{ m.text }}</div>
-          <div class="tiny text-end">{{ formatDate(m.sentAt) }}, {{ time(m.sentAt) }}</div>
+          <div class="bubble-name">{{ m.fromName }}</div>
+          <div class="bubble-text">{{ m.text }}</div>
+          <div class="bubble-time">{{ formatDate(m.sentAt) }}, {{ time(m.sentAt) }}</div>
         </div>
       </div>
     </div>
 
-    <form class="border-top p-2 d-flex gap-2" @submit.prevent="submit">
+    <form class="chat-input-row border-top p-2 d-flex gap-2" @submit.prevent="submit">
       <input
         v-model="draft"
         class="form-control"
         placeholder="Type a message..."
         data-test="chat-input"
+        @keyup.enter="submit"
       />
-      <button class="btn btn-primary" type="submit" :disabled="sending">
+      <button class="btn btn-primary" type="submit" :disabled="sending || !draft.trim()">
         <i class="bi bi-send"></i>
       </button>
     </form>
@@ -70,22 +66,56 @@ function time(iso) {
   height: 65vh;
   min-height: 360px;
 }
+
+.empty-chat {
+  color: var(--cb-muted);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
 .bubble {
   max-width: 78%;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.85rem;
   border-radius: 14px;
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
+  font-weight: 500;
 }
+
 .mine {
-  background: var(--cb-primary);
-  color: #fff;
+  background: var(--topic-messages);
+  color: var(--lapis-plum);
   border-bottom-right-radius: 4px;
 }
+
 .theirs {
-  background: var(--cb-primary-soft);
+  background: var(--topic-messages-soft);
+  color: var(--lapis-plum);
   border-bottom-left-radius: 4px;
 }
-.tiny {
-  font-size: 0.7rem;
-  opacity: 0.75;
+
+.bubble-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+  margin-bottom: 2px;
+}
+
+.bubble-text { font-size: 0.95rem; }
+
+.bubble-time {
+  font-size: 0.68rem;
+  text-align: right;
+  opacity: 0.7;
+  margin-top: 3px;
+}
+
+.chat-input-row {
+  border-top-color: var(--lapis-shadow) !important;
+  border-top-width: 3px !important;
 }
 </style>

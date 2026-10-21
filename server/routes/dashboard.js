@@ -11,9 +11,10 @@
 import { Router } from 'express'
 import { Child, User, Session, Homework } from '../models/index.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
+import { buildAlerts, todayKey } from '../utils/alerts.js'
 
 const router = Router()
-router.use(requireAuth, requireRole('coordinator'))
+router.use(requireAuth, requireRole('teacher'))
 
 // GET /dashboard/summary  -> numbers for the KPI cards (basic version DONE)
 router.get('/summary', async (req, res) => {
@@ -36,9 +37,35 @@ router.get('/summary', async (req, res) => {
   })
 })
 
-// GET /dashboard/alerts  -> [{ childId, childName, type, message, severity }]
-router.get('/alerts', async (req, res) => {
-  res.status(501).json({ message: 'TODO (Yu Xuan): build alerts' })
+
+
+const toPlain = (doc) => ({ ...doc.toJSON(), id: doc.id })
+
+// GET /dashboard/alerts -> [{ id, type, severity, childId, childName, avatar, followUp, message }]
+router.get('/alerts', requireAuth, requireRole('teacher'), async (req, res) => {
+  const [children, sessions, homework] = await Promise.all([Child.find(), Session.find(), Homework.find()])
+  res.json(
+    buildAlerts({
+      children: children.map(toPlain),
+      sessions: sessions.map(toPlain),
+      homework: homework.map(toPlain),
+      today: todayKey(),
+    }),
+  )
+})
+
+// PUT /dashboard/follow-up/:childId   body: { followUp: true | false }
+router.put('/follow-up/:childId', requireAuth, requireRole('teacher'), async (req, res) => {
+  const { followUp } = req.body
+  if (typeof followUp !== 'boolean') {
+    return res.status(400).json({ message: 'followUp must be true or false.' })
+  }
+  const child = await Child.findById(req.params.childId)
+  if (!child) return res.status(404).json({ message: 'Child not found' })
+
+  child.followUp = followUp
+  await child.save()
+  res.json(child)
 })
 
 export default router
