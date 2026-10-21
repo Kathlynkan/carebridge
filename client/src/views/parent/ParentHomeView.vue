@@ -8,7 +8,6 @@
         (reuse <HandoverCard> with POST /handover/:id { audience: 'parent' })
     [x] timeline of recent sessions (simpler than the volunteer view - no jargon)
     [x] homework status so parents can remind their child at home
-    [x] "Message the volunteer" button -> /messages/:childId
 ============================================================= -->
 <script setup>
 import { ref, computed, onMounted } from 'vue' 
@@ -93,12 +92,6 @@ const FEELING_WORDS = {
   tired: 'was a bit tired',
   frustrated: 'had a harder day',
 }
-
-// the name on the message button: the volunteer of the latest session, like 'Aisha' ('the volunteer' if we do not know)
-const messageName = computed(() => {
-  if (latest.value && latest.value.volunteerName) return firstName(latest.value.volunteerName)
-  return 'the volunteer'
-})
 
 // the weekday of the latest session, like "Saturday"
 const latestWeekday = computed(() => {
@@ -248,10 +241,6 @@ onMounted(async () => {
           <h2 class="h5 mb-0">{{ selectedChild.name }}</h2>
           <div class="small text-muted-cb">{{ selectedChild.level }} &middot; ⭐ {{ selectedChild.points }} stars earned</div>
         </div>
-        <!-- goes to the chat about this child -->
-        <router-link :to="{ name: 'messages', params: { childId: selectedId } }" class="btn btn-primary ms-auto" data-test="message-volunteer">
-          <i class="bi bi-chat-dots me-1"></i>Message {{ messageName }}
-        </router-link>
       </div>
 
       <!-- one sentence: how the latest session went -->

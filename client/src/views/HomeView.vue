@@ -110,12 +110,12 @@ const roles = [
   border-radius: 50%;
   background: var(--lapis-pink);
   color: var(--lapis-cream);
-  font-weight: 800;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid var(--lapis-shadow);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   flex-shrink: 0;
 }
 </style>

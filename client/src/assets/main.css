@@ -4,48 +4,48 @@
    edge-to-edge, top-to-bottom — like a steamed kueh lapis.
    ============================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=Fredoka:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap');
 
 /* ── Palette tokens ─────────────────────────────────────────── */
 :root {
   --band: 16px;
 
-  --lapis-pink:   #E94B8B; /* pink */
-  --lapis-cream:  #FFFDF7; /* coconut white */
-  --lapis-lime:   #7ED36B; /* pandan green */
-  --lapis-yellow: #FADCE6; /* butter yellow */
-  --lapis-orange: #4FC3E6; /* peach */
-  --lapis-purple: #9A6AD6; /* lavender */
+  --lapis-pink:   #C9577F; /* pink */
+  --lapis-cream:  #FBF8F3; /* coconut white */
+  --lapis-lime:   #86B67A; /* pandan green */
+  --lapis-yellow: #F4DEE5; /* butter yellow */
+  --lapis-orange: #5EA9C6; /* peach */
+  --lapis-purple: #8C6DB3; /* lavender */
   --lapis-plum:   #4A3F3A; /* warm brown ink, for text */
   --lapis-shadow: #B9A99B; /* soft taupe, for borders and shadows */
-  --lapis-apricot: #FFC9A0;
-  --lapis-mint:    #B6E6A6;
-  --lapis-sky:     #9ADBF2; /* sky blue */
+  --lapis-apricot: #EBCDB2;
+  --lapis-mint:    #C5DDB9;
+  --lapis-sky:     #B9D9E6; /* sky blue */
 
   /* ── One colour per topic, used everywhere in the app ──
      academic = pink, social = blue, homework = lavender,
      schedule = lime, messages = peach, highlights = blush */
-  --topic-academic:       #F6A6C9;
-  --topic-academic-soft:  #FDE6F0;
-  --topic-social:         #9ADBF2;
-  --topic-social-soft:    #E3F6FC;
-  --topic-homework:       #C3A2EB;
-  --topic-homework-soft:  #EFE6FA;
-  --topic-schedule:       #B6E6A6;
-  --topic-schedule-soft:  #EAF7E4;
-  --topic-messages:       #FFC9A0;
-  --topic-messages-soft:  #FFF0E2;
-  --topic-highlight:      #FADCE6;
-  --topic-highlight-soft: #FFF0F5;
-  --topic-alert:          #FF8A80;
-  --topic-alert-soft:     #FFE1DE;
+  --topic-academic:       #E9B9CB;
+  --topic-academic-soft:  #F8EBF0;
+  --topic-social:         #B9D9E6;
+  --topic-social-soft:    #EDF5F9;
+  --topic-homework:       #CDBFE0;
+  --topic-homework-soft:  #F3EFF8;
+  --topic-schedule:       #C5DDB9;
+  --topic-schedule-soft:  #F1F6EC;
+  --topic-messages:       #EBCDB2;
+  --topic-messages-soft:  #F8F0E8;
+  --topic-highlight:      #F4DEE5;
+  --topic-highlight-soft: #FAF1F4;
+  --topic-alert:          #E58E86;
+  --topic-alert-soft:     #FBE9E7;
 
   /* Legacy cb tokens — remapped so existing templates keep working */
   --cb-primary:      var(--lapis-lime);
-  --cb-primary-dark: #4FB45C;
-  --cb-primary-soft: #E4F6DC;
+  --cb-primary-dark: #6E9A63;
+  --cb-primary-soft: #E8F0E3;
   --cb-accent:       var(--lapis-yellow);
-  --cb-accent-soft:  #FFF0F5;
+  --cb-accent-soft:  #FAF1F4;
   --cb-ruby:         var(--lapis-pink);
   --cb-ruby-soft:    #FDE3EE;
   --cb-danger-soft:  #FFE1DE;
@@ -58,21 +58,21 @@
 
   /* Bootstrap colour overrides */
   --bs-primary:           var(--lapis-pink);
-  --bs-primary-rgb:       233, 75, 139;
+  --bs-primary-rgb:       201, 87, 127;
   --bs-success:           var(--lapis-lime);
-  --bs-success-rgb:       126, 211, 107;
+  --bs-success-rgb:       134, 182, 122;
   --bs-warning:           var(--lapis-yellow);
-  --bs-warning-rgb:       250, 220, 230;
+  --bs-warning-rgb:       244, 222, 229;
   --bs-danger:            var(--topic-alert);
   --bs-danger-rgb:        255, 138, 128;
   --bs-link-color:        #7A4FB8;
   --bs-link-hover-color:  #C93A74;
-  --bs-body-font-family:  'Nunito', ui-rounded, 'Segoe UI', sans-serif;
+  --bs-body-font-family:  'Inter', system-ui, 'Segoe UI', sans-serif;
   --bs-body-color:        var(--lapis-plum);
   --bs-body-bg:           var(--lapis-cream);
   --bs-border-color:      var(--lapis-shadow);
   --bs-border-radius:     0px;
-  --bs-border-width:      3px;
+  --bs-border-width: 1px;
 }
 
 /* 16px bands look great on all screen sizes — no override needed */
@@ -105,15 +105,15 @@ html, body {
 
 /* ── Typography ─────────────────────────────────────────────── */
 h1, h2, h3, .fw-heavy {
-  font-family: 'Fredoka', 'Nunito', ui-rounded, sans-serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--lapis-plum);
 }
 
 h4, h5, h6 {
-  font-family: 'Nunito', ui-rounded, sans-serif;
-  font-weight: 800;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
   color: var(--lapis-plum);
 }
 
@@ -131,9 +131,9 @@ h4, h5, h6 {
 .cb-card {
   position: relative;
   background: var(--lapis-cream);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: var(--cb-radius);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
@@ -163,8 +163,7 @@ h4, h5, h6 {
 .cb-card-hover { cursor: pointer; }
 
 .cb-card-hover:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--lapis-shadow);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 /* Section dividers: 4-colour strip (replaces 1px grey hairlines) */
@@ -185,7 +184,7 @@ h4, h5, h6 {
 /* ── Buttons ────────────────────────────────────────────────── */
 .btn {
   font-family: 'Nunito', sans-serif;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border-radius: 6px;
@@ -199,24 +198,22 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-pink);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-cream);
-  --bs-btn-hover-bg:            #D63D80;
+  --bs-btn-hover-bg:            #B0446A;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-cream);
-  --bs-btn-active-bg:           #D63D80;
+  --bs-btn-active-bg:           #B0446A;
   --bs-btn-active-border-color: var(--lapis-shadow);
   --bs-btn-disabled-bg:         var(--lapis-pink);
   --bs-btn-disabled-border-color: var(--lapis-shadow);
-  box-shadow: 4px 4px 0 var(--lapis-purple);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .btn-primary:hover:not(:disabled) {
-  box-shadow: 6px 6px 0 var(--lapis-purple);
-  transform: translate(-2px, -2px);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 .btn-primary:active {
-  box-shadow: 2px 2px 0 var(--lapis-purple) !important;
-  transform: translate(2px, 2px) !important;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10) !important;
 }
 
 /* Outline primary — cream bg, pink on hover */
@@ -230,17 +227,15 @@ h4, h5, h6 {
   --bs-btn-active-bg:           var(--lapis-pink);
   --bs-btn-active-border-color: var(--lapis-shadow);
   background: var(--lapis-cream);
-  box-shadow: 4px 4px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .btn-outline-primary:hover:not(:disabled) {
-  box-shadow: 6px 6px 0 var(--lapis-shadow);
-  transform: translate(-2px, -2px);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 .btn-outline-primary:active {
-  transform: translate(2px, 2px) !important;
-  box-shadow: 2px 2px 0 var(--lapis-shadow) !important;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10) !important;
 }
 
 /* Secondary — orange, shadow in plum */
@@ -248,21 +243,19 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-orange);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-plum);
-  --bs-btn-hover-bg:            #35A9CF;
+  --bs-btn-hover-bg:            #488CA8;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-plum);
-  --bs-btn-active-bg:           #35A9CF;
-  box-shadow: 4px 4px 0 var(--lapis-shadow);
+  --bs-btn-active-bg:           #488CA8;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  box-shadow: 6px 6px 0 var(--lapis-shadow);
-  transform: translate(-2px, -2px);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 .btn-secondary:active {
-  transform: translate(2px, 2px) !important;
-  box-shadow: 2px 2px 0 var(--lapis-shadow) !important;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10) !important;
 }
 
 /* Outline secondary */
@@ -273,12 +266,11 @@ h4, h5, h6 {
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-plum);
   background: var(--lapis-cream);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .btn-outline-secondary:hover:not(:disabled) {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--lapis-shadow);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 /* Danger — pink */
@@ -286,20 +278,18 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-pink);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-cream);
-  --bs-btn-hover-bg:            #D63D80;
+  --bs-btn-hover-bg:            #B0446A;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-cream);
-  box-shadow: 4px 4px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .btn-danger:hover:not(:disabled) {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--lapis-shadow);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 .btn-danger:active {
-  transform: translate(2px, 2px) !important;
-  box-shadow: 2px 2px 0 var(--lapis-shadow) !important;
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10) !important;
 }
 
 /* Outline danger */
@@ -310,7 +300,7 @@ h4, h5, h6 {
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-cream);
   background: var(--lapis-cream);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 /* Link buttons */
@@ -327,7 +317,7 @@ h4, h5, h6 {
 
 /* ── Forms ──────────────────────────────────────────────────── */
 .form-label {
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-size: 0.78rem;
@@ -337,7 +327,7 @@ h4, h5, h6 {
 .form-control,
 .form-select {
   background-color: var(--lapis-cream);
-  border: 3px solid var(--lapis-plum);
+  border: 1px solid var(--lapis-plum);
   border-radius: 6px;
   color: var(--lapis-plum);
   font-weight: 500;
@@ -347,7 +337,7 @@ h4, h5, h6 {
 .form-select:focus {
   background-color: var(--lapis-cream);
   border-color: var(--lapis-pink);
-  box-shadow: 4px 4px 0 var(--lapis-pink);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-plum);
   outline: none;
 }
@@ -360,24 +350,24 @@ h4, h5, h6 {
 }
 
 .form-check-input:focus {
-  box-shadow: 3px 3px 0 var(--lapis-lime);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   border-color: var(--lapis-lime);
 }
 
 .input-group-text {
   background: var(--lapis-yellow);
-  border: 3px solid var(--lapis-plum);
+  border: 1px solid var(--lapis-plum);
   color: var(--lapis-plum);
   font-weight: 700;
 }
 
 /* ── Badges / pills ─────────────────────────────────────────── */
 .badge {
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border: 2px solid var(--lapis-shadow);
-  box-shadow: 2px 2px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   border-radius: 4px;
 }
 
@@ -429,10 +419,10 @@ h4, h5, h6 {
 
 /* ── Alerts ─────────────────────────────────────────────────── */
 .alert {
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 6px;
   font-weight: 600;
-  box-shadow: 4px 4px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .alert-success {
@@ -460,17 +450,17 @@ h4, h5, h6 {
   justify-content: center;
   font-size: 1.6rem;
   background: var(--lapis-yellow);
-  border: 3px solid var(--lapis-shadow);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   flex-shrink: 0;
 }
 
 /* ── Progress bars ──────────────────────────────────────────── */
 .progress {
   background: var(--lapis-cream);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 999px;
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   overflow: hidden;
 }
 
@@ -492,16 +482,16 @@ h4, h5, h6 {
   --bs-list-group-active-bg:            var(--lapis-pink);
   --bs-list-group-active-border-color:  var(--lapis-shadow);
   --bs-list-group-active-color:         var(--lapis-cream);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: var(--cb-radius);
-  box-shadow: 4px 4px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   overflow: hidden;
 }
 
 .list-group-item {
   background: var(--lapis-cream);
   border: 0;
-  border-bottom: 3px solid var(--lapis-shadow);
+  border-bottom: 1px solid var(--lapis-shadow);
   color: var(--lapis-plum);
   font-weight: 500;
 }
@@ -529,17 +519,17 @@ h4, h5, h6 {
 }
 
 .nav-pills .nav-link.active {
-  border: 3px solid var(--lapis-shadow);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-cream);
 }
 
 /* ── Modals ─────────────────────────────────────────────────── */
 .modal-content {
   background: var(--lapis-cream);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: var(--cb-radius);
-  box-shadow: 8px 8px 0 var(--lapis-shadow);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
   overflow: hidden;
 }
 
@@ -566,17 +556,17 @@ h4, h5, h6 {
 }
 
 .modal-header {
-  border-bottom: 3px solid var(--lapis-shadow);
+  border-bottom: 1px solid var(--lapis-shadow);
   background: var(--lapis-cream);
 }
 
 .modal-footer {
-  border-top: 3px solid var(--lapis-shadow);
+  border-top: 1px solid var(--lapis-shadow);
   background: var(--lapis-cream);
 }
 
 .modal-title {
-  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-weight: 700;
   color: var(--lapis-plum);
 }
@@ -592,7 +582,7 @@ h4, h5, h6 {
   color: var(--lapis-plum);
   --bs-table-bg: var(--lapis-cream);
   --bs-table-striped-bg: var(--lapis-cream);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 12px;
   overflow: hidden;
 }
@@ -600,10 +590,10 @@ h4, h5, h6 {
 .table th {
   background: var(--lapis-plum);
   color: var(--lapis-cream);
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  border-bottom: 3px solid var(--lapis-shadow) !important;
+  border-bottom: 1px solid var(--lapis-shadow) !important;
   border-color: var(--lapis-shadow) !important;
 }
 
@@ -626,9 +616,9 @@ h4, h5, h6 {
     var(--lapis-yellow) 50% 75%,
     var(--lapis-orange) 75% 100%
   );
-  border-top: 3px solid var(--lapis-shadow);
+  border-top: 1px solid var(--lapis-shadow);
   color: var(--lapis-plum);
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.78rem;
@@ -658,15 +648,15 @@ h4, h5, h6 {
 
 /* ── Nav tabs ───────────────────────────────────────────────── */
 .nav-tabs {
-  border-bottom: 3px solid var(--lapis-shadow);
+  border-bottom: 1px solid var(--lapis-shadow);
   gap: 4px;
 }
 
 .nav-tabs .nav-link {
-  border: 3px solid transparent;
+  border: 1px solid transparent;
   border-radius: 12px 12px 0 0;
   color: var(--lapis-plum);
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-size: 0.78rem;
@@ -684,7 +674,7 @@ h4, h5, h6 {
   background: var(--lapis-pink) !important;
   border-color: var(--lapis-shadow) var(--lapis-shadow) var(--lapis-pink);
   color: var(--lapis-cream) !important;
-  box-shadow: 3px -3px 0 var(--lapis-shadow);
+  box-shadow: none;
 }
 
 /* text-bg-light → cream pill (used in badge variants) */
@@ -727,3 +717,10 @@ h4, h5, h6 {
 .chip-schedule { background: var(--topic-schedule); }
 .chip-messages { background: var(--topic-messages); }
 .chip-alert    { background: var(--topic-alert); }
+
+/* ---------- narrow screens: tags wrap inside their box ---------- */
+.badge {
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}

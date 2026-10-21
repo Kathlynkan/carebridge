@@ -31,8 +31,8 @@ defineProps({
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
-  border: 3px solid var(--lapis-shadow);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   flex-shrink: 0;
 }
 
@@ -43,7 +43,7 @@ defineProps({
 .stat-icon[data-color='purple'] { background: var(--lapis-purple); color: var(--lapis-cream); }
 
 .stat-value {
-  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-weight: 700;
   font-size: 1.75rem;
   color: var(--lapis-plum);
@@ -52,7 +52,7 @@ defineProps({
 
 .stat-label {
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--cb-muted);

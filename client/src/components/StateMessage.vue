@@ -53,7 +53,7 @@ defineProps({
   height: 8px;
   border-radius: 4px;
   border: 2px solid var(--lapis-shadow);
-  box-shadow: 2px 2px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .state-msg {

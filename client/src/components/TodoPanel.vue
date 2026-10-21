@@ -25,11 +25,11 @@ const open = ref(true)
 
 <style scoped>
 .todo-panel {
-  border: 3px dashed var(--lapis-orange);
+  border: 1px dashed var(--lapis-orange);
   background: var(--lapis-yellow);
   border-radius: var(--cb-radius);
   padding: 0.6rem 0.9rem;
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-plum);
 }
 </style>

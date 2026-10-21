@@ -143,7 +143,6 @@ onMounted(async () => {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   font-size: 4rem;
   z-index: 9999;
   pointer-events: none;

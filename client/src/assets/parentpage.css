@@ -7,7 +7,7 @@
 .parentpage .top-summary {
   margin-bottom: 24px;
   padding: 20px 24px;
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-left: 8px solid var(--lapis-apricot);
   border-radius: 16px;
   background: var(--lapis-orange);
@@ -17,7 +17,7 @@
   color: var(--lapis-plum);
   font-size: 20px;
   font-weight: 700;
-  box-shadow: 6px 6px 0 var(--lapis-shadow);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 .parentpage .top-extra {
@@ -30,7 +30,7 @@
   display: block;
   margin-bottom: 4px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--lapis-plum);
@@ -42,10 +42,10 @@
 .parentpage .notice-board {
   padding: 20px;
   padding-top: 28px;
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 16px;
   background: var(--lapis-apricot);
-  box-shadow: 6px 6px 0 var(--lapis-shadow);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
   position: relative;
   overflow: hidden;
 }
@@ -71,12 +71,12 @@
   padding: 6px 16px;
   background: var(--lapis-cream);
   color: var(--lapis-plum);
-  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-weight: 700;
   font-size: 18px;
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 999px;
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .parentpage .notice-tabs {
@@ -88,29 +88,28 @@
 
 .parentpage .notice-tab {
   padding: 6px 16px;
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   background: var(--lapis-cream);
   color: var(--lapis-plum);
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.78rem;
   cursor: pointer;
   border-radius: 999px;
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .parentpage .notice-tab:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--lapis-shadow);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 .parentpage .notice-tab.active {
   background: var(--lapis-yellow);
   border-color: var(--lapis-shadow);
   color: var(--lapis-plum);
-  box-shadow: 4px 4px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 /* Post-it note: yellow paper with a pink pin */
@@ -119,9 +118,9 @@
   margin-bottom: 12px;
   padding: 18px 12px 12px;
   background: var(--lapis-yellow);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 8px;
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-plum);
 }
 
@@ -147,7 +146,7 @@
   display: block;
   margin-bottom: 4px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--lapis-plum);
@@ -177,9 +176,9 @@
   width: 120px;
   height: 160px;
   object-fit: cover;
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 8px;
-  box-shadow: 4px 4px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .parentpage .pic-empty {
@@ -189,7 +188,7 @@
   justify-content: center;
   width: 120px;
   height: 160px;
-  border: 3px dashed var(--lapis-purple);
+  border: 1px dashed var(--lapis-purple);
   border-radius: 8px;
   background: var(--lapis-cream);
   color: var(--cb-muted);
@@ -200,7 +199,7 @@
   background: transparent;
   font-size: 24px;
   color: var(--lapis-pink);
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   transition: transform 0.1s ease;
 }
@@ -230,10 +229,10 @@
 
 .parentpage .session-homework {
   padding: 8px 12px;
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 8px;
   background: var(--lapis-lime);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-plum);
   font-weight: 600;
 }
@@ -253,10 +252,10 @@
   align-items: center;
   min-width: 96px;
   padding: 8px 12px;
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 10px;
   background: var(--lapis-cream);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-plum);
   font-weight: 700;
 }
@@ -287,8 +286,8 @@
   height: 14px;
   border-radius: 7px;
   background: var(--lapis-pink);
-  border: 3px solid var(--lapis-shadow);
-  box-shadow: 2px 2px 0 var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 /* ---------- kueh lapis pastel tiles ---------- */
@@ -328,10 +327,10 @@
 .parentpage .cake-box {
   margin-bottom: 16px;
   padding: 10px 14px 12px;
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 12px;
   background: var(--lapis-cream);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .parentpage .cake {
@@ -412,3 +411,26 @@
 /* the timeline is about sessions, so it is pink */
 .parentpage .timeline { border-left-color: var(--topic-academic); }
 .parentpage .timeline-item::before { background: var(--topic-academic); }
+
+/* ---------- a calmer look for the parent page ---------- */
+
+/* the banner is a light blush panel with a rose edge, not a block of colour */
+.parentpage .top-summary {
+  background: var(--topic-highlight-soft);
+  border-left: 4px solid var(--lapis-pink);
+}
+
+/* the notice board is a cream panel; its topic colour is a bar on top and the open tab */
+.parentpage .notice-board.board-social { background: var(--lapis-cream); border-top: 6px solid var(--topic-social); }
+.parentpage .notice-board.board-latest { background: var(--lapis-cream); border-top: 6px solid var(--topic-academic); }
+.parentpage .notice-board.board-homework { background: var(--lapis-cream); border-top: 6px solid var(--topic-homework); }
+
+/* tabs: a thin coloured line underneath instead of a thick block */
+.parentpage .notice-tab.tab-social { border-bottom: 3px solid var(--topic-social); }
+.parentpage .notice-tab.tab-latest { border-bottom: 3px solid var(--topic-academic); }
+.parentpage .notice-tab.tab-homework { border-bottom: 3px solid var(--topic-homework); }
+
+/* the tinted notes read as a quiet card with a coloured edge */
+.parentpage .board-social .note { background: var(--topic-social-soft); }
+.parentpage .board-latest .note { background: var(--topic-academic-soft); }
+.parentpage .board-homework .note { background: var(--topic-homework-soft); }

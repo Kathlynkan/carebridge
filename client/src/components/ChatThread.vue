@@ -79,8 +79,8 @@ function time(iso) {
   max-width: 78%;
   padding: 0.5rem 0.85rem;
   border-radius: 14px;
-  border: 3px solid var(--lapis-shadow);
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   font-weight: 500;
 }
 
@@ -98,7 +98,7 @@ function time(iso) {
 
 .bubble-name {
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   opacity: 0.8;

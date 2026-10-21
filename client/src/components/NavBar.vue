@@ -112,57 +112,55 @@ async function logout() {
   background-attachment: fixed;
   background-size: 100% calc(var(--band) * 8);
   border-bottom: 4px solid var(--lapis-shadow);
-  box-shadow: 0 4px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   min-height: calc(var(--band) * 2);
 }
 
 .lapis-brand {
-  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-weight: 700;
   font-size: 1.4rem;
   color: var(--lapis-plum) !important;
   text-decoration: none;
   background: var(--lapis-cream);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 6px;
   padding: 0.25rem 1rem;
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .lapis-brand:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--lapis-shadow);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 /* Each nav link is a cream pill with plum text */
 .lapis-nav-link {
   display: inline-block;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-size: 0.78rem;
   color: var(--lapis-plum) !important;
   background: var(--lapis-cream);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 6px;
   padding: 0.3rem 0.9rem;
   text-decoration: none;
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
 }
 
 .lapis-nav-link:hover {
   background: var(--lapis-yellow);
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--lapis-shadow);
+  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
 /* Active link: cream + stronger shadow */
 .lapis-nav-link.router-link-active {
   background: var(--lapis-cream);
   border-color: var(--lapis-shadow);
-  box-shadow: 4px 4px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-plum) !important;
 }
 
@@ -171,19 +169,18 @@ async function logout() {
   display: inline-flex;
   align-items: center;
   background: var(--lapis-cream);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 6px;
   padding: 0.25rem 0.8rem;
   font-weight: 700;
   font-size: 0.85rem;
   color: var(--lapis-plum) !important;
   text-decoration: none;
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   transition: transform 0.1s ease;
 }
 
 .lapis-user-pill:hover {
-  transform: translate(-2px, -2px);
 }
 
 .lapis-role-badge {
@@ -192,7 +189,7 @@ async function logout() {
   border: 2px solid var(--lapis-shadow);
   border-radius: 6px;
   font-size: 0.65rem;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 1px 6px;
@@ -200,8 +197,8 @@ async function logout() {
 
 .lapis-toggler {
   background: var(--lapis-cream);
-  border: 3px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-shadow);
   border-radius: 8px;
-  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 </style>

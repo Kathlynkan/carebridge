@@ -77,7 +77,7 @@ const open = ref(props.initialOpen)
 
 .peel-title {
   font-size: 0.875rem;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--lapis-plum);

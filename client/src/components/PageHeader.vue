@@ -24,7 +24,7 @@ defineProps({
 }
 
 .page-title {
-  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-weight: 700;
   font-size: 2rem;
   color: var(--lapis-plum);
