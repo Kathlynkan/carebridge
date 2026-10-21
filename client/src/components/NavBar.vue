@@ -75,10 +75,15 @@ async function logout() {
         </ul>
 
         <div v-if="auth.isLoggedIn" class="d-flex align-items-center gap-3">
-          <span class="small text-muted-cb">
+          <RouterLink
+            to="/profile"
+            class="small text-decoration-none d-flex align-items-center gap-1"
+            style="color: inherit"
+            data-test="nav-profile"
+          >
             <i class="bi bi-person-circle me-1"></i>{{ auth.user.name }}
             <span class="badge badge-soft ms-1 text-capitalize">{{ auth.role }}</span>
-          </span>
+          </RouterLink>
           <button class="btn btn-sm btn-outline-secondary" data-test="logout" @click="logout">
             Log out
           </button>

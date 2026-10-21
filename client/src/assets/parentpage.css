@@ -1,7 +1,8 @@
 /* Styles for the parent home page (ParentHomeView.vue).
-   Every rule starts with .parentpage so it only affects that page. */
+   Every rule starts with .parentpage so it only affects that page.
+   All colours use design tokens from main.css. */
 
-/* ---------- the sentence at the top: big and yellow so a parent sees it first ---------- */
+/* ---------- the sentence at the top ---------- */
 
 .parentpage .top-summary {
   margin-bottom: 24px;
@@ -13,42 +14,37 @@
   font-weight: 600;
 }
 
-/* the two smaller lines under the sentence */
 .parentpage .top-extra {
   margin-top: 8px;
   font-size: 16px;
   font-weight: 400;
 }
 
-/* the small label above the sentence */
 .parentpage .top-label {
   display: block;
   margin-bottom: 4px;
   font-size: 14px;
   font-weight: 700;
-  color: #6b6b6b;
+  color: var(--cb-muted);
 }
 
 /* ---------- the notice board ---------- */
 
-/* the board: cork colour with a wooden frame */
 .parentpage .notice-board {
   padding: 20px;
-  border: 8px solid #8b5e3c;
+  border: 4px solid var(--cb-primary);
   border-radius: 12px;
-  background: #e0b97e;
+  background: var(--cb-primary-soft);
 }
 
-/* the title "Notice board" on a piece of paper */
 .parentpage .board-title {
   display: inline-block;
   margin: 0 0 16px;
   padding: 6px 16px;
-  background: #fffdf2;
+  background: var(--cb-surface);
   font-size: 20px;
 }
 
-/* the row of tabs: Social, Latest session, Homework */
 .parentpage .notice-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -56,28 +52,31 @@
   margin-bottom: 16px;
 }
 
-/* one tab */
 .parentpage .notice-tab {
   padding: 6px 14px;
-  border: 2px solid #8b5e3c;
-  background: #fffdf2;
-  color: #5a4630;
+  border: 2px solid var(--cb-border);
+  background: var(--cb-surface);
+  color: var(--cb-text);
   font-weight: 600;
   cursor: pointer;
+  border-radius: 6px;
 }
 
-/* the tab that is open */
 .parentpage .notice-tab.active {
   background: var(--cb-accent-soft);
+  border-color: var(--cb-accent);
+  color: var(--cb-text);
 }
 
-/* a note pinned on the board: yellow paper with a red pin on top */
+/* post-it note: amber paper with a ruby red pin */
 .parentpage .note {
   position: relative;
   margin-bottom: 12px;
   padding: 18px 12px 12px;
-  background: #fff8c9;
+  background: var(--cb-accent-soft);
+  border-radius: 6px;
 }
+
 .parentpage .note::before {
   content: '';
   position: absolute;
@@ -86,36 +85,32 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background: #c0392b;
+  background: var(--cb-ruby);
 }
 
-/* the line of a post-it you click to open it */
 .parentpage .note summary {
   cursor: pointer;
   font-weight: 600;
 }
 
-/* the small heading on a note */
 .parentpage .note-label {
   display: block;
   margin-bottom: 4px;
   font-size: 12px;
   font-weight: 700;
-  color: #6b6b6b;
+  color: var(--cb-muted);
 }
 
-/* ---------- session card (picture on the left, details on the right) ---------- */
+/* ---------- session card ---------- */
 
-/* the whole card is a white paper */
 .parentpage .parent-session-card {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   padding: 24px 16px 16px;
-  background: #fffdf2;
+  background: var(--cb-surface);
 }
 
-/* the picture box with the < > arrows */
 .parentpage .session-pic {
   display: flex;
   align-items: center;
@@ -124,13 +119,13 @@
   width: 160px;
   min-height: 160px;
 }
+
 .parentpage .session-pic img {
   width: 120px;
   height: 160px;
   object-fit: cover;
 }
 
-/* shown when the session has no photo yet */
 .parentpage .pic-empty {
   display: flex;
   flex-direction: column;
@@ -138,11 +133,10 @@
   justify-content: center;
   width: 120px;
   height: 160px;
-  border: 2px dashed #b8b2a3;
-  color: #6b6b6b;
+  border: 2px dashed var(--cb-border);
+  color: var(--cb-muted);
 }
 
-/* the < and > buttons */
 .parentpage .pic-arrow {
   border: 0;
   background: transparent;
@@ -151,12 +145,11 @@
   cursor: pointer;
 }
 
-/* the right side: dropdown, title, details, homework */
 .parentpage .session-info {
   flex: 1;
   min-width: 200px;
 }
-/* the "Session: Academic" dropdown */
+
 .parentpage .session-kind {
   display: flex;
   align-items: center;
@@ -164,19 +157,19 @@
   margin-bottom: 8px;
   font-weight: 600;
 }
-/* the details under the title */
+
 .parentpage .session-details {
   margin-bottom: 12px;
 }
 
-/* the homework box */
 .parentpage .session-homework {
   padding: 8px 12px;
-  border: 2px solid #8b5e3c;
+  border: 2px solid var(--cb-border);
+  border-radius: 6px;
 }
-/* ---------- homework status (Homework tab) ---------- */
 
-/* the row of four small boxes */
+/* ---------- homework status ---------- */
+
 .parentpage .homework-status {
   display: flex;
   flex-wrap: wrap;
@@ -184,37 +177,34 @@
   margin-bottom: 16px;
 }
 
-/* one box: a big number and a small word */
 .parentpage .status-box {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-width: 96px;
   padding: 8px 12px;
-  border: 2px solid #8b5e3c;
-  background: #fffdf2;
+  border: 2px solid var(--cb-border);
+  border-radius: 8px;
+  background: var(--cb-surface);
 }
-/* the Late box turns red when something is late */
+
 .parentpage .status-box.late {
-  border-color: #c0392b;
-  background: #fdecea;
+  border-color: var(--cb-ruby);
+  background: var(--cb-ruby-soft);
 }
 
-/* ---------- the timeline of recent sessions ---------- */
+/* ---------- session timeline ---------- */
 
-/* a line down the left with a dot for each session */
 .parentpage .timeline {
   border-left: 2px solid var(--cb-accent);
   margin-left: 6px;
 }
 
-/* one session in the timeline: space on the left for the dot */
 .parentpage .timeline-item {
   position: relative;
   padding: 0 0 16px 20px;
 }
 
-/* the dot */
 .parentpage .timeline-item::before {
   content: '';
   position: absolute;

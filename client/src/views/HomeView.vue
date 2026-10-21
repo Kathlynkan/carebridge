@@ -107,7 +107,7 @@ const roles = [
   height: 32px;
   border-radius: 50%;
   background: var(--cb-accent);
-  color: #3d2a00;
+  color: #064e3b;
   font-weight: 800;
   display: flex;
   align-items: center;
