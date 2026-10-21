@@ -1,6 +1,4 @@
-<!-- HomeworkQuestCard - homework shown as a "quest".     Owner: Jachin
-     Props:  homework (Object), mode: 'child' | 'volunteer' | 'parent'
-     Emits:  submit(id)  (child marks done),  verify(id)  (volunteer checks it) -->
+<!-- HomeworkQuestCard - homework shown as a "quest".     Owner: Jachin -->
 <script setup>
 import { computed } from 'vue'
 import { formatDate, daysSince } from '@/utils/format'
@@ -8,7 +6,7 @@ import { HOMEWORK_STATUS } from '@/utils/constants'
 
 const props = defineProps({
   homework: { type: Object, required: true },
-  mode: { type: String, default: 'child' },
+  mode:     { type: String, default: 'child' },
 })
 const emit = defineEmits(['submit', 'verify'])
 
@@ -22,24 +20,38 @@ const isOverdue = computed(
   <div
     class="cb-card p-3 h-100 d-flex flex-column"
     data-test="homework-card"
-    :class="{ 'border-danger': isOverdue }"
+    :style="isOverdue ? 'border-color:var(--lapis-pink)' : ''"
+    style="padding-top: 1.25rem !important;"
   >
     <div class="d-flex justify-content-between align-items-start gap-2">
-      <h3 class="h6 mb-1">{{ homework.title }}</h3>
-      <span class="badge badge-accent">+{{ homework.points }} ⭐</span>
+      <h3 class="h6 mb-1" style="text-shadow:none;color:var(--lapis-plum)">{{ homework.title }}</h3>
+      <span
+        class="badge"
+        style="background:var(--lapis-yellow);color:var(--lapis-plum)"
+      >+{{ homework.points }} ⭐</span>
     </div>
-    <div class="small text-muted-cb mb-2">
-      {{ homework.subject }} &middot; due {{ formatDate(homework.dueDate) }}
-      <span v-if="isOverdue" class="badge badge-danger-soft ms-1">Overdue</span>
-    </div>
-    <p class="small mb-3">{{ homework.details }}</p>
-    <div class="mt-auto d-flex flex-column gap-2">
-      <span class="badge" :class="status.badge">{{ status.label }}</span>
 
-      <!-- Child: submitted but not yet verified — explain what happens next -->
+    <div class="small mb-2" style="color:var(--cb-muted)">
+      {{ homework.subject }} &middot; due {{ formatDate(homework.dueDate) }}
+      <span
+        v-if="isOverdue"
+        class="badge ms-1"
+        style="background:var(--lapis-pink);color:var(--lapis-cream)"
+      >Overdue</span>
+    </div>
+
+    <p class="small mb-3" style="color:var(--lapis-plum)">{{ homework.details }}</p>
+
+    <div class="mt-auto d-flex flex-column gap-2">
+      <span
+        class="badge"
+        :style="`background:${status?.badge?.includes('success') ? 'var(--lapis-lime)' : status?.badge?.includes('warning') ? 'var(--lapis-yellow)' : 'var(--lapis-orange)'};color:var(--lapis-plum)`"
+      >{{ status?.label }}</span>
+
       <p
         v-if="mode === 'child' && homework.status === 'submitted'"
-        class="small text-muted-cb mb-0 mt-1"
+        class="small mb-0 mt-1"
+        style="color:var(--cb-muted)"
         data-test="waiting-message"
       >
         ⏳ Your volunteer will check this — then you'll get your ⭐ stars!

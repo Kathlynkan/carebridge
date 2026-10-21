@@ -1,16 +1,20 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import NavBar from './components/NavBar.vue'
+
+const route = useRoute()
 </script>
 
 <template>
   <NavBar />
-  <!-- Kueh Lapis signature stripe: Spiced Brown | Golden Yellow | Pandan Green -->
-  <div class="lapis-stripe" aria-hidden="true"></div>
   <main class="app-main">
-    <RouterView />
+    <RouterView v-slot="{ Component }">
+      <Transition name="page-peel" mode="out-in">
+        <component :is="Component" :key="route.path" />
+      </Transition>
+    </RouterView>
   </main>
-  <footer class="app-footer text-center small py-4">
+  <footer class="app-footer text-center py-3">
     Kids Lapis &middot; IS216 WAD2 Group Project
   </footer>
 </template>

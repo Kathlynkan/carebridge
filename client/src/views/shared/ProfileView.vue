@@ -9,6 +9,7 @@ import { ref, onMounted } from 'vue'
 import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 import PageHeader from '@/components/PageHeader.vue'
+import PeelCard from '@/components/PeelCard.vue'
 import { SKILL_OPTIONS, DAYS } from '@/utils/constants'
 
 const auth = useAuthStore()
@@ -104,9 +105,7 @@ async function save() {
         <form data-test="profile-form" @submit.prevent="save">
 
           <!-- Account info -->
-          <div class="cb-card p-4 mb-4">
-            <h2 class="h6 fw-semibold mb-3">Account</h2>
-
+          <PeelCard title="Account" icon="bi-person-circle" :initial-open="true">
             <div class="d-flex align-items-center gap-3 mb-4">
               <span class="fs-1 lh-1">{{ auth.role === 'child' ? avatar : '👤' }}</span>
               <div>
@@ -127,11 +126,10 @@ async function save() {
                 data-test="profile-name"
               />
             </div>
-          </div>
+          </PeelCard>
 
           <!-- Avatar picker (child only) -->
-          <div v-if="auth.role === 'child'" class="cb-card p-4 mb-4">
-            <h2 class="h6 fw-semibold mb-3">Pick your avatar</h2>
+          <PeelCard v-if="auth.role === 'child'" title="Pick your avatar" icon="bi-emoji-smile" :initial-open="true">
             <div class="d-flex flex-wrap gap-2">
               <button
                 v-for="emoji in AVATARS"
@@ -143,11 +141,10 @@ async function save() {
                 @click="avatar = emoji"
               >{{ emoji }}</button>
             </div>
-          </div>
+          </PeelCard>
 
           <!-- Change password (not for child — teacher manages child accounts) -->
-          <div v-if="auth.role !== 'child'" class="cb-card p-4 mb-4">
-            <h2 class="h6 fw-semibold mb-1">Change password</h2>
+          <PeelCard v-if="auth.role !== 'child'" title="Change password" icon="bi-shield-lock" :initial-open="false">
             <p class="small text-muted-cb mb-3">Leave blank to keep your current password.</p>
 
             <div class="mb-3">
@@ -180,12 +177,10 @@ async function save() {
                 autocomplete="new-password"
               />
             </div>
-          </div>
+          </PeelCard>
 
           <!-- Skills + availability (volunteer only) -->
-          <div v-if="auth.role === 'volunteer'" class="cb-card p-4 mb-4">
-            <h2 class="h6 fw-semibold mb-3">Skills &amp; schedule</h2>
-
+          <PeelCard v-if="auth.role === 'volunteer'" title="Skills &amp; schedule" icon="bi-calendar-check" :initial-open="true">
             <fieldset class="mb-4">
               <legend class="form-label fs-6 mb-2">Skills I can help with</legend>
               <div class="d-flex flex-wrap gap-2">
@@ -219,7 +214,7 @@ async function save() {
                 </template>
               </div>
             </fieldset>
-          </div>
+          </PeelCard>
 
           <button
             type="submit"

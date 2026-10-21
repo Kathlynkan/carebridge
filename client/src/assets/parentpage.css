@@ -1,54 +1,81 @@
 /* Styles for the parent home page (ParentHomeView.vue).
-   Every rule starts with .parentpage so it only affects that page. */
+   Every rule starts with .parentpage so it only affects that page.
+   All colours use lapis design tokens from main.css. */
 
-/* ---------- the sentence at the top: big and yellow so a parent sees it first ---------- */
+/* ---------- top summary sentence ---------- */
 
 .parentpage .top-summary {
   margin-bottom: 24px;
   padding: 20px 24px;
-  border-left: 8px solid #e8708a;
-  border-radius: 12px;
-  background: #fff1a8;
+  border: 3px solid var(--lapis-shadow);
+  border-left: 8px solid var(--lapis-orange);
+  border-radius: 16px;
+  background: var(--lapis-yellow);
+  color: var(--lapis-plum);
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 6px 6px 0 var(--lapis-shadow);
 }
 
-/* the two smaller lines under the sentence */
 .parentpage .top-extra {
   margin-top: 8px;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
 }
 
-/* the small label above the sentence */
 .parentpage .top-label {
   display: block;
   margin-bottom: 4px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #6b6b6b;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lapis-plum);
+  opacity: 0.7;
 }
 
-/* ---------- the notice board ---------- */
+/* ---------- notice board ---------- */
 
-/* the board: cork colour with a wooden frame */
 .parentpage .notice-board {
   padding: 20px;
-  border: 8px solid #8b5e3c;
-  border-radius: 12px;
-  background: #e0b97e;
+  padding-top: 28px;
+  border: 3px solid var(--lapis-shadow);
+  border-radius: 16px;
+  background: var(--lapis-plum);
+  box-shadow: 6px 6px 0 var(--lapis-shadow);
+  position: relative;
+  overflow: hidden;
 }
 
-/* the title "Notice board" on a piece of paper */
+.parentpage .notice-board::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(to right,
+    var(--lapis-pink)   0 25%,
+    var(--lapis-lime)   25% 50%,
+    var(--lapis-yellow) 50% 75%,
+    var(--lapis-orange) 75% 100%
+  );
+}
+
 .parentpage .board-title {
   display: inline-block;
   margin: 0 0 16px;
   padding: 6px 16px;
-  background: #fffdf2;
-  font-size: 20px;
+  background: var(--lapis-cream);
+  color: var(--lapis-plum);
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  border: 3px solid var(--lapis-shadow);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--lapis-shadow);
 }
 
-/* the row of tabs: Social, Latest session, Homework */
 .parentpage .notice-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -56,66 +83,84 @@
   margin-bottom: 16px;
 }
 
-/* one tab */
 .parentpage .notice-tab {
-  padding: 6px 14px;
-  border: 2px solid #8b5e3c;
-  background: #fffdf2;
-  color: #5a4630;
-  font-weight: 600;
+  padding: 6px 16px;
+  border: 3px solid var(--lapis-shadow);
+  background: var(--lapis-cream);
+  color: var(--lapis-plum);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.78rem;
   cursor: pointer;
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-/* the tab that is open */
+.parentpage .notice-tab:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--lapis-shadow);
+}
+
 .parentpage .notice-tab.active {
-  background: #fff1a8;
+  background: var(--lapis-yellow);
+  border-color: var(--lapis-shadow);
+  color: var(--lapis-plum);
+  box-shadow: 4px 4px 0 var(--lapis-shadow);
 }
 
-/* a note pinned on the board: yellow paper with a red pin on top */
+/* Post-it note: yellow paper with a pink pin */
 .parentpage .note {
   position: relative;
   margin-bottom: 12px;
   padding: 18px 12px 12px;
-  background: #fff8c9;
+  background: var(--lapis-yellow);
+  border: 3px solid var(--lapis-shadow);
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  color: var(--lapis-plum);
 }
+
 .parentpage .note::before {
   content: '';
   position: absolute;
-  top: 4px;
+  top: 5px;
   left: 50%;
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background: #c0392b;
+  background: var(--lapis-pink);
+  border: 2px solid var(--lapis-shadow);
 }
 
-/* the line of a post-it you click to open it */
 .parentpage .note summary {
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--lapis-plum);
 }
 
-/* the small heading on a note */
 .parentpage .note-label {
   display: block;
   margin-bottom: 4px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #6b6b6b;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lapis-plum);
+  opacity: 0.65;
 }
 
-/* ---------- session card (picture on the left, details on the right) ---------- */
+/* ---------- session card ---------- */
 
-/* the whole card is a white paper */
 .parentpage .parent-session-card {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   padding: 24px 16px 16px;
-  background: #fffdf2;
+  background: var(--lapis-cream);
 }
 
-/* the picture box with the < > arrows */
 .parentpage .session-pic {
   display: flex;
   align-items: center;
@@ -124,13 +169,16 @@
   width: 160px;
   min-height: 160px;
 }
+
 .parentpage .session-pic img {
   width: 120px;
   height: 160px;
   object-fit: cover;
+  border: 3px solid var(--lapis-shadow);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 var(--lapis-shadow);
 }
 
-/* shown when the session has no photo yet */
 .parentpage .pic-empty {
   display: flex;
   flex-direction: column;
@@ -138,45 +186,57 @@
   justify-content: center;
   width: 120px;
   height: 160px;
-  border: 2px dashed #b8b2a3;
-  color: #6b6b6b;
+  border: 3px dashed var(--lapis-purple);
+  border-radius: 8px;
+  background: var(--lapis-cream);
+  color: var(--cb-muted);
 }
 
-/* the < and > buttons */
 .parentpage .pic-arrow {
   border: 0;
   background: transparent;
   font-size: 24px;
-  color: #2f7d4f;
+  color: var(--lapis-pink);
+  font-weight: 800;
   cursor: pointer;
+  transition: transform 0.1s ease;
 }
 
-/* the right side: dropdown, title, details, homework */
+.parentpage .pic-arrow:hover { transform: scale(1.2); }
+
 .parentpage .session-info {
   flex: 1;
   min-width: 200px;
+  color: var(--lapis-plum);
 }
-/* the "Session: Academic" dropdown */
+
 .parentpage .session-kind {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--lapis-plum);
 }
-/* the details under the title */
+
 .parentpage .session-details {
   margin-bottom: 12px;
+  font-weight: 500;
+  color: var(--lapis-plum);
 }
 
-/* the homework box */
 .parentpage .session-homework {
   padding: 8px 12px;
-  border: 2px solid #8b5e3c;
+  border: 3px solid var(--lapis-shadow);
+  border-radius: 8px;
+  background: var(--lapis-lime);
+  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  color: var(--lapis-plum);
+  font-weight: 600;
 }
-/* ---------- homework status (Homework tab) ---------- */
 
-/* the row of four small boxes */
+/* ---------- homework status boxes ---------- */
+
 .parentpage .homework-status {
   display: flex;
   flex-wrap: wrap;
@@ -184,44 +244,46 @@
   margin-bottom: 16px;
 }
 
-/* one box: a big number and a small word */
 .parentpage .status-box {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-width: 96px;
   padding: 8px 12px;
-  border: 2px solid #8b5e3c;
-  background: #fffdf2;
+  border: 3px solid var(--lapis-shadow);
+  border-radius: 10px;
+  background: var(--lapis-cream);
+  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  color: var(--lapis-plum);
+  font-weight: 700;
 }
-/* the Late box turns red when something is late */
+
 .parentpage .status-box.late {
-  border-color: #c0392b;
-  background: #fdecea;
+  background: var(--lapis-pink);
+  color: var(--lapis-cream);
 }
 
-/* ---------- the timeline of recent sessions ---------- */
+/* ---------- session timeline ---------- */
 
-/* a line down the left with a dot for each session */
 .parentpage .timeline {
-  border-left: 2px solid #e8708a;
+  border-left: 4px solid var(--lapis-yellow);
   margin-left: 6px;
 }
 
-/* one session in the timeline: space on the left for the dot */
 .parentpage .timeline-item {
   position: relative;
   padding: 0 0 16px 20px;
 }
 
-/* the dot */
 .parentpage .timeline-item::before {
   content: '';
   position: absolute;
-  left: -7px;
+  left: -9px;
   top: 4px;
-  width: 12px;
-  height: 12px;
-  border-radius: 6px;
-  background: #e8708a;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background: var(--lapis-pink);
+  border: 3px solid var(--lapis-shadow);
+  box-shadow: 2px 2px 0 var(--lapis-shadow);
 }

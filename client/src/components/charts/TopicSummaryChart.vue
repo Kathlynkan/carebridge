@@ -20,9 +20,9 @@ const props = defineProps({
 })
 
 function barColor(acc) {
-  if (acc < 50) return '#e05c3a'
-  if (acc < 75) return '#e8a33d'
-  return '#2f7d4f'
+  if (acc < 50) return '#FF3D7F'   // Lapis Pink — needs help
+  if (acc < 75) return '#FF8C42'   // Lapis Orange — steady
+  return '#A8E063'                  // Lapis Lime — strong
 }
 
 const byTopic = computed(() => {
@@ -76,9 +76,9 @@ const chartOptions = {
         <Bar :data="chartData" :options="chartOptions" />
       </div>
       <div class="d-flex flex-wrap gap-3 mt-2 small text-muted-cb">
-        <span><span style="color: #2f7d4f; font-size: 1.1em">●</span> Strong (≥75%)</span>
-        <span><span style="color: #e8a33d; font-size: 1.1em">●</span> Steady (50–74%)</span>
-        <span><span style="color: #e05c3a; font-size: 1.1em">●</span> Needs help (&lt;50%)</span>
+        <span><span style="color:#A8E063;font-size:1.1em">●</span> Strong (≥75%)</span>
+        <span><span style="color:#FF8C42;font-size:1.1em">●</span> Steady (50–74%)</span>
+        <span><span style="color:#FF3D7F;font-size:1.1em">●</span> Needs help (&lt;50%)</span>
       </div>
     </template>
   </div>

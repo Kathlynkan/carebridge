@@ -1,8 +1,5 @@
-<!-- =============================================================
-  DEV-ONLY helper: shows who owns a page and what is left to build.
-  Lets the whole team see the plan right inside the running app.
-  !!! Remove every <TodoPanel> before the final submission !!!
-============================================================= -->
+<!-- DEV-ONLY: shows who owns a page and what is left to build.
+     Remove every <TodoPanel> before final submission. -->
 <script setup>
 import { ref } from 'vue'
 
@@ -20,7 +17,7 @@ const open = ref(true)
       <span><i class="bi bi-tools me-2"></i><strong>Owner: {{ owner }}</strong> &middot; to build</span>
       <i class="bi" :class="open ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
     </button>
-    <ul v-if="open" class="small mb-0 mt-2">
+    <ul v-if="open" class="small mb-0 mt-2 ps-3">
       <li v-for="item in items" :key="item">{{ item }}</li>
     </ul>
   </div>
@@ -28,9 +25,11 @@ const open = ref(true)
 
 <style scoped>
 .todo-panel {
-  border: 2px dashed #c9a227;
-  background: #fffbea;
+  border: 3px dashed var(--lapis-orange);
+  background: var(--lapis-yellow);
   border-radius: var(--cb-radius);
   padding: 0.6rem 0.9rem;
+  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  color: var(--lapis-plum);
 }
 </style>

@@ -97,20 +97,25 @@ const roles = [
 
 <style scoped>
 .hero {
-  background: linear-gradient(180deg, var(--cb-primary-soft), var(--cb-bg));
+  background: transparent; /* lapis bands show through from body */
 }
+
 .handover-demo {
-  border-left: 6px solid var(--cb-accent);
+  border-left: 6px solid var(--lapis-orange);
 }
+
 .step-num {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: var(--cb-accent);
-  color: #064e3b;
+  background: var(--lapis-pink);
+  color: var(--lapis-cream);
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 3px solid var(--lapis-shadow);
+  box-shadow: 3px 3px 0 var(--lapis-shadow);
+  flex-shrink: 0;
 }
 </style>

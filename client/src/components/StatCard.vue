@@ -1,37 +1,66 @@
-<!-- KPI number card, e.g. on the coordinator dashboard
-  <StatCard label="Sessions this week" :value="12" icon="bi-journal-check" />
--->
+<!-- KPI number card — e.g. on the coordinator dashboard -->
 <script setup>
 defineProps({
   label: { type: String, required: true },
   value: { type: [String, Number], required: true },
-  icon: { type: String, default: 'bi-bar-chart' },
-  hint: String,
+  icon:  { type: String, default: 'bi-bar-chart' },
+  hint:  String,
+  color: { type: String, default: 'pink' }, // pink | lime | yellow | orange | purple
 })
 </script>
 
 <template>
-  <div class="cb-card p-3 h-100 d-flex align-items-center gap-3">
-    <div class="stat-icon"><i class="bi" :class="icon"></i></div>
+  <div class="cb-card cb-card-hover p-3 h-100 d-flex align-items-center gap-3" style="padding-top: 1.25rem !important;">
+    <div class="stat-icon" :data-color="color">
+      <i class="bi" :class="icon"></i>
+    </div>
     <div>
-      <div class="h4 mb-0 fw-heavy">{{ value }}</div>
-      <div class="small text-muted-cb">{{ label }}</div>
-      <div v-if="hint" class="small">{{ hint }}</div>
+      <div class="stat-value">{{ value }}</div>
+      <div class="stat-label">{{ label }}</div>
+      <div v-if="hint" class="stat-hint">{{ hint }}</div>
     </div>
   </div>
 </template>
 
 <style scoped>
 .stat-icon {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
-  background: var(--cb-primary-soft);
-  color: var(--cb-primary);
+  font-size: 1.4rem;
+  border: 3px solid var(--lapis-shadow);
+  box-shadow: 3px 3px 0 var(--lapis-shadow);
   flex-shrink: 0;
+}
+
+.stat-icon[data-color='pink']   { background: var(--lapis-pink);   color: var(--lapis-cream); }
+.stat-icon[data-color='lime']   { background: var(--lapis-lime);   color: var(--lapis-plum);  }
+.stat-icon[data-color='yellow'] { background: var(--lapis-yellow); color: var(--lapis-plum);  }
+.stat-icon[data-color='orange'] { background: var(--lapis-orange); color: var(--lapis-plum);  }
+.stat-icon[data-color='purple'] { background: var(--lapis-purple); color: var(--lapis-cream); }
+
+.stat-value {
+  font-family: 'Fredoka', 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: var(--lapis-plum);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cb-muted);
+}
+
+.stat-hint {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--cb-muted);
 }
 </style>
