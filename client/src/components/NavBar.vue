@@ -124,7 +124,7 @@ async function logout() {
   text-decoration: none;
   background: var(--lapis-cream);
   border: 3px solid var(--lapis-shadow);
-  border-radius: 999px;
+  border-radius: 6px;
   padding: 0.25rem 1rem;
   box-shadow: 3px 3px 0 var(--lapis-shadow);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -145,7 +145,7 @@ async function logout() {
   color: var(--lapis-plum) !important;
   background: var(--lapis-cream);
   border: 3px solid var(--lapis-shadow);
-  border-radius: 999px;
+  border-radius: 6px;
   padding: 0.3rem 0.9rem;
   text-decoration: none;
   box-shadow: 3px 3px 0 var(--lapis-shadow);
@@ -172,7 +172,7 @@ async function logout() {
   align-items: center;
   background: var(--lapis-cream);
   border: 3px solid var(--lapis-shadow);
-  border-radius: 999px;
+  border-radius: 6px;
   padding: 0.25rem 0.8rem;
   font-weight: 700;
   font-size: 0.85rem;
@@ -190,7 +190,7 @@ async function logout() {
   background: var(--lapis-pink);
   color: var(--lapis-cream);
   border: 2px solid var(--lapis-shadow);
-  border-radius: 999px;
+  border-radius: 6px;
   font-size: 0.65rem;
   font-weight: 800;
   text-transform: uppercase;

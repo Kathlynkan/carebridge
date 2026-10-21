@@ -1,5 +1,5 @@
 <!--
-  PeelableCard — a cb-card whose top kueh layer can be peeled off.
+  PeelableCard — a cb-card whose left strip peels away to the right.
 
   Usage:
     <PeelableCard>
@@ -7,47 +7,41 @@
     </PeelableCard>
 
   Behaviour:
-    • A coloured strip sits at the top of every card (the "top layer" of the kueh).
-    • The user can click/tap and drag it downward.
-    • It rotates around its top edge using rotateX + perspective — like paper peeling.
-    • Drag > 40 % of the strip height → commits: strip animates off, revealing the next layer.
+    • A coloured strip sits on the left edge of every card.
+    • The user can click/tap and drag it rightward.
+    • It rotates around its left edge using rotateY + perspective — like a page turning.
+    • Drag > 40 % of the strip width → commits: strip animates off, revealing the next colour.
     • Drag < 40 % → snaps back with a spring.
     • Respects prefers-reduced-motion: skips to a colour-change cross-fade instead.
 -->
 <script setup>
 import { ref, computed, onUnmounted } from 'vue'
 
-// The 4-colour sequence for the peelable strip.
-// After each peel the next colour shows, cycling round.
 const STRIP_COLOURS = [
-  { front: '#F8BBD0', under: '#cc0055' }, // pink  → dark pink underside
-  { front: '#A5D6A7', under: '#6aa830' }, // lime  → dark lime
-  { front: '#FFF59D', under: '#ccaa00' }, // yellow → dark yellow
-  { front: '#FFCCBC', under: '#cc6010' }, // orange → dark orange
+  { front: '#E8789A', under: '#C05070' },
+  { front: '#A8D870', under: '#70A840' },
+  { front: '#F0D060', under: '#C8A830' },
+  { front: '#F0A868', under: '#C87840' },
 ]
 
-const STRIP_H   = 14   // px — height of the draggable strip
-const THRESHOLD = 0.4  // fraction of STRIP_H at which the peel commits
+const STRIP_W   = 14   // px — width of the draggable strip
+const THRESHOLD = 0.4  // fraction at which the peel commits
 
 const colourIdx = ref(0)
 const progress  = ref(0)   // 0 = flat, 1 = fully peeled
 const dragging  = ref(false)
-const peeling   = ref(false) // true while animating to committed
-const peeled    = ref(false) // true = strip gone (next layer locked in)
+const peeling   = ref(false)
+const peeled    = ref(false)
 
-let startY = 0
-
-// ---------- computed styles ----------
+let startX = 0
 
 const stripColour = computed(() => STRIP_COLOURS[colourIdx.value])
-const nextColour  = computed(() => STRIP_COLOURS[(colourIdx.value + 1) % STRIP_COLOURS.length])
 
 const stripStyle = computed(() => {
-  const deg = progress.value * -125   // rotate toward the viewer (negative = top lifts toward you)
+  const deg = progress.value * 125   // rotateY: positive = right edge peels toward viewer
   return {
-    '--strip-bg': stripColour.value.front,
-    transform: `perspective(500px) rotateX(${deg}deg)`,
-    transformOrigin: 'top center',
+    transform: `perspective(500px) rotateY(${deg}deg)`,
+    transformOrigin: 'left center',
     transition: dragging.value
       ? 'none'
       : peeling.value
@@ -56,34 +50,30 @@ const stripStyle = computed(() => {
     opacity: peeling.value ? 1 - progress.value * 0.4 : 1,
     cursor: 'grab',
     userSelect: 'none',
-    // Lift shadow grows as the strip peels
     filter: progress.value > 0.05
-      ? `drop-shadow(0 ${Math.round(progress.value * 12)}px ${Math.round(progress.value * 8)}px rgba(42,6,24,0.4))`
+      ? `drop-shadow(${Math.round(progress.value * 10)}px 0 ${Math.round(progress.value * 8)}px rgba(58,10,42,0.25))`
       : 'none',
   }
 })
 
-// The "revealed underside" — the darker layer peeking out from under the strip
 const underlayStyle = computed(() => ({
   background: stripColour.value.under,
   opacity: Math.min(1, progress.value * 2),
 }))
 
-// ---------- pointer handlers ----------
-
 function onPointerDown(e) {
   if (peeled.value || peeling.value) return
   e.preventDefault()
   dragging.value = true
-  startY = e.clientY ?? e.touches?.[0]?.clientY ?? 0
+  startX = e.clientX ?? e.touches?.[0]?.clientX ?? 0
   window.addEventListener('pointermove', onPointerMove, { passive: false })
   window.addEventListener('pointerup', onPointerUp)
 }
 
 function onPointerMove(e) {
   if (!dragging.value) return
-  const dy = (e.clientY ?? e.touches?.[0]?.clientY ?? startY) - startY
-  progress.value = Math.max(0, Math.min(1, dy / (STRIP_H * 2.5)))
+  const dx = (e.clientX ?? e.touches?.[0]?.clientX ?? startX) - startX
+  progress.value = Math.max(0, Math.min(1, dx / (STRIP_W * 2.5)))
 }
 
 function onPointerUp() {
@@ -91,21 +81,18 @@ function onPointerUp() {
   cleanup()
 
   if (progress.value >= THRESHOLD) {
-    // Commit: animate strip flying off
     peeling.value = true
     progress.value = 1
     setTimeout(() => {
       peeling.value = false
       peeled.value  = true
       colourIdx.value = (colourIdx.value + 1) % STRIP_COLOURS.length
-      // Re-appear with the next strip after a brief gap
       setTimeout(() => {
         progress.value = 0
         peeled.value   = false
       }, 120)
     }, 380)
   } else {
-    // Snap back
     progress.value = 0
   }
 }
@@ -120,10 +107,6 @@ onUnmounted(cleanup)
 
 <template>
   <div class="peel-root cb-card">
-    <!--
-      The peelable top strip.
-      Hidden during the brief gap between commit and re-appear (peeled = true).
-    -->
     <div
       v-show="!peeled"
       class="peel-strip"
@@ -134,16 +117,12 @@ onUnmounted(cleanup)
       @pointerdown="onPointerDown"
       @keydown.enter="() => { progress = THRESHOLD; onPointerUp() }"
     >
-      <!-- Front: the coloured band -->
       <div class="peel-face peel-front" :style="{ background: stripColour.front }" />
-      <!-- Back: darker underside that shows as the strip curls -->
-      <div class="peel-face peel-back" :style="{ background: stripColour.under }" />
+      <div class="peel-face peel-back"  :style="{ background: stripColour.under }" />
     </div>
 
-    <!-- The colour revealed beneath the strip as it lifts -->
     <div class="peel-underlay" :style="underlayStyle" />
 
-    <!-- Card content — given left padding to clear the edge strip -->
     <div class="peel-body">
       <slot />
     </div>
@@ -151,21 +130,21 @@ onUnmounted(cleanup)
 </template>
 
 <style scoped>
-/* ── wrapper ──────────────────────────────────────────────── */
 .peel-root {
-  /* pb-0 on the base cb-card — padding already on .peel-body */
   padding: 0 !important;
-  overflow: visible; /* let the strip shadow spill */
+  overflow: visible;
+  display: flex;
 }
 
 /* ── strip ────────────────────────────────────────────────── */
 .peel-strip {
   position: relative;
-  height: v-bind('STRIP_H + "px"');
-  border-radius: calc(var(--cb-radius) - 3px) calc(var(--cb-radius) - 3px) 0 0;
+  width: v-bind('STRIP_W + "px"');
+  flex-shrink: 0;
+  border-radius: calc(var(--cb-radius) - 3px) 0 0 calc(var(--cb-radius) - 3px);
   overflow: hidden;
-  /* The strip sits above the ::before left-edge via stacking context */
   z-index: 2;
+  align-self: stretch;
 }
 
 .peel-face {
@@ -173,32 +152,33 @@ onUnmounted(cleanup)
   inset: 0;
 }
 
-/* The back face is flipped — only visible when the strip has rotated past 90° */
 .peel-back {
-  transform: rotateX(180deg);
+  transform: rotateY(180deg);
   backface-visibility: visible;
 }
 
 /* ── underlay ─────────────────────────────────────────────── */
 .peel-underlay {
   position: absolute;
-  top: 0;
-  left: 10px; /* clear the left-edge cross-section */
-  right: 0;
-  height: v-bind('STRIP_H + "px"');
-  border-radius: 0 calc(var(--cb-radius) - 3px) 0 0;
+  left: 0;
+  top: 3px;
+  bottom: 3px;
+  width: v-bind('STRIP_W + "px"');
+  border-radius: calc(var(--cb-radius) - 3px) 0 0 calc(var(--cb-radius) - 3px);
   pointer-events: none;
   z-index: 1;
 }
 
 /* ── content ──────────────────────────────────────────────── */
 .peel-body {
-  padding: 1rem 1rem 1rem 1.5rem; /* left: 10px edge + 16px gutter */
+  flex: 1;
+  padding: 1rem 1rem 1rem 1.25rem;
   position: relative;
   z-index: 2;
+  min-width: 0;
 }
 
-/* ── reduced motion: skip the 3-D rotation ────────────────── */
+/* ── reduced motion ───────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .peel-strip {
     transition: opacity 0.15s ease !important;
