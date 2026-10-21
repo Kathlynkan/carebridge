@@ -3,10 +3,10 @@
      Use as a section divider inside a page (not the main background). -->
 <script setup>
 const LAYERS = [
-  { color: '#F8BBD0', label: 'Wellbeing', interactive: true },
-  { color: '#A5D6A7', label: 'Learning',  interactive: true },
-  { color: '#FFF59D', label: 'Growth',    interactive: true },
-  { color: '#FFCCBC', label: 'Progress',  interactive: true },
+  { color: '#E94B8B', label: 'Wellbeing', interactive: true },
+  { color: '#7ED36B', label: 'Learning',  interactive: true },
+  { color: '#4FC3E6', label: 'Growth',    interactive: true },
+  { color: '#9A6AD6', label: 'Progress',  interactive: true },
 ]
 </script>
 
