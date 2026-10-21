@@ -17,6 +17,10 @@ const sessionSchema = new mongoose.Schema(
     nextStep: String,
     mood: { type: String, enum: ['happy', 'okay', 'tired', 'frustrated'], default: 'okay' },
     notes: String,
+    activity: String,
+    interaction: String,
+    behaviour: String,
+    socialNotes: String
   },
   { toJSON: jsonOptions },
 )
