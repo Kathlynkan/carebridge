@@ -10,63 +10,63 @@
 :root {
   --band: 16px;
 
-  --lapis-pink:   #F7A3C2; /* pink */
-  --lapis-cream:  #FFFDF7; /* coconut white */
-  --lapis-lime:   #90D49A; /* pandan green */
-  --lapis-yellow: #FFEB66; /* butter yellow */
-  --lapis-orange: #FFB59C; /* peach */
-  --lapis-purple: #BCA6EA; /* lavender */
-  --lapis-plum:   #4A3F3A; /* warm brown ink, for text */
-  --lapis-shadow: #B9A99B; /* soft taupe, for borders and shadows */
-  --lapis-apricot: #FFC78E;
-  --lapis-mint:    #B4E5BE;
-  --lapis-sky:     #8DD3F6; /* sky blue */
+  --lapis-pink:   #E94B8B; /* pink */
+  --lapis-cream:  #FFF7FA; /* coconut white */
+  --lapis-lime:   #7ED36B; /* pandan green */
+  --lapis-yellow: #FADCE6; /* butter yellow */
+  --lapis-orange: #4FC3E6; /* peach */
+  --lapis-purple: #9A6AD6; /* lavender */
+  --lapis-plum:   #3B2A33; /* warm brown ink, for text */
+  --lapis-shadow: #3B2A33; /* soft taupe, for borders and shadows */
+  --lapis-apricot: #FFC9A0;
+  --lapis-mint:    #B6E6A6;
+  --lapis-sky:     #9ADBF2; /* sky blue */
 
   /* ── One colour per topic, used everywhere in the app ──
      academic = pink, social = blue, homework = lavender,
-     schedule = apricot, messages = green, highlights = yellow */
-  --topic-academic:       #F7A3C2;
-  --topic-academic-soft:  #FDE3EE;
-  --topic-social:         #8DD3F6;
-  --topic-social-soft:    #E0F3FD;
-  --topic-homework:       #BCA6EA;
-  --topic-homework-soft:  #EEE8FA;
-  --topic-schedule:       #FFC78E;
-  --topic-schedule-soft:  #FFF0DC;
-  --topic-messages:       #90D49A;
-  --topic-messages-soft:  #E6F6E9;
-  --topic-highlight:      #FFEB66;
-  --topic-highlight-soft: #FFF8C2;
+     schedule = lime, messages = peach, highlights = blush */
+  --topic-academic:       #F6A6C9;
+  --topic-academic-soft:  #FDE6F0;
+  --topic-social:         #9ADBF2;
+  --topic-social-soft:    #E3F6FC;
+  --topic-homework:       #C3A2EB;
+  --topic-homework-soft:  #EFE6FA;
+  --topic-schedule:       #B6E6A6;
+  --topic-schedule-soft:  #EAF7E4;
+  --topic-messages:       #FFC9A0;
+  --topic-messages-soft:  #FFF0E2;
+  --topic-highlight:      #FADCE6;
+  --topic-highlight-soft: #FFF0F5;
   --topic-alert:          #FF8A80;
   --topic-alert-soft:     #FFE1DE;
 
   /* Legacy cb tokens — remapped so existing templates keep working */
   --cb-primary:      var(--lapis-lime);
-  --cb-primary-dark: #6FBF7B;
-  --cb-primary-soft: #D4F0DA;
+  --cb-primary-dark: #4FB45C;
+  --cb-primary-soft: #E4F6DC;
   --cb-accent:       var(--lapis-yellow);
-  --cb-accent-soft:  #FFF4B0;
+  --cb-accent-soft:  #FFF0F5;
   --cb-ruby:         var(--lapis-pink);
   --cb-ruby-soft:    #FDE3EE;
   --cb-danger-soft:  #FFE1DE;
   --cb-bg:           var(--lapis-cream);
   --cb-surface:      var(--lapis-cream);
   --cb-text:         var(--lapis-plum);
-  --cb-muted:        #8D7F77;
+  --cb-muted:        #8A6E7C;
   --cb-border:       var(--lapis-shadow);
   --cb-radius:       0px;
 
   /* Bootstrap colour overrides */
   --bs-primary:           var(--lapis-pink);
-  --bs-primary-rgb:       247, 163, 194;
+  --bs-primary-rgb:       233, 75, 139;
   --bs-success:           var(--lapis-lime);
-  --bs-success-rgb:       144, 212, 154;
+  --bs-success-rgb:       126, 211, 107;
   --bs-warning:           var(--lapis-yellow);
-  --bs-warning-rgb:       255, 235, 102;
+  --bs-warning-rgb:       250, 220, 230;
   --bs-danger:            var(--topic-alert);
   --bs-danger-rgb:        255, 138, 128;
-  --bs-link-color:        #7A5AA6;
-  --bs-link-hover-color:  #C2557A;
+  --bs-link-color:        #7A4FB8;
+  --bs-link-hover-color:  #C93A74;
   --bs-body-font-family:  'Nunito', ui-rounded, 'Segoe UI', sans-serif;
   --bs-body-color:        var(--lapis-plum);
   --bs-body-bg:           var(--lapis-cream);
@@ -199,10 +199,10 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-pink);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-cream);
-  --bs-btn-hover-bg:            #E27AA2;
+  --bs-btn-hover-bg:            #D63D80;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-cream);
-  --bs-btn-active-bg:           #E27AA2;
+  --bs-btn-active-bg:           #D63D80;
   --bs-btn-active-border-color: var(--lapis-shadow);
   --bs-btn-disabled-bg:         var(--lapis-pink);
   --bs-btn-disabled-border-color: var(--lapis-shadow);
@@ -248,10 +248,10 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-orange);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-plum);
-  --bs-btn-hover-bg:            #F29E7C;
+  --bs-btn-hover-bg:            #35A9CF;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-plum);
-  --bs-btn-active-bg:           #F29E7C;
+  --bs-btn-active-bg:           #35A9CF;
   box-shadow: 4px 4px 0 var(--lapis-shadow);
 }
 
@@ -286,7 +286,7 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-pink);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-cream);
-  --bs-btn-hover-bg:            #E592AD;
+  --bs-btn-hover-bg:            #D63D80;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-cream);
   box-shadow: 4px 4px 0 var(--lapis-shadow);
