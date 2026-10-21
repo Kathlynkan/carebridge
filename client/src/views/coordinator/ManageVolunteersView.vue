@@ -12,8 +12,6 @@ import { ref, computed, onMounted } from 'vue'
 import api, { errorMessage } from '@/services/api'
 import PageHeader from '@/components/PageHeader.vue'
 import StateMessage from '@/components/StateMessage.vue'
-import TodoPanel from '@/components/TodoPanel.vue'
-
 const Days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 const volunteers = ref([])

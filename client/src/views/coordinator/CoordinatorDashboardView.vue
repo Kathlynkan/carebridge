@@ -15,7 +15,6 @@ import api, { errorMessage } from '@/services/api'
 import PageHeader from '@/components/PageHeader.vue'
 import StatCard from '@/components/StatCard.vue'
 import StateMessage from '@/components/StateMessage.vue'
-import TodoPanel from '@/components/TodoPanel.vue'
 import TopicSummaryChart from '@/components/charts/TopicSummaryChart.vue'
 
 const router = useRouter()

@@ -1,10 +1,10 @@
-# Kids Lapis — Student Care Handover & Progress Tracking
+# Kids Lapis — Student Care Development & Progress Tracking
 
 IS216 Web Application Development II — Group Project
 
-At student care centres, a different volunteer may help the same child each day. Without a proper handover, the next volunteer doesn't know what the child learned, what they struggled with, or which teaching methods worked. Kids Lapis keeps each child's learning history in one place and uses an LLM API to turn past session notes into a short handover for the next volunteer.
+Parents whose children attend student care centres often have limited visibility into what actually happens during each session. The volunteers who work with children hold valuable observations — what the child is working on, how they are feeling, what approaches help — but this information rarely reaches parents in any useful form. Kids Lapis collects structured observations from volunteers and turns them into a clear, regularly-updated picture of each child's development that parents can actually read and act on.
 
-**Core flow:** Child practises → Volunteer records session → App stores history → API summarises handover → Next volunteer continues
+**Core flow:** Volunteer records session (academic progress, mood, struggles, what worked) → App stores history → Gemini AI summarises it in plain language → Parent sees a personalised update, charts, and mood timeline → Next volunteer is briefed and continues without losing context
 
 > 👉 **Team members: read [WORKLOAD.md](WORKLOAD.md) first.** It says who owns what. Then read [CONTRIBUTING.md](CONTRIBUTING.md) for the git workflow.
 
@@ -23,7 +23,7 @@ At student care centres, a different volunteer may help the same child each day.
 | HTTP | Axios (one shared instance in `src/services/api.js`) |
 | Backend | Node.js + Express (REST API, same style as the Week 5 blog service) |
 | Data store | MongoDB Atlas via Mongoose (models in `server/models/`). Demo data is loaded from `server/data/seed.json` with `pnpm seed`. |
-| External API | Google Gemini API (LLM handover summaries), called from the server so the API key stays secret |
+| External API | Google Gemini API (LLM handover and parent summaries), called from the server so the API key stays secret |
 | Charts | Chart.js + vue-chartjs |
 | Testing | Playwright (end-to-end, desktop + iPhone 6 viewport), Vitest (unit) |
 
@@ -65,9 +65,9 @@ pnpm dev
 
 You should see `Connected to MongoDB database "kidslapis_<yourname>"`. Run `pnpm seed` again any time to reset the demo data.
 
-To look at the data, use **Atlas → Browse Collections** or **MongoDB Compass**: `users`, `children`, `sessions`, `homeworks`, `messages`.
+To look at the data, use **Atlas → Browse Collections** or **MongoDB Compass**: `users`, `children`, `sessions`, `homeworks`, `messages`, `handovers`, `decks`.
 
-To turn on the AI handover, paste a free Gemini key into `server/config.env` (`GEMINI_API_KEY=...`, get one at https://aistudio.google.com/apikey). Without a key the app still works: it falls back to a rule-based summary.
+To turn on the AI summary, paste a free Gemini key into `server/config.env` (`GEMINI_API_KEY=...`, get one at https://aistudio.google.com/apikey). Without a key the app still works: it falls back to a rule-based summary.
 
 ### Terminal 2 — Vue app (http://localhost:5173)
 
@@ -94,9 +94,10 @@ Open http://localhost:5173. The URL with `/__devtools__/` opens Vue DevTools.
 
 The demo data is built to trigger interesting cases:
 
-- Ethan's fractions improve from 1/5 to 4/5, but "common denominators" keeps coming back.
-- Chloe has had no session for 11 days.
-- Sofia has no volunteer assigned.
+- Ethan's fractions improve from 1/5 to 4/5, but "common denominators" keeps coming back as a recurring struggle.
+- Ethan's mood has varied — parents can see the emotional trend alongside the academic one.
+- Chloe has had no session for 11 days — triggers a coordinator alert.
+- Sofia has no volunteer assigned — triggers an "unassigned child" alert.
 - Chloe also has overdue homework.
 
 ---
@@ -118,6 +119,7 @@ The E2E tests run on two projects: **Desktop Chrome** and **iPhone 6** (responsi
 | `e2e/auth.spec.js` | Landing page, login for all 4 roles, wrong password, route guards | Kai Sen |
 | `e2e/volunteer.spec.js` | Assigned children only, handover + history on profile, open session form | Yuqi / Ning Xuan |
 | `e2e/child.spec.js` | Child quests (submit, waiting message, badge shelf), leaderboard (loads, tab switch) | Jachin |
+| `e2e/parent.spec.js` | Parent home: greeting, child info, handover card, recurring badge, session timeline with mood labels, SkillProgressChart, child switcher, switching children | Jachin |
 
 ---
 
@@ -131,7 +133,7 @@ kids-lapis/
 │   ├── server.js          <- mounts all routes
 │   ├── config.env.example <- copy to config.env (git-ignored)
 │   ├── middleware/auth.js <- requireAuth, requireRole
-│   ├── models/            <- Mongoose schemas: User, Child, Session, Homework, Message
+│   ├── models/            <- Mongoose schemas: User, Child, Session, Homework, Message, Handover, Deck
 │   ├── utils/db.js        <- MongoDB connection (DB= in config.env)
 │   ├── utils/seed.js      <- `pnpm seed`: reset your database with the demo data
 │   ├── utils/access.js    <- who can see which child (+ the same rule as a Mongo filter)
@@ -163,17 +165,20 @@ All routes except `/auth/signup` and `/auth/login` need `Authorization: Bearer <
 | `POST / PUT / DELETE /children` | Manage children | ⏳ TODO | Kai Sen |
 | `GET /users?role=volunteer`, `GET /users/:id`, `PUT /users/:id` | Volunteers & profiles | ✅ done | Yu Xuan |
 | `GET /sessions?childId=`, `GET /sessions/:id` | Session history | ✅ done | Ning Xuan |
-| `POST / PUT / DELETE /sessions` | Record / edit / delete | ⏳ TODO | Ning Xuan |
+| `POST / PUT / DELETE /sessions` | Record / edit / delete | ✅ done | Ning Xuan |
 | `GET /homework?childId=` | Homework list | ✅ done | Ning Xuan |
-| `POST /homework` | Assign homework | ⏳ TODO | Ning Xuan |
-| `PUT /homework/:id/submit`, `PUT /homework/:id/verify`, `GET /homework/leaderboard` | Gamification | ✅ done | Jachin |
-| `POST /handover/:childId` | Handover summary (Gemini + fallback) | 🟡 fallback done, AI TODO | Yuqi |
-| `GET /messages?childId=` | Conversation | ✅ done | Kat |
-| `POST /messages`, `PUT /messages/read`, `GET /messages/unread` | Chat | ⏳ TODO | Kat |
+| `POST /homework` | Assign homework (with optional question deck) | ✅ done | Ning Xuan / Jachin |
+| `PUT /homework/:id/submit`, `PUT /homework/:id/verify` | Child submits; volunteer verifies and awards berries | ✅ done | Jachin |
+| `GET /homework/leaderboard` | Berry leaderboard (all-time + weekly) | ✅ done | Jachin |
+| `GET /decks` | Question bank decks for homework | ✅ done | Jachin |
+| `POST /handover/:childId` | AI summary (Gemini + fallback), audience: volunteer or parent | ✅ done | Yuqi |
+| `GET /messages?childId=` | Conversation history | ✅ done | Kat |
+| `POST /messages`, `PUT /messages/read`, `GET /messages/unread` | Send message, mark read, unread counts | ✅ done | Kat |
 | `GET /dashboard/summary` | KPI numbers | ✅ done | Yu Xuan |
-| `GET /dashboard/alerts` | Needs-attention list | ⏳ TODO | Yu Xuan |
-| `GET /matchmaking/:childId`, `PUT /matchmaking/:childId/assign` | Skills-based matching | ⏳ TODO | Yu Xuan |
-| `GET /progress/:childId`, `GET /progress/overview` | Chart data | ✅ done | Jachin |
+| `GET /dashboard/alerts` | Needs-attention list | ✅ done | Yu Xuan |
+| `PUT /dashboard/follow-up/:childId` | Toggle follow-up flag | ✅ done | Yu Xuan |
+| `GET /matchmaking/:childId`, `PUT /matchmaking/:childId/assign` | Skills-based volunteer matching | ✅ done | Yu Xuan |
+| `GET /progress/:childId`, `GET /progress/overview` | Per-topic accuracy, trends, recurring struggles | ✅ done | Jachin |
 
 ---
 

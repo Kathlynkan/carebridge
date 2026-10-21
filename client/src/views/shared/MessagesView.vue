@@ -1,14 +1,6 @@
 <!-- =============================================================
   Messages: volunteer <-> parent, one conversation per child.   Owner: Kat
   Route: /messages/:childId?   (used by volunteers, parents, coordinators)
-  -------------------------------------------------------------
-  Already: list of children on the left, messages loaded for the selected child.
-  TODO (Kat):
-    [ ] onSend(text): POST /messages, then add it to the list
-    [ ] mark as read (PUT /messages/read) when a conversation is opened
-    [ ] unread badge per child in the left list (GET /messages/unread)
-    [ ] simple polling every 10s with setInterval (clear it in onUnmounted!)
-    [ ] mobile: show either the list OR the chat, with a back button
 ============================================================= -->
 <script setup>
 import { ref, onMounted, watch } from 'vue'
@@ -17,7 +9,6 @@ import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 import PageHeader from '@/components/PageHeader.vue'
 import StateMessage from '@/components/StateMessage.vue'
-import TodoPanel from '@/components/TodoPanel.vue'
 import ChatThread from '@/components/ChatThread.vue'
 
 const route = useRoute()
@@ -27,6 +18,7 @@ const auth = useAuthStore()
 const children = ref([])
 const messages = ref([])
 const loading = ref(true)
+const sending = ref(false)
 const error = ref('')
 
 async function loadMessages(childId) {
@@ -39,9 +31,17 @@ async function loadMessages(childId) {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
 async function onSend(text) {
-  // TODO (Kat)
+  if (!text?.trim() || !route.params.childId) return
+  sending.value = true
+  try {
+    const res = await api.post('/messages', { childId: route.params.childId, text })
+    messages.value.push(res.data)
+  } catch (err) {
+    error.value = errorMessage(err)
+  } finally {
+    sending.value = false
+  }
 }
 
 function selectChild(childId) {
@@ -94,7 +94,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="col-md-8">
-        <ChatThread :messages="messages" :current-user-id="auth.user.id" @send="onSend" />
+        <ChatThread :messages="messages" :current-user-id="auth.user.id" :sending="sending" @send="onSend" />
       </div>
     </div>
   </div>

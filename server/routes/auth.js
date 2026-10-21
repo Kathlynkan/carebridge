@@ -5,10 +5,11 @@
 // everyone else's routes:  validate -> Model.create / find -> res.json
 //
 // TODO (Kai Sen):
-//   [ ] Hash passwords with bcryptjs (pnpm add bcryptjs)
+//   [x] Hash passwords with bcryptjs
 //   [x] Stronger validation (email format, password length)
 // =============================================================
 import { Router } from 'express'
+import bcrypt from 'bcryptjs'
 import { User } from '../models/index.js'
 import { issueToken, revokeToken, requireAuth } from '../middleware/auth.js'
 
@@ -84,7 +85,7 @@ router.post('/signup', async (req, res) => {
     const user = await User.create({
       name,
       email,
-      password, // TODO (Kai Sen): store a bcrypt hash instead
+      password: await bcrypt.hash(password, 10),
       role,
       // new Set(...) removes duplicates; parents get empty lists
       skills: role === 'volunteer' ? [...new Set(req.body.skills)] : [],
@@ -106,7 +107,8 @@ router.post('/login', async (req, res) => {
   const { password } = req.body
   const user = await User.findOne({ email: cleanEmail(req.body.email) })
 
-  if (!user || user.password !== password) {
+  const valid = user && (await bcrypt.compare(password, user.password))
+  if (!valid) {
     return res.status(401).json({ message: 'Incorrect email or password.' })
   }
   const token = issueToken(user.id)

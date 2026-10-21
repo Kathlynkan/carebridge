@@ -2,11 +2,6 @@
   ChatThread - chat bubbles + send box.               Owner: Kat
   Props:  messages (Array), currentUserId (String), sending (Boolean)
   Emits:  send(text)
-  TODO (Kat):
-    [ ] emit('send', text) when the form is submitted, then clear the box
-    [ ] Enter to send (Week 5: @keyup.enter), disable when empty
-    [ ] auto-scroll to the newest message (watch + nextTick)
-    [ ] group messages by day ("Today", "Yesterday")
 ============================================================= -->
 <script setup>
 import { ref } from 'vue'
@@ -23,7 +18,10 @@ const emit = defineEmits(['send'])
 const draft = ref('')
 
 function submit() {
-  // TODO (Kat): emit the message to the parent page
+  const text = draft.value.trim()
+  if (!text) return
+  emit('send', text)
+  draft.value = ''
 }
 
 function time(iso) {
@@ -57,8 +55,9 @@ function time(iso) {
         class="form-control"
         placeholder="Type a message..."
         data-test="chat-input"
+        @keyup.enter="submit"
       />
-      <button class="btn btn-primary" type="submit" :disabled="sending">
+      <button class="btn btn-primary" type="submit" :disabled="sending || !draft.trim()">
         <i class="bi bi-send"></i>
       </button>
     </form>

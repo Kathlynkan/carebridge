@@ -75,6 +75,16 @@ export function buildFallbackHandover(sessions, audience = 'volunteer') {
     if (last.struggles.length > 0) {
       tricky = last.struggles.join(', ')
     }
+    // mention mood gently if the last session was tired or frustrated
+    if (last.mood === 'tired') {
+      tricky = tricky === 'Nothing in particular - it went smoothly.'
+        ? 'Seemed a bit tired in this session.'
+        : `${tricky} (seemed a bit tired)`
+    } else if (last.mood === 'frustrated') {
+      tricky = tricky === 'Nothing in particular - it went smoothly.'
+        ? 'Found this session a bit frustrating.'
+        : `${tricky} (seemed frustrated)`
+    }
     let helped = 'The volunteer is still finding out what works best.'
     if (last.whatWorked) {
       helped = last.whatWorked
@@ -145,6 +155,7 @@ function buildPrompt(child, sessions, audience) {
 
     notes = notes + `- ${date}: ${s.subject} - ${s.topic}. `
     notes = notes + `Score ${s.correct}/${s.attempted}. `
+    notes = notes + `Mood: ${s.mood || 'not recorded'}. `
     notes = notes + `Struggled with: ${struggles}. `
     notes = notes + `What worked: ${whatWorked}. `
     notes = notes + `Next step planned: ${nextStep}.\n`
@@ -163,7 +174,8 @@ function buildPrompt(child, sessions, audience) {
     style = `You are writing for the child's PARENT, not a teacher.
 Write short, warm, plain sentences. No jargon or abbreviations.
 Say "got 6 out of 8 right" instead of "6/8 correct". Say "a bit tricky" instead of "struggled".
-Be kind and honest. Mention one thing the child did well.`
+Be kind and honest. Mention one thing the child did well.
+If the child's mood was tired or frustrated in several recent sessions, mention this gently in the "struggle" field (e.g. "seemed a bit tired lately, and found X tricky"). If the mood was happy or okay, you can note positive engagement. Do not overinterpret a single session.`
   } else {
     style = `You are writing for the NEXT VOLUNTEER, who has never met this child.
 Be practical and specific, like a short note from one tutor to another.`
