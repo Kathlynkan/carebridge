@@ -21,7 +21,7 @@ const props = defineProps({
   sessions: { type: Array, default: () => [] },
 })
 
-const COLORS = ['#A8E063', '#FF3D7F', '#FFD93D', '#FF8C42', '#7B2D8E', '#3A0A2A']
+const COLORS = ['#6FBF84', '#E58AA8', '#F2C94C', '#F4A37A', '#A995D6', '#7EC3E6']
 
 const chartData = computed(() => {
   const byTopic = {}

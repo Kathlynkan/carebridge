@@ -8,9 +8,12 @@
   margin-bottom: 24px;
   padding: 20px 24px;
   border: 3px solid var(--lapis-shadow);
-  border-left: 8px solid var(--lapis-orange);
+  border-left: 8px solid var(--lapis-apricot);
   border-radius: 16px;
-  background: var(--lapis-yellow);
+  background: var(--lapis-orange);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 32px;
   color: var(--lapis-plum);
   font-size: 20px;
   font-weight: 700;
@@ -41,7 +44,7 @@
   padding-top: 28px;
   border: 3px solid var(--lapis-shadow);
   border-radius: 16px;
-  background: var(--lapis-plum);
+  background: var(--lapis-apricot);
   box-shadow: 6px 6px 0 var(--lapis-shadow);
   position: relative;
   overflow: hidden;
@@ -260,7 +263,7 @@
 
 .parentpage .status-box.late {
   background: var(--lapis-pink);
-  color: var(--lapis-cream);
+  color: var(--lapis-plum);
 }
 
 /* ---------- session timeline ---------- */
@@ -287,3 +290,73 @@
   border: 3px solid var(--lapis-shadow);
   box-shadow: 2px 2px 0 var(--lapis-shadow);
 }
+
+/* ---------- kueh lapis pastel tiles ---------- */
+
+/* the layered edge along the bottom of the big tiles: pink, cream, apricot, cream, pandan */
+.parentpage .top-summary::after,
+.parentpage .notice-board::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 12px;
+  background: linear-gradient(
+    to bottom,
+    var(--lapis-pink) 0 20%,
+    var(--lapis-cream) 20% 40%,
+    var(--lapis-apricot) 40% 60%,
+    var(--lapis-cream) 60% 80%,
+    var(--lapis-lime) 80% 100%
+  );
+}
+.parentpage .notice-board {
+  padding-bottom: 32px;
+}
+
+/* the child card is sky blue, the timeline card is lavender */
+.parentpage .tile-sky {
+  background: var(--lapis-sky);
+}
+.parentpage .tile-lav {
+  background: var(--lapis-purple);
+}
+
+/* ---------- the kueh lapis cake (homework tab) ---------- */
+
+.parentpage .cake-box {
+  margin-bottom: 16px;
+  padding: 10px 14px 12px;
+  border: 3px solid var(--lapis-shadow);
+  border-radius: 12px;
+  background: var(--lapis-cream);
+  box-shadow: 3px 3px 0 var(--lapis-shadow);
+}
+
+.parentpage .cake {
+  display: flex;
+  gap: 3px;
+  margin: 6px 0;
+}
+
+/* one layer: empty (dashed) until it is baked */
+.parentpage .cake i {
+  flex: 1;
+  height: 18px;
+  border-radius: 5px;
+  border: 2px dashed var(--lapis-shadow);
+  background: var(--lapis-cream);
+}
+.parentpage .cake i.baked {
+  border-style: solid;
+}
+.parentpage .cake i:nth-child(1).baked { background: var(--lapis-pink); }
+.parentpage .cake i:nth-child(2).baked { background: var(--lapis-cream); }
+.parentpage .cake i:nth-child(3).baked { background: var(--lapis-apricot); }
+.parentpage .cake i:nth-child(4).baked { background: var(--lapis-cream); }
+.parentpage .cake i:nth-child(5).baked { background: var(--lapis-lime); }
+.parentpage .cake i:nth-child(6).baked { background: var(--lapis-cream); }
+.parentpage .cake i:nth-child(7).baked { background: var(--lapis-sky); }
+.parentpage .cake i:nth-child(8).baked { background: var(--lapis-cream); }
+.parentpage .cake i:nth-child(9).baked { background: var(--lapis-purple); }

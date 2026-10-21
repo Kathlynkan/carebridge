@@ -3,10 +3,10 @@
      Use as a section divider inside a page (not the main background). -->
 <script setup>
 const LAYERS = [
-  { color: '#FF3D7F', label: 'Wellbeing', interactive: true },
-  { color: '#A8E063', label: 'Learning',  interactive: true },
-  { color: '#FFD93D', label: 'Growth',    interactive: true },
-  { color: '#FF8C42', label: 'Progress',  interactive: true },
+  { color: '#F8BBD0', label: 'Wellbeing', interactive: true },
+  { color: '#A5D6A7', label: 'Learning',  interactive: true },
+  { color: '#FFF59D', label: 'Growth',    interactive: true },
+  { color: '#FFCCBC', label: 'Progress',  interactive: true },
 ]
 </script>
 
@@ -34,8 +34,8 @@ const LAYERS = [
   display: flex;
   position: relative;
   z-index: 20;
-  border-top: 2px solid #2A0618;
-  border-bottom: 2px solid #2A0618;
+  border-top: 2px solid #B9A99B;
+  border-bottom: 2px solid #B9A99B;
 }
 
 .lapis-slot {

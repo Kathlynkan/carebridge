@@ -10,42 +10,45 @@
 :root {
   --band: 16px;
 
-  --lapis-pink:   #FF3D7F;
-  --lapis-cream:  #FFF8F0;
-  --lapis-lime:   #A8E063;
-  --lapis-yellow: #FFD93D;
-  --lapis-orange: #FF8C42;
-  --lapis-purple: #7B2D8E;
-  --lapis-plum:   #3A0A2A;
-  --lapis-shadow: #2A0618;
+  --lapis-pink:   #F8BBD0;
+  --lapis-cream:  #FFFDF7; /* coconut white */
+  --lapis-lime:   #A5D6A7; /* pandan green */
+  --lapis-yellow: #FFF59D; /* butter yellow */
+  --lapis-orange: #FFCCBC; /* peach */
+  --lapis-purple: #D1C4E9; /* lavender */
+  --lapis-plum:   #4A3F3A; /* warm brown ink, for text */
+  --lapis-shadow: #B9A99B; /* soft taupe, for borders and shadows */
+  --lapis-apricot: #FFD8B1;
+  --lapis-mint:    #C8E6C9;
+  --lapis-sky:     #B3E5FC;
 
   /* Legacy cb tokens — remapped so existing templates keep working */
   --cb-primary:      var(--lapis-lime);
-  --cb-primary-dark: #7BC23F;
-  --cb-primary-soft: #D6F5A0;
+  --cb-primary-dark: #86C08A;
+  --cb-primary-soft: #C8E6C9;
   --cb-accent:       var(--lapis-yellow);
-  --cb-accent-soft:  #FFF5B0;
+  --cb-accent-soft:  #FFFAC8;
   --cb-ruby:         var(--lapis-pink);
-  --cb-ruby-soft:    #FFD0E2;
-  --cb-danger-soft:  #FFD0E2;
+  --cb-ruby-soft:    #FCE4EC;
+  --cb-danger-soft:  #FCE4EC;
   --cb-bg:           var(--lapis-cream);
   --cb-surface:      var(--lapis-cream);
   --cb-text:         var(--lapis-plum);
-  --cb-muted:        #7B4060;
+  --cb-muted:        #8D7F77;
   --cb-border:       var(--lapis-shadow);
   --cb-radius:       16px;
 
   /* Bootstrap colour overrides */
   --bs-primary:           var(--lapis-pink);
-  --bs-primary-rgb:       255, 61, 127;
+  --bs-primary-rgb:       248, 187, 208;
   --bs-success:           var(--lapis-lime);
-  --bs-success-rgb:       168, 224, 99;
+  --bs-success-rgb:       165, 214, 167;
   --bs-warning:           var(--lapis-yellow);
-  --bs-warning-rgb:       255, 217, 61;
+  --bs-warning-rgb:       255, 245, 157;
   --bs-danger:            var(--lapis-pink);
-  --bs-danger-rgb:        255, 61, 127;
-  --bs-link-color:        var(--lapis-purple);
-  --bs-link-hover-color:  var(--lapis-pink);
+  --bs-danger-rgb:        248, 187, 208;
+  --bs-link-color:        #7A5AA6;
+  --bs-link-hover-color:  #C2557A;
   --bs-body-font-family:  'Nunito', ui-rounded, 'Segoe UI', sans-serif;
   --bs-body-color:        var(--lapis-plum);
   --bs-body-bg:           var(--lapis-cream);
@@ -181,10 +184,10 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-pink);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-cream);
-  --bs-btn-hover-bg:            #e0005f;
+  --bs-btn-hover-bg:            #EBA3BB;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-cream);
-  --bs-btn-active-bg:           #e0005f;
+  --bs-btn-active-bg:           #EBA3BB;
   --bs-btn-active-border-color: var(--lapis-shadow);
   --bs-btn-disabled-bg:         var(--lapis-pink);
   --bs-btn-disabled-border-color: var(--lapis-shadow);
@@ -230,10 +233,10 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-orange);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-plum);
-  --bs-btn-hover-bg:            #e07030;
+  --bs-btn-hover-bg:            #F5B99D;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-plum);
-  --bs-btn-active-bg:           #e07030;
+  --bs-btn-active-bg:           #F5B99D;
   box-shadow: 4px 4px 0 var(--lapis-shadow);
 }
 
@@ -268,7 +271,7 @@ h4, h5, h6 {
   --bs-btn-bg:                  var(--lapis-pink);
   --bs-btn-border-color:        var(--lapis-shadow);
   --bs-btn-color:               var(--lapis-cream);
-  --bs-btn-hover-bg:            #cc0055;
+  --bs-btn-hover-bg:            #E592AD;
   --bs-btn-hover-border-color:  var(--lapis-shadow);
   --bs-btn-hover-color:         var(--lapis-cream);
   box-shadow: 4px 4px 0 var(--lapis-shadow);

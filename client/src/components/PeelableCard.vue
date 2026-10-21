@@ -20,10 +20,10 @@ import { ref, computed, onUnmounted } from 'vue'
 // The 4-colour sequence for the peelable strip.
 // After each peel the next colour shows, cycling round.
 const STRIP_COLOURS = [
-  { front: '#FF3D7F', under: '#cc0055' }, // pink  → dark pink underside
-  { front: '#A8E063', under: '#6aa830' }, // lime  → dark lime
-  { front: '#FFD93D', under: '#ccaa00' }, // yellow → dark yellow
-  { front: '#FF8C42', under: '#cc6010' }, // orange → dark orange
+  { front: '#F8BBD0', under: '#cc0055' }, // pink  → dark pink underside
+  { front: '#A5D6A7', under: '#6aa830' }, // lime  → dark lime
+  { front: '#FFF59D', under: '#ccaa00' }, // yellow → dark yellow
+  { front: '#FFCCBC', under: '#cc6010' }, // orange → dark orange
 ]
 
 const STRIP_H   = 14   // px — height of the draggable strip

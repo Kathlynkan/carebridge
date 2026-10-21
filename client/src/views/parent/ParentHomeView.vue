@@ -141,6 +141,13 @@ const nextSession = computed(() => {
   }
 })
 
+// how many of the 9 cake layers are baked: one for every checked homework (a full cake is 9, then a new one starts)
+const layersBaked = computed(() => {
+  const checked = homeworkCounts.value.checked
+  if (checked > 0 && checked % 9 === 0) return 9
+  return checked % 9
+})
+
 // ONE friendly sentence about the latest session, shown at the very top
 const topSentence = computed(() => {
   if (!latest.value) return ''
@@ -235,7 +242,7 @@ onMounted(async () => {
       </div>
 
       <!-- the child's name, level and stars -->
-      <div class="cb-card p-3 p-md-4 mb-4 d-flex align-items-center gap-3">
+      <div class="cb-card tile-sky p-3 p-md-4 mb-4 d-flex align-items-center gap-3">
         <span class="avatar">{{ selectedChild.avatar }}</span>
         <div>
           <h2 class="h5 mb-0">{{ selectedChild.name }}</h2>
@@ -318,6 +325,15 @@ onMounted(async () => {
                 <div class="status-box" :class="{ late: homeworkCounts.late > 0 }"><strong class="fs-4">{{ homeworkCounts.late }}</strong><span class="small text-muted-cb">Late</span></div>
               </div>
 
+              <!-- the kueh lapis cake: nine layers, one more for every checked homework -->
+              <div v-if="homework.length > 0" class="cake-box" data-test="cake">
+                <span class="note-label">{{ firstName(selectedChild.name) }}'s kueh lapis</span>
+                <div class="cake">
+                  <i v-for="layer in 9" :key="layer" :class="{ baked: layer <= layersBaked }"></i>
+                </div>
+                <div class="small">{{ layersBaked }} of 9 layers baked. Each checked homework adds one.</div>
+              </div>
+
               <!-- reminders: what to ask the child about at home -->
               <div v-if="todoHomework.length > 0" class="note" data-test="homework-reminders">
                 <strong>Remind {{ firstName(selectedChild.name) }} at home:</strong>
@@ -345,7 +361,7 @@ onMounted(async () => {
           <SkillProgressChart :sessions="sessions" />
         </div>
         <div class="col-lg-5">
-          <div v-if="recentSessions.length > 0" class="cb-card p-3 p-md-4" data-test="session-timeline">
+          <div v-if="recentSessions.length > 0" class="cb-card tile-lav p-3 p-md-4" data-test="session-timeline">
             <h2 class="h5 mb-3">Recent sessions</h2>
             <ul class="timeline list-unstyled mb-0">
               <li v-for="session in recentSessions" :key="session.id" class="timeline-item">
