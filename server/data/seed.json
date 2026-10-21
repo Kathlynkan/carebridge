@@ -620,7 +620,10 @@
       "whatWorked": "Visual diagrams",
       "nextStep": "Practise basic fraction addition",
       "mood": "happy",
-      "notes": ""
+      "notes": "",
+      "activity": "Drawing",
+      "interaction": "Good",
+      "behaviour": "Helped a classmate with colouring"
     },
     {
       "id": "s_4",
@@ -637,7 +640,10 @@
       "whatWorked": "Skip counting songs",
       "nextStep": "Timed times-table drill",
       "mood": "happy",
-      "notes": ""
+      "notes": "",
+      "activity": "Board games",
+      "interaction": "Excellent",
+      "behaviour": "Led a group game of Snakes and Ladders"
     },
     {
       "id": "s_5",
@@ -654,7 +660,10 @@
       "whatWorked": "Highlighting keywords",
       "nextStep": "Try one inference passage",
       "mood": "okay",
-      "notes": ""
+      "notes": "",
+      "activity": "Reading corner",
+      "interaction": "Good",
+      "socialNotes": "Spent some quiet time reading with a friend after the session."
     },
     {
       "id": "s_6",
@@ -671,7 +680,11 @@
       "whatWorked": "Visual diagrams",
       "nextStep": "Practise basic fraction addition",
       "mood": "happy",
-      "notes": "Much more confident today!"
+      "notes": "Much more confident today!",
+      "activity": "Outdoor play",
+      "interaction": "Excellent",
+      "behaviour": "Encouraged a friend who was finding it hard",
+      "socialNotes": "Really came out of his shell — very chatty and upbeat the whole session."
     },
     {
       "id": "s_7",

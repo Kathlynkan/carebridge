@@ -133,9 +133,17 @@ const someHomework = computed(() => props.homework.slice(0, 3))
               <li v-for="activity in activityList" :key="activity">{{ activity }}</li>
             </ul>
           </div>
-          <div v-if="session.notes" class="note">
+          <div v-if="session.interaction" class="note">
+            <span class="note-label">Getting along with others</span>
+            {{ session.interaction }}
+          </div>
+          <div v-if="session.behaviour" class="note">
+            <span class="note-label">Something positive</span>
+            {{ session.behaviour }}
+          </div>
+          <div v-if="session.socialNotes" class="note">
             <span class="note-label">A note from the volunteer</span>
-            "{{ session.notes }}"
+            "{{ session.socialNotes }}"
           </div>
         </div>
       </div>
