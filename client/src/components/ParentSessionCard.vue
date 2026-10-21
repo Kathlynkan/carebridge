@@ -89,11 +89,14 @@ const someHomework = computed(() => props.homework.slice(0, 3))
         <h3 class="h5 mb-0">{{ session.subject }}: {{ session.topic }}</h3>
         <div class="small text-muted-cb mb-2">{{ formatDate(session.date) }}</div>
 
+        <!-- the details: the AI summary if the page gives one, otherwise the plain details -->
         <div class="session-details">
-          <div>Got {{ session.correct }} out of {{ session.attempted }} right ({{ accuracy(session) }}%)</div>
-          <div v-if="session.struggles && session.struggles.length">A bit tricky: {{ session.struggles.join(', ') }}</div>
-          <div v-if="session.whatWorked">What helped: {{ session.whatWorked }}</div>
-          <div v-if="session.nextStep">Coming up next: {{ session.nextStep }}</div>
+          <slot name="academic-extra">
+            <div>Got {{ session.correct }} out of {{ session.attempted }} right ({{ accuracy(session) }}%)</div>
+            <div v-if="session.struggles && session.struggles.length">A bit tricky: {{ session.struggles.join(', ') }}</div>
+            <div v-if="session.whatWorked">What helped: {{ session.whatWorked }}</div>
+            <div v-if="session.nextStep">Coming up next: {{ session.nextStep }}</div>
+          </slot>
         </div>
 
         <!-- homework box -->
@@ -106,11 +109,6 @@ const someHomework = computed(() => props.homework.slice(0, 3))
             </li>
           </ul>
           <div v-else class="small text-muted-cb">No homework right now.</div>
-        </div>
-
-        <!-- an empty spot for whatever the page puts here (the AI summary), only in the academic view -->
-        <div class="mt-3">
-          <slot name="academic-extra"></slot>
         </div>
       </div>
 
