@@ -95,9 +95,9 @@ async function logout() {
 </template>
 
 <style scoped>
-/* Nav IS a kueh band: same fixed gradient as the page body */
+/* Nav IS the kueh — same fixed gradient as the body, no cream slab on top */
 .lapis-nav {
-  background-color: transparent;
+  background-color: transparent !important;
   background-image: repeating-linear-gradient(
     to bottom,
     var(--lapis-pink)   0                     calc(var(--band) * 1),
