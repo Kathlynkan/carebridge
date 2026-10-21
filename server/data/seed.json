@@ -19,9 +19,8 @@
       "password": "password123",
       "role": "volunteer",
       "skills": [
-        "Primary Math",
-        "Fractions",
-        "English Comprehension"
+        "Math",
+        "English"
       ],
       "availability": [
         "Mon",
@@ -36,8 +35,7 @@
       "password": "password123",
       "role": "volunteer",
       "skills": [
-        "Primary Math",
-        "Problem Sums",
+        "Math",
         "Science"
       ],
       "availability": [
@@ -53,9 +51,8 @@
       "password": "password123",
       "role": "volunteer",
       "skills": [
-        "English Comprehension",
-        "Composition",
-        "Spelling"
+        "English",
+        "Mother Tongue"
       ],
       "availability": [
         "Wed",
@@ -136,8 +133,7 @@
         }
       ],
       "needs": [
-        "Primary Math",
-        "Fractions"
+        "Math"
       ],
       "points": 120,
       "avatar": "🦊",
@@ -159,7 +155,7 @@
         }
       ],
       "needs": [
-        "Problem Sums",
+        "Math",
         "Science"
       ],
       "points": 210,
@@ -187,8 +183,7 @@
         }
       ],
       "needs": [
-        "English Comprehension",
-        "Spelling"
+        "English"
       ],
       "points": 60,
       "avatar": "🐯",
@@ -210,8 +205,8 @@
         }
       ],
       "needs": [
-        "Primary Math",
-        "Composition"
+        "Math",
+        "English"
       ],
       "points": 90,
       "avatar": "🐰",
@@ -233,7 +228,7 @@
         }
       ],
       "needs": [
-        "Problem Sums"
+        "Math"
       ],
       "points": 150,
       "avatar": "🦁",
@@ -248,8 +243,8 @@
       "volunteerIds": [],
       "schedule": [],
       "needs": [
-        "Spelling",
-        "Primary Math"
+        "English",
+        "Math"
       ],
       "points": 0,
       "avatar": "🐨",
@@ -271,8 +266,8 @@
         }
       ],
       "needs": [
-        "Spelling",
-        "Primary Math"
+        "English",
+        "Math"
       ],
       "points": 30,
       "avatar": "🐰",

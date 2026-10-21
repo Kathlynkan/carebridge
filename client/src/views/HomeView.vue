@@ -20,7 +20,7 @@ const steps = [
 
 const roles = [
   { icon: 'bi-person-heart', name: 'Volunteers', text: 'Pick up where the last volunteer left off.' },
-  { icon: 'bi-speedometer2', name: 'Coordinators', text: 'Spot children who need follow-up or have missing records.' },
+  { icon: 'bi-speedometer2', name: 'Teachers', text: 'Spot children who need follow-up and match them with the right volunteer. Teacher accounts are set up by the centre.' },
   { icon: 'bi-house-heart', name: 'Parents', text: 'Know what your child worked on today, even when you work late.' },
   { icon: 'bi-stars', name: 'Children', text: 'Earn stars and badges for finishing homework quests.' },
 ]
@@ -114,7 +114,7 @@ const roles = [
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-pink-dark);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   flex-shrink: 0;
 }

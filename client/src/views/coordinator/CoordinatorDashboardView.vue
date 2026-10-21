@@ -241,7 +241,7 @@ function daysAgo(dateStr) {
         </div>
 
         <div class="col-lg-5 d-flex flex-column gap-4">
-          <TopicSummaryChart :sessions="sessions" title="Centre-wide accuracy by topic" />
+          <TopicSummaryChart :sessions="sessions" title="Centre-wide accuracy by subject" />
 
           <!-- Recent activity -->
           <div class="cb-card p-3" data-test="activity-feed">

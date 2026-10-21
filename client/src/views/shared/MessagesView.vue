@@ -3,7 +3,7 @@
   Route: /messages/:childId?   (used by volunteers, parents, coordinators)
 ============================================================= -->
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
@@ -14,6 +14,12 @@ import ChatThread from '@/components/ChatThread.vue'
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
+
+const subtitle = computed(() => {
+  if (auth.role === 'parent') return 'Chat with the volunteers working with your child.'
+  if (auth.role === 'teacher') return 'View conversations between parents and volunteers.'
+  return 'Chat about your child\'s progress.'
+})
 
 const children = ref([])
 const messages = ref([])
@@ -73,7 +79,7 @@ onMounted(async () => {
 
 <template>
   <div class="container py-4">
-    <PageHeader title="Messages" subtitle="Chat with your child's teacher." />
+    <PageHeader title="Messages" :subtitle="subtitle" />
 
     <StateMessage v-if="loading" type="loading" />
     <StateMessage v-else-if="error" type="error" :message="error" />

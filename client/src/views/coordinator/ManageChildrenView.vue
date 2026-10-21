@@ -42,7 +42,7 @@ onMounted(async () => {
 const sortByName = (list) => list.sort((a, b) => a.name.localeCompare(b.name))
 
 // ---------- "Add child" / "Edit child" modal (one form for both) ----------
-const emptyForm = () => ({ name: '', level: '', school: '', parentId: '', needs: [] })
+const emptyForm = () => ({ name: '', level: '', school: '', parentId: '', needs: [], childEmail: '', childPassword: '' })
 
 const showModal = ref(false)
 const editingId = ref(null) // null = adding a new child, otherwise the id of the child being edited
@@ -301,7 +301,7 @@ async function confirmDelete() {
                 </select>
               </div>
 
-              <fieldset>
+              <fieldset class="mb-3">
                 <legend class="form-label fs-6">Needs help with</legend>
                 <div class="d-flex flex-wrap gap-2">
                   <template v-for="(skill, i) in SKILL_OPTIONS" :key="skill">
@@ -319,6 +319,38 @@ async function confirmDelete() {
                   </template>
                 </div>
               </fieldset>
+
+              <template v-if="!editingId">
+                <hr class="my-3" />
+                <p class="small text-muted-cb mb-2">
+                  <strong>Child login account</strong>
+                  <span class="ms-1">(optional — leave blank to set up later)</span>
+                </p>
+                <div class="mb-3">
+                  <label for="child-login-email" class="form-label">Login email</label>
+                  <input
+                    id="child-login-email"
+                    v-model.trim="form.childEmail"
+                    type="email"
+                    class="form-control"
+                    autocomplete="off"
+                    data-test="child-login-email"
+                    placeholder="e.g. ethan@kidslapis.sg"
+                  />
+                </div>
+                <div class="mb-2">
+                  <label for="child-login-password" class="form-label">Login password</label>
+                  <input
+                    id="child-login-password"
+                    v-model="form.childPassword"
+                    type="password"
+                    class="form-control"
+                    autocomplete="new-password"
+                    data-test="child-login-password"
+                    placeholder="At least 6 characters"
+                  />
+                </div>
+              </template>
             </div>
 
             <div class="modal-footer">

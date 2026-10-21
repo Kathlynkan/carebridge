@@ -10,35 +10,62 @@
 :root {
   --band: 16px;
 
-  --lapis-pink:   #D989A5; /* pink */
+  --lapis-pink:   #E8A0B8; /* rose pink — children */
   --lapis-cream:  #FBF8F3; /* coconut white */
-  --lapis-lime:   #AACCA2; /* pandan green */
-  --lapis-yellow: #F6E3E9; /* butter yellow */
-  --lapis-orange: #8EC3D7; /* peach */
-  --lapis-purple: #AF99CA; /* lavender */
+  --lapis-lime:   #A8CC90; /* pandan green — sessions / activities */
+  --lapis-yellow: #F5DF98; /* golden yellow — homework / tasks */
+  --lapis-blue:   #88C0D8; /* sky blue — messages / communication */
+  --lapis-orange: #F5B880; /* warm peach — accent / alerts */
+  --lapis-purple: #C0A8D8; /* soft lavender */
   --lapis-plum:   #4A3F3A; /* warm brown ink, for text */
-  --lapis-shadow: #B9A99B; /* soft taupe, for borders and shadows */
+  --lapis-shadow: #B9A99B; /* soft taupe, for drop shadows only — not borders */
+
+  /* Darker border tones — each is the fill colour deepened ~40% */
+  --lapis-cream-dark:  #C8B8A8;
+  --lapis-pink-dark:   #C07090;
+  --lapis-lime-dark:   #68A048;
+  --lapis-yellow-dark: #C8A028;
+  --lapis-blue-dark:   #4890B8;
+  --lapis-orange-dark: #C07838;
+  --lapis-purple-dark: #8068A8;
+
   --lapis-apricot: #EBCDB2;
   --lapis-mint:    #C5DDB9;
-  --lapis-sky:     #B9D9E6; /* sky blue */
+  --lapis-sky:     #B9D9E6;
 
-  /* ── One colour per topic, used everywhere in the app ──
-     academic = pink, social = blue, homework = lavender,
-     schedule = lime, messages = peach, highlights = blush */
-  --topic-academic:       #E9B9CB;
-  --topic-academic-soft:  #F8EBF0;
-  --topic-social:         #B9D9E6;
-  --topic-social-soft:    #EDF5F9;
-  --topic-homework:       #CDBFE0;
-  --topic-homework-soft:  #F3EFF8;
-  --topic-schedule:       #C5DDB9;
-  --topic-schedule-soft:  #F1F6EC;
-  --topic-messages:       #EBCDB2;
-  --topic-messages-soft:  #F8F0E8;
-  --topic-highlight:      #F4DEE5;
-  --topic-highlight-soft: #FAF1F4;
-  --topic-alert:          #E58E86;
-  --topic-alert-soft:     #FBE9E7;
+  /* ── Semantic topic colours — 4 colours, consistently applied ──
+     children/people = pink, sessions/learning = lime,
+     homework/tasks = yellow, messages/communication = blue */
+  --topic-academic:       #A8CC90;   /* lime — learning */
+  --topic-academic-soft:  #E8F5DC;
+  --topic-social:         #88C0D8;   /* blue — people/social */
+  --topic-social-soft:    #DFF0F8;
+  --topic-homework:       #F5DF98;   /* yellow — tasks */
+  --topic-homework-soft:  #FBF5DC;
+  --topic-schedule:       #A8CC90;   /* lime — activities */
+  --topic-schedule-soft:  #E8F5DC;
+  --topic-messages:       #88C0D8;   /* blue — communication */
+  --topic-messages-soft:  #DFF0F8;
+  --topic-highlight:      #F5DF98;   /* yellow — highlight */
+  --topic-highlight-soft: #FBF5DC;
+  --topic-alert:          #E8A0B8;   /* pink — alert */
+  --topic-alert-soft:     #FAE8F2;
+
+  /* ── PSLE subject colours — charts and subject badges.
+     Intentionally distinct from the four role accent colours
+     (pink=child, orange=parent, lime=volunteer, purple=teacher). ──
+     English = sky blue   (language, reading, calm)
+     Math    = amber      (analytical, gold — was lime, conflicted with volunteer)
+     Science = yellow     (discovery, brightness)
+     Mother Tongue = coral (cultural warmth — was pink, conflicted with child role) */
+  --subject-english:            #88C0D8;
+  --subject-english-soft:       #DFF0F8;
+  --subject-math:               #D4B840;
+  --subject-math-soft:          #FBF0C8;
+  --subject-science:            #F5DF98;
+  --subject-science-soft:       #FBF5DC;
+  --subject-mother-tongue:      #E8906C;
+  --subject-mother-tongue-soft: #FBE4D8;
 
   /* Legacy cb tokens — remapped so existing templates keep working */
   --cb-primary:      var(--lapis-lime);
@@ -53,16 +80,16 @@
   --cb-surface:      var(--lapis-cream);
   --cb-text:         var(--lapis-plum);
   --cb-muted:        #8D7F77;
-  --cb-border:       var(--lapis-shadow);
+  --cb-border:       var(--lapis-cream-dark);
   --cb-radius:       0px;
 
   /* Bootstrap colour overrides */
   --bs-primary:           var(--lapis-pink);
-  --bs-primary-rgb:       217, 137, 165;
+  --bs-primary-rgb:       232, 160, 184;
   --bs-success:           var(--lapis-lime);
-  --bs-success-rgb:       170, 204, 162;
+  --bs-success-rgb:       168, 204, 144;
   --bs-warning:           var(--lapis-yellow);
-  --bs-warning-rgb:       246, 227, 233;
+  --bs-warning-rgb:       245, 223, 152;
   --bs-danger:            var(--topic-alert);
   --bs-danger-rgb:        255, 138, 128;
   --bs-link-color:        #7A4FB8;
@@ -70,7 +97,7 @@
   --bs-body-font-family:  'Inter', system-ui, 'Segoe UI', sans-serif;
   --bs-body-color:        var(--lapis-plum);
   --bs-body-bg:           var(--lapis-cream);
-  --bs-border-color:      var(--lapis-shadow);
+  --bs-border-color:      var(--lapis-cream-dark);
   --bs-border-radius:     0px;
   --bs-border-width: 1px;
 }
@@ -103,6 +130,13 @@ html, body {
   background: transparent !important;
 }
 
+/* ── Role accent colours — each role owns one kueh layer ─────── */
+.role-child     { --role-accent: var(--lapis-pink);   --role-accent-soft: #FAE8F0; --role-accent-dark: var(--lapis-pink-dark); }
+.role-parent    { --role-accent: var(--lapis-orange); --role-accent-soft: #FBF0E4; --role-accent-dark: var(--lapis-orange-dark); }
+.role-volunteer { --role-accent: var(--lapis-lime);   --role-accent-soft: #EAF5E0; --role-accent-dark: var(--lapis-lime-dark); }
+.role-teacher   { --role-accent: var(--lapis-purple); --role-accent-soft: #F0EAF8; --role-accent-dark: var(--lapis-purple-dark); }
+.role-guest     { --role-accent: var(--lapis-pink);   --role-accent-soft: #FAE8F0; --role-accent-dark: var(--lapis-pink-dark); }
+
 /* ── Typography ─────────────────────────────────────────────── */
 h1, h2, h3, .fw-heavy {
   font-family: 'Fraunces', Georgia, serif;
@@ -131,34 +165,17 @@ h4, h5, h6 {
 .cb-card {
   position: relative;
   background: var(--lapis-cream);
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-cream-dark);
   border-radius: var(--cb-radius);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* Left edge: the kueh cross-section — thin vertical strip of stacked colour bands */
-.cb-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 10px;
-  border-radius: calc(var(--cb-radius) - 3px) 0 0 calc(var(--cb-radius) - 3px);
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--lapis-pink)   0                     calc(var(--band) * 1),
-    var(--lapis-cream)  calc(var(--band) * 1)  calc(var(--band) * 2),
-    var(--lapis-lime)   calc(var(--band) * 2)  calc(var(--band) * 3),
-    var(--lapis-cream)  calc(var(--band) * 3)  calc(var(--band) * 4),
-    var(--lapis-yellow) calc(var(--band) * 4)  calc(var(--band) * 5),
-    var(--lapis-cream)  calc(var(--band) * 5)  calc(var(--band) * 6),
-    var(--lapis-orange) calc(var(--band) * 6)  calc(var(--band) * 7),
-    var(--lapis-cream)  calc(var(--band) * 7)  calc(var(--band) * 8)
-  );
-  box-shadow: inset -1px 0 0 rgba(255, 248, 240, 0.4);
-}
+/* Semantic card colour variants — pastel fill + matching darker border */
+.cb-card-pink   { background: #FAE8F2; border-color: #C07090; }
+.cb-card-lime   { background: #E8F5DC; border-color: #68A048; }
+.cb-card-yellow { background: #FBF5DC; border-color: #C8A028; }
+.cb-card-blue   { background: #DFF0F8; border-color: #4890B8; }
 
 .cb-card-hover { cursor: pointer; }
 
@@ -166,17 +183,12 @@ h4, h5, h6 {
   box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
-/* Section dividers: 4-colour strip (replaces 1px grey hairlines) */
+/* Section dividers */
 .lapis-stripe,
 .lapis-divider {
-  height: 8px;
+  height: 4px;
   flex-shrink: 0;
-  background: linear-gradient(to right,
-    var(--lapis-pink)   0 25%,
-    var(--lapis-lime)   25% 50%,
-    var(--lapis-yellow) 50% 75%,
-    var(--lapis-orange) 75% 100%
-  );
+  background: var(--role-accent, var(--lapis-pink));
   border: none;
   border-radius: 0;
 }
@@ -193,18 +205,18 @@ h4, h5, h6 {
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-/* Primary — pink with purple hard shadow */
+/* Primary — pink with darker pink border */
 .btn-primary {
   --bs-btn-bg:                  var(--lapis-pink);
-  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-border-color:        var(--lapis-pink-dark);
   --bs-btn-color:               var(--lapis-cream);
   --bs-btn-hover-bg:            #B0446A;
-  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-border-color:  var(--lapis-pink-dark);
   --bs-btn-hover-color:         var(--lapis-cream);
   --bs-btn-active-bg:           #B0446A;
-  --bs-btn-active-border-color: var(--lapis-shadow);
+  --bs-btn-active-border-color: var(--lapis-pink-dark);
   --bs-btn-disabled-bg:         var(--lapis-pink);
-  --bs-btn-disabled-border-color: var(--lapis-shadow);
+  --bs-btn-disabled-border-color: var(--lapis-pink-dark);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
@@ -219,13 +231,13 @@ h4, h5, h6 {
 /* Outline primary — cream bg, pink on hover */
 .btn-outline-primary {
   --bs-btn-color:               var(--lapis-plum);
-  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-border-color:        var(--lapis-cream-dark);
   --bs-btn-bg:                  var(--lapis-cream);
   --bs-btn-hover-bg:            var(--lapis-pink);
-  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-border-color:  var(--lapis-pink-dark);
   --bs-btn-hover-color:         var(--lapis-cream);
   --bs-btn-active-bg:           var(--lapis-pink);
-  --bs-btn-active-border-color: var(--lapis-shadow);
+  --bs-btn-active-border-color: var(--lapis-pink-dark);
   background: var(--lapis-cream);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
@@ -238,13 +250,13 @@ h4, h5, h6 {
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10) !important;
 }
 
-/* Secondary — orange, shadow in plum */
+/* Secondary — orange with darker orange border */
 .btn-secondary {
   --bs-btn-bg:                  var(--lapis-orange);
-  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-border-color:        var(--lapis-orange-dark);
   --bs-btn-color:               var(--lapis-plum);
   --bs-btn-hover-bg:            #488CA8;
-  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-border-color:  var(--lapis-orange-dark);
   --bs-btn-hover-color:         var(--lapis-plum);
   --bs-btn-active-bg:           #488CA8;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
@@ -261,9 +273,9 @@ h4, h5, h6 {
 /* Outline secondary */
 .btn-outline-secondary {
   --bs-btn-color:               var(--lapis-plum);
-  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-border-color:        var(--lapis-cream-dark);
   --bs-btn-hover-bg:            var(--lapis-orange);
-  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-border-color:  var(--lapis-orange-dark);
   --bs-btn-hover-color:         var(--lapis-plum);
   background: var(--lapis-cream);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
@@ -273,13 +285,13 @@ h4, h5, h6 {
   box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
 }
 
-/* Danger — pink */
+/* Danger — pink with darker pink border */
 .btn-danger {
   --bs-btn-bg:                  var(--lapis-pink);
-  --bs-btn-border-color:        var(--lapis-shadow);
+  --bs-btn-border-color:        var(--lapis-pink-dark);
   --bs-btn-color:               var(--lapis-cream);
   --bs-btn-hover-bg:            #B0446A;
-  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-border-color:  var(--lapis-pink-dark);
   --bs-btn-hover-color:         var(--lapis-cream);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
@@ -294,10 +306,10 @@ h4, h5, h6 {
 
 /* Outline danger */
 .btn-outline-danger {
-  --bs-btn-color:               var(--lapis-pink);
-  --bs-btn-border-color:        var(--lapis-pink);
+  --bs-btn-color:               var(--lapis-pink-dark);
+  --bs-btn-border-color:        var(--lapis-pink-dark);
   --bs-btn-hover-bg:            var(--lapis-pink);
-  --bs-btn-hover-border-color:  var(--lapis-shadow);
+  --bs-btn-hover-border-color:  var(--lapis-pink-dark);
   --bs-btn-hover-color:         var(--lapis-cream);
   background: var(--lapis-cream);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
@@ -346,7 +358,7 @@ h4, h5, h6 {
 
 .form-check-input:checked {
   background-color: var(--lapis-lime);
-  border-color: var(--lapis-shadow);
+  border-color: var(--lapis-lime-dark);
 }
 
 .form-check-input:focus {
@@ -356,7 +368,7 @@ h4, h5, h6 {
 
 .input-group-text {
   background: var(--lapis-yellow);
-  border: 1px solid var(--lapis-plum);
+  border: 1px solid var(--lapis-yellow-dark);
   color: var(--lapis-plum);
   font-weight: 700;
 }
@@ -366,10 +378,15 @@ h4, h5, h6 {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border: 2px solid var(--lapis-shadow);
+  border: none;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   border-radius: 4px;
 }
+
+.badge-soft        { border: 1px solid var(--lapis-lime-dark); }
+.badge-accent      { border: 1px solid var(--lapis-yellow-dark); }
+.badge-ruby        { border: 1px solid var(--lapis-pink-dark); }
+.badge-danger-soft { border: 1px solid var(--lapis-orange-dark); }
 
 .badge-soft {
   background: var(--lapis-lime);
@@ -419,7 +436,6 @@ h4, h5, h6 {
 
 /* ── Alerts ─────────────────────────────────────────────────── */
 .alert {
-  border: 1px solid var(--lapis-shadow);
   border-radius: 6px;
   font-weight: 600;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
@@ -428,16 +444,19 @@ h4, h5, h6 {
 .alert-success {
   background: var(--lapis-lime);
   color: var(--lapis-plum);
+  border: 1px solid var(--lapis-lime-dark);
 }
 
 .alert-danger {
   background: var(--lapis-pink);
   color: var(--lapis-cream);
+  border: 1px solid var(--lapis-pink-dark);
 }
 
 .alert-warning {
   background: var(--lapis-yellow);
   color: var(--lapis-plum);
+  border: 1px solid var(--lapis-yellow-dark);
 }
 
 /* ── Avatar circle ──────────────────────────────────────────── */
@@ -450,7 +469,7 @@ h4, h5, h6 {
   justify-content: center;
   font-size: 1.6rem;
   background: var(--lapis-yellow);
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-yellow-dark);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   flex-shrink: 0;
 }
@@ -458,31 +477,23 @@ h4, h5, h6 {
 /* ── Progress bars ──────────────────────────────────────────── */
 .progress {
   background: var(--lapis-cream);
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-cream-dark);
   border-radius: 999px;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   overflow: hidden;
 }
 
 .progress-bar {
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--lapis-pink)   0      20%,
-    var(--lapis-lime)   20%    40%,
-    var(--lapis-yellow) 40%    60%,
-    var(--lapis-orange) 60%    80%,
-    var(--lapis-purple) 80%   100%
-  );
-  background-size: 200px 100%;
-  color: var(--lapis-cream);
+  background-color: var(--role-accent, var(--lapis-pink));
+  color: var(--lapis-plum);
 }
 
 /* ── List groups ────────────────────────────────────────────── */
 .list-group {
   --bs-list-group-active-bg:            var(--lapis-pink);
-  --bs-list-group-active-border-color:  var(--lapis-shadow);
+  --bs-list-group-active-border-color:  var(--lapis-pink-dark);
   --bs-list-group-active-color:         var(--lapis-cream);
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-cream-dark);
   border-radius: var(--cb-radius);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   overflow: hidden;
@@ -491,7 +502,7 @@ h4, h5, h6 {
 .list-group-item {
   background: var(--lapis-cream);
   border: 0;
-  border-bottom: 1px solid var(--lapis-shadow);
+  border-bottom: 1px solid var(--lapis-cream-dark);
   color: var(--lapis-plum);
   font-weight: 500;
 }
@@ -515,11 +526,11 @@ h4, h5, h6 {
 .nav-pills .nav-link:hover {
   background: var(--lapis-yellow);
   color: var(--lapis-plum);
-  border-color: var(--lapis-shadow);
+  border-color: var(--lapis-yellow-dark);
 }
 
 .nav-pills .nav-link.active {
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-pink-dark);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-cream);
 }
@@ -527,41 +538,19 @@ h4, h5, h6 {
 /* ── Modals ─────────────────────────────────────────────────── */
 .modal-content {
   background: var(--lapis-cream);
-  border: 1px solid var(--lapis-shadow);
+  border: 2px solid var(--role-accent, var(--lapis-pink));
   border-radius: var(--cb-radius);
   box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
   overflow: hidden;
 }
 
-/* Kueh left-edge cross-section on modals */
-.modal-content::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 10px;
-  border-radius: calc(var(--cb-radius) - 3px) 0 0 calc(var(--cb-radius) - 3px);
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--lapis-pink)   0                     calc(var(--band) * 1),
-    var(--lapis-cream)  calc(var(--band) * 1)  calc(var(--band) * 2),
-    var(--lapis-lime)   calc(var(--band) * 2)  calc(var(--band) * 3),
-    var(--lapis-cream)  calc(var(--band) * 3)  calc(var(--band) * 4),
-    var(--lapis-yellow) calc(var(--band) * 4)  calc(var(--band) * 5),
-    var(--lapis-cream)  calc(var(--band) * 5)  calc(var(--band) * 6),
-    var(--lapis-orange) calc(var(--band) * 6)  calc(var(--band) * 7),
-    var(--lapis-cream)  calc(var(--band) * 7)  calc(var(--band) * 8)
-  );
-}
-
 .modal-header {
-  border-bottom: 1px solid var(--lapis-shadow);
+  border-bottom: 1px solid var(--lapis-cream-dark);
   background: var(--lapis-cream);
 }
 
 .modal-footer {
-  border-top: 1px solid var(--lapis-shadow);
+  border-top: 1px solid var(--lapis-cream-dark);
   background: var(--lapis-cream);
 }
 
@@ -582,7 +571,7 @@ h4, h5, h6 {
   color: var(--lapis-plum);
   --bs-table-bg: var(--lapis-cream);
   --bs-table-striped-bg: var(--lapis-cream);
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-cream-dark);
   border-radius: 12px;
   overflow: hidden;
 }
@@ -593,8 +582,8 @@ h4, h5, h6 {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  border-bottom: 1px solid var(--lapis-shadow) !important;
-  border-color: var(--lapis-shadow) !important;
+  border-bottom: 1px solid rgba(251, 248, 243, 0.2) !important;
+  border-color: rgba(251, 248, 243, 0.2) !important;
 }
 
 .table td {
@@ -602,21 +591,13 @@ h4, h5, h6 {
   font-weight: 500;
 }
 
-/* Alternating left-stripe rows — kueh layers, not grey zebra */
-.table tbody tr:nth-child(4n+1) td:first-child { border-left: 6px solid var(--lapis-pink); }
-.table tbody tr:nth-child(4n+2) td:first-child { border-left: 6px solid var(--lapis-lime); }
-.table tbody tr:nth-child(4n+3) td:first-child { border-left: 6px solid var(--lapis-yellow); }
-.table tbody tr:nth-child(4n+0) td:first-child { border-left: 6px solid var(--lapis-orange); }
+/* Alternating row tint */
+.table tbody tr:nth-child(even) { background: rgba(74, 63, 58, 0.03); }
 
 /* ── Footer ─────────────────────────────────────────────────── */
 .app-footer {
-  background: linear-gradient(to right,
-    var(--lapis-pink)   0 25%,
-    var(--lapis-lime)   25% 50%,
-    var(--lapis-yellow) 50% 75%,
-    var(--lapis-orange) 75% 100%
-  );
-  border-top: 1px solid var(--lapis-shadow);
+  background: var(--role-accent-soft, var(--lapis-cream));
+  border-top: 3px solid var(--role-accent-dark, var(--lapis-cream-dark));
   color: var(--lapis-plum);
   font-weight: 600;
   text-transform: uppercase;
@@ -635,12 +616,7 @@ h4, h5, h6 {
 ::-webkit-scrollbar              { width: 10px; }
 ::-webkit-scrollbar-track        { background: var(--lapis-cream); }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom,
-    var(--lapis-pink),
-    var(--lapis-lime),
-    var(--lapis-yellow),
-    var(--lapis-orange)
-  );
+  background: var(--lapis-shadow);
   border-radius: 999px;
   border: 2px solid var(--lapis-cream);
 }
@@ -648,7 +624,7 @@ h4, h5, h6 {
 
 /* ── Nav tabs ───────────────────────────────────────────────── */
 .nav-tabs {
-  border-bottom: 1px solid var(--lapis-shadow);
+  border-bottom: 1px solid var(--lapis-cream-dark);
   gap: 4px;
 }
 
@@ -665,14 +641,14 @@ h4, h5, h6 {
 
 .nav-tabs .nav-link:hover {
   background: var(--lapis-yellow);
-  border-color: var(--lapis-shadow) var(--lapis-shadow) transparent;
+  border-color: var(--lapis-yellow-dark) var(--lapis-yellow-dark) transparent;
   color: var(--lapis-plum);
 }
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-link.active.bg-primary {
   background: var(--lapis-pink) !important;
-  border-color: var(--lapis-shadow) var(--lapis-shadow) var(--lapis-pink);
+  border-color: var(--lapis-pink-dark) var(--lapis-pink-dark) var(--lapis-pink);
   color: var(--lapis-cream) !important;
   box-shadow: none;
 }
@@ -681,7 +657,7 @@ h4, h5, h6 {
 .text-bg-light {
   background-color: var(--lapis-cream) !important;
   color: var(--lapis-plum) !important;
-  border: 2px solid var(--lapis-shadow);
+  border: 2px solid var(--lapis-cream-dark);
 }
 
 /* ── Page peel transition ────────────────────────────────────── */
@@ -702,12 +678,12 @@ h4, h5, h6 {
 
 /* ---------- topic colours: the same colour for the same kind of information, everywhere ---------- */
 
-/* soft tinted block with a strong left edge */
-.topic-academic { background: var(--topic-academic-soft); border-left: 8px solid var(--topic-academic); }
-.topic-social   { background: var(--topic-social-soft);   border-left: 8px solid var(--topic-social); }
-.topic-homework { background: var(--topic-homework-soft); border-left: 8px solid var(--topic-homework); }
-.topic-schedule { background: var(--topic-schedule-soft); border-left: 8px solid var(--topic-schedule); }
-.topic-messages { background: var(--topic-messages-soft); border-left: 8px solid var(--topic-messages); }
+/* soft tinted block — pastel bg + matching border, no left stripe */
+.topic-academic { background: var(--topic-academic-soft); border-color: var(--topic-academic); }
+.topic-social   { background: var(--topic-social-soft);   border-color: var(--topic-social); }
+.topic-homework { background: var(--topic-homework-soft); border-color: var(--topic-homework); }
+.topic-schedule { background: var(--topic-schedule-soft); border-color: var(--topic-schedule); }
+.topic-messages { background: var(--topic-messages-soft); border-color: var(--topic-messages); }
 
 /* small coloured tags: <span class="chip chip-social">Happy</span> */
 .chip { display: inline-block; padding: 2px 10px; font-size: 0.8rem; font-weight: 700; color: var(--lapis-plum); }

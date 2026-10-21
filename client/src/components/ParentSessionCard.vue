@@ -56,8 +56,8 @@ const activityList = computed(() => {
   return []
 })
 
-// the first 3 homework items are enough for the academic view
 const someHomework = computed(() => props.homework.slice(0, 3))
+const extraHomework = computed(() => Math.max(0, props.homework.length - 3))
 </script>
 
 <template>
@@ -106,6 +106,9 @@ const someHomework = computed(() => props.homework.slice(0, 3))
             <li v-for="item in someHomework" :key="item.id">
               {{ item.title }}
               <span class="text-muted-cb">({{ HOMEWORK_STATUS[item.status] ? HOMEWORK_STATUS[item.status].label : item.status }})</span>
+            </li>
+            <li v-if="extraHomework > 0" class="text-muted-cb fst-italic">
+              + {{ extraHomework }} more — see the Homework tab for the full list
             </li>
           </ul>
           <div v-else class="small text-muted-cb">No homework right now.</div>

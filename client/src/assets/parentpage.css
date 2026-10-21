@@ -7,17 +7,15 @@
 .parentpage .top-summary {
   margin-bottom: 24px;
   padding: 20px 24px;
-  border: 1px solid var(--lapis-shadow);
-  border-left: 8px solid var(--lapis-apricot);
-  border-radius: 16px;
-  background: var(--lapis-orange);
+  border: 1px solid var(--role-accent-dark, var(--lapis-orange-dark));
+  border-radius: 0;
+  background: var(--lapis-cream);
   position: relative;
   overflow: hidden;
-  padding-bottom: 32px;
   color: var(--lapis-plum);
   font-size: 20px;
   font-weight: 700;
-  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 .parentpage .top-extra {
@@ -42,27 +40,12 @@
 .parentpage .notice-board {
   padding: 20px;
   padding-top: 28px;
-  border: 1px solid var(--lapis-shadow);
-  border-radius: 16px;
-  background: var(--lapis-apricot);
-  box-shadow: 0 6px 16px rgba(74, 63, 58, 0.12);
+  border: 1px solid var(--lapis-cream-dark);
+  border-radius: 0;
+  background: var(--lapis-cream);
+  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   position: relative;
   overflow: hidden;
-}
-
-.parentpage .notice-board::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background: linear-gradient(to right,
-    var(--lapis-pink)   0 25%,
-    var(--lapis-lime)   25% 50%,
-    var(--lapis-yellow) 50% 75%,
-    var(--lapis-orange) 75% 100%
-  );
 }
 
 .parentpage .board-title {
@@ -74,8 +57,8 @@
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 700;
   font-size: 18px;
-  border: 1px solid var(--lapis-shadow);
-  border-radius: 999px;
+  border: 1px solid var(--lapis-cream-dark);
+  border-radius: 0;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
@@ -88,7 +71,7 @@
 
 .parentpage .notice-tab {
   padding: 6px 16px;
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-cream-dark);
   background: var(--lapis-cream);
   color: var(--lapis-plum);
   font-weight: 600;
@@ -96,7 +79,7 @@
   letter-spacing: 0.05em;
   font-size: 0.78rem;
   cursor: pointer;
-  border-radius: 999px;
+  border-radius: 0;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
@@ -107,7 +90,7 @@
 
 .parentpage .notice-tab.active {
   background: var(--lapis-yellow);
-  border-color: var(--lapis-shadow);
+  border-color: var(--lapis-yellow-dark);
   color: var(--lapis-plum);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
@@ -118,8 +101,8 @@
   margin-bottom: 12px;
   padding: 18px 12px 12px;
   background: var(--lapis-yellow);
-  border: 1px solid var(--lapis-shadow);
-  border-radius: 8px;
+  border: 1px solid var(--lapis-yellow-dark);
+  border-radius: 0;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-plum);
 }
@@ -133,7 +116,7 @@
   height: 10px;
   border-radius: 5px;
   background: var(--lapis-pink);
-  border: 2px solid var(--lapis-shadow);
+  border: 2px solid var(--lapis-pink-dark);
 }
 
 .parentpage .note summary {
@@ -176,7 +159,7 @@
   width: 120px;
   height: 160px;
   object-fit: cover;
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-cream-dark);
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
@@ -229,8 +212,8 @@
 
 .parentpage .session-homework {
   padding: 8px 12px;
-  border: 1px solid var(--lapis-shadow);
-  border-radius: 8px;
+  border: 1px solid var(--lapis-lime-dark);
+  border-radius: 0;
   background: var(--lapis-lime);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-plum);
@@ -252,8 +235,8 @@
   align-items: center;
   min-width: 96px;
   padding: 8px 12px;
-  border: 1px solid var(--lapis-shadow);
-  border-radius: 10px;
+  border: 1px solid var(--lapis-cream-dark);
+  border-radius: 0;
   background: var(--lapis-cream);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   color: var(--lapis-plum);
@@ -286,33 +269,11 @@
   height: 14px;
   border-radius: 7px;
   background: var(--lapis-pink);
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-pink-dark);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 /* ---------- kueh lapis pastel tiles ---------- */
-
-/* the layered edge along the bottom of the big tiles: pink, cream, apricot, cream, pandan */
-.parentpage .top-summary::after,
-.parentpage .notice-board::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 12px;
-  background: linear-gradient(
-    to bottom,
-    var(--lapis-pink) 0 20%,
-    var(--lapis-cream) 20% 40%,
-    var(--lapis-apricot) 40% 60%,
-    var(--lapis-cream) 60% 80%,
-    var(--lapis-lime) 80% 100%
-  );
-}
-.parentpage .notice-board {
-  padding-bottom: 32px;
-}
 
 /* the child card is sky blue, the timeline card is lavender */
 .parentpage .tile-sky {
@@ -327,8 +288,8 @@
 .parentpage .cake-box {
   margin-bottom: 16px;
   padding: 10px 14px 12px;
-  border: 1px solid var(--lapis-shadow);
-  border-radius: 12px;
+  border: 1px solid var(--lapis-cream-dark);
+  border-radius: 0;
   background: var(--lapis-cream);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
@@ -344,28 +305,28 @@
   flex: 1;
   height: 18px;
   border-radius: 5px;
-  border: 2px dashed var(--lapis-shadow);
+  border: 2px dashed var(--lapis-cream-dark);
   background: var(--lapis-cream);
 }
 .parentpage .cake i.baked {
   border-style: solid;
 }
-.parentpage .cake i:nth-child(1).baked { background: var(--lapis-pink); }
-.parentpage .cake i:nth-child(2).baked { background: var(--lapis-yellow); }
-.parentpage .cake i:nth-child(3).baked { background: var(--lapis-lime); }
-.parentpage .cake i:nth-child(4).baked { background: var(--lapis-orange); }
-.parentpage .cake i:nth-child(5).baked { background: var(--lapis-purple); }
-.parentpage .cake i:nth-child(6).baked { background: var(--lapis-pink); }
-.parentpage .cake i:nth-child(7).baked { background: var(--lapis-yellow); }
-.parentpage .cake i:nth-child(8).baked { background: var(--lapis-lime); }
-.parentpage .cake i:nth-child(9).baked { background: var(--lapis-orange); }
+.parentpage .cake i:nth-child(1).baked { background: var(--lapis-pink);   border-color: var(--lapis-pink-dark); }
+.parentpage .cake i:nth-child(2).baked { background: var(--lapis-yellow); border-color: var(--lapis-yellow-dark); }
+.parentpage .cake i:nth-child(3).baked { background: var(--lapis-lime);   border-color: var(--lapis-lime-dark); }
+.parentpage .cake i:nth-child(4).baked { background: var(--lapis-orange); border-color: var(--lapis-orange-dark); }
+.parentpage .cake i:nth-child(5).baked { background: var(--lapis-purple); border-color: var(--lapis-purple-dark); }
+.parentpage .cake i:nth-child(6).baked { background: var(--lapis-pink);   border-color: var(--lapis-pink-dark); }
+.parentpage .cake i:nth-child(7).baked { background: var(--lapis-yellow); border-color: var(--lapis-yellow-dark); }
+.parentpage .cake i:nth-child(8).baked { background: var(--lapis-lime);   border-color: var(--lapis-lime-dark); }
+.parentpage .cake i:nth-child(9).baked { background: var(--lapis-orange); border-color: var(--lapis-orange-dark); }
 
 /* ---------- topic colours on the parent page ---------- */
 /* academic = pink, social = blue, homework = lavender, schedule = apricot, highlights = yellow */
 
-/* today at a glance: the yellow highlight; the next session line is the schedule colour */
+/* today at a glance: soft orange panel; the next session line is the schedule colour */
 .parentpage .top-summary {
-  background: var(--topic-highlight);
+  background: var(--role-accent-soft, #FBF0E4);
 }
 .parentpage .top-next {
   display: inline-block;
@@ -402,11 +363,11 @@
 }
 .parentpage .kind-social .note { background: var(--lapis-cream); }
 
-/* homework is lavender everywhere: the box in the card, the status boxes and the cake */
-.parentpage .session-homework { background: var(--topic-homework); }
-.parentpage .status-box { background: var(--topic-homework-soft); }
-.parentpage .status-box.late { background: var(--topic-alert); color: var(--lapis-plum); }
-.parentpage .cake-box { background: var(--topic-homework-soft); }
+/* homework is yellow everywhere: the box in the card, the status boxes and the cake */
+.parentpage .session-homework { background: var(--topic-homework); border-color: var(--lapis-yellow-dark); }
+.parentpage .status-box { background: var(--topic-homework-soft); border-color: var(--lapis-yellow-dark); }
+.parentpage .status-box.late { background: var(--topic-alert); color: var(--lapis-plum); border-color: var(--lapis-pink-dark); }
+.parentpage .cake-box { background: var(--topic-homework-soft); border-color: var(--lapis-yellow-dark); }
 
 /* the timeline is about sessions, so it is pink */
 .parentpage .timeline { border-left-color: var(--topic-academic); }
@@ -414,9 +375,9 @@
 
 /* ---------- a calmer look for the parent page ---------- */
 
-/* the banner is a light blush panel with a rose edge, not a block of colour */
+/* the banner is a soft role-accent panel with a rose edge */
 .parentpage .top-summary {
-  background: var(--topic-highlight-soft);
+  background: var(--role-accent-soft, #FBF0E4);
   border-left: 4px solid var(--lapis-pink);
 }
 
@@ -431,6 +392,6 @@
 .parentpage .notice-tab.tab-homework { border-bottom: 3px solid var(--topic-homework); }
 
 /* the tinted notes read as a quiet card with a coloured edge */
-.parentpage .board-social .note { background: var(--topic-social-soft); }
-.parentpage .board-latest .note { background: var(--topic-academic-soft); }
-.parentpage .board-homework .note { background: var(--topic-homework-soft); }
+.parentpage .board-social .note   { background: var(--topic-social-soft);   border-color: var(--lapis-blue-dark); }
+.parentpage .board-latest .note   { background: var(--topic-academic-soft); border-color: var(--lapis-lime-dark); }
+.parentpage .board-homework .note { background: var(--topic-homework-soft); border-color: var(--lapis-yellow-dark); }

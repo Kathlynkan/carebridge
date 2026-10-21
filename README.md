@@ -86,7 +86,7 @@ Open http://localhost:5173. The URL with `/__devtools__/` opens Vue DevTools.
 | Volunteer | `volunteer@kidslapis.sg` | Aisha — assigned to Ethan, Arjun, Chloe |
 | Volunteer | `volunteer2@kidslapis.sg` | Daniel — Ethan, Meera, Ryan |
 | Volunteer | `volunteer3@kidslapis.sg` | Priya — Arjun |
-| Coordinator | `coordinator@kidslapis.sg` | Sees the whole centre |
+| Teacher | `teacher@kidslapis.sg` | Sees the whole centre |
 | Parent | `parent@kidslapis.sg` | Ms Grace — parent of Ethan **and** Mia |
 | Parent | `parent2@kidslapis.sg` | Ravi — parent of Meera **and** Arjun |
 | Child | `child@kidslapis.sg` | Ethan |
@@ -120,6 +120,7 @@ The E2E tests run on two projects: **Desktop Chrome** and **iPhone 6** (responsi
 | `e2e/volunteer.spec.js` | Assigned children only, handover + history on profile, open session form | Yuqi / Ning Xuan |
 | `e2e/child.spec.js` | Child quests (submit, waiting message, badge shelf), leaderboard (loads, tab switch) | Jachin |
 | `e2e/parent.spec.js` | Parent home: greeting, child info, handover card, recurring badge, session timeline with mood labels, SkillProgressChart, child switcher, switching children | Jachin |
+| `e2e/teacher.spec.js` | Dashboard KPI cards, alerts table + type filter, follow-up toggle, unassigned alert → matchmaking, matchmaking suggestions, manage children, manage volunteers | Jachin |
 
 ---
 
@@ -168,7 +169,7 @@ All routes except `/auth/signup` and `/auth/login` need `Authorization: Bearer <
 | `POST / PUT / DELETE /sessions` | Record / edit / delete | ✅ done | Ning Xuan |
 | `GET /homework?childId=` | Homework list | ✅ done | Ning Xuan |
 | `POST /homework` | Assign homework (with optional question deck) | ✅ done | Ning Xuan / Jachin |
-| `PUT /homework/:id/submit`, `PUT /homework/:id/verify` | Child submits; volunteer verifies and awards berries | ✅ done | Jachin |
+| `PUT /homework/:id/submit`, `PUT /homework/:id/verify` | Child submits; volunteer verifies and awards stars | ✅ done | Jachin |
 | `GET /homework/leaderboard` | Berry leaderboard (all-time + weekly) | ✅ done | Jachin |
 | `GET /decks` | Question bank decks for homework | ✅ done | Jachin |
 | `POST /handover/:childId` | AI summary (Gemini + fallback), audience: volunteer or parent | ✅ done | Yuqi |
@@ -184,4 +185,4 @@ All routes except `/auth/signup` and `/auth/login` need `Authorization: Bearer <
 
 ## Third-party code & credits
 
-Bootstrap, Bootstrap Icons, Vue, Vue Router, Pinia, Axios, Chart.js, vue-chartjs, Express, Mongoose, Playwright, Vitest (all free/open-source). Fonts: Nunito (Google Fonts); the child pages use Arial and Georgia. The child pages ("Road to Becoming King of the Pirates", berries, Bounty Board) are a fan-inspired nod to the One Piece series and use only emoji and our own CSS, no original artwork. The project skeleton was generated with AI assistance as boilerplate starter code, which the module allows. Each feature is implemented by its owner as listed in WORKLOAD.md.
+Bootstrap, Bootstrap Icons, Vue, Vue Router, Pinia, Axios, Chart.js, vue-chartjs, Express, Mongoose, Playwright, Vitest (all free/open-source). Fonts: Nunito (Google Fonts); the child pages use Arial and Georgia. The child pages (stars, Bounty Board leaderboard) are a fan-inspired nod to the One Piece series and use only emoji and our own CSS, no original artwork. The project skeleton was generated with AI assistance as boilerplate starter code, which the module allows. Each feature is implemented by its owner as listed in WORKLOAD.md.

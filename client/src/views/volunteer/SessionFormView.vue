@@ -38,7 +38,7 @@ const date = dateString.slice(0, 10) // format to yyyy-mm-dd
 const form = ref({
   // academic
   date: date,
-  subject: 'Math',
+  subject: 'English',
   topic: '',
   attempted: 0,
   correct: 0,
@@ -123,6 +123,10 @@ async function handleSubmit() {
         behaviour: form.value.behaviour,
         socialNotes: form.value.socialNotes,
       })
+
+      // Refresh the handover immediately so the next volunteer doesn't see a stale summary.
+      // Fire-and-forget: we navigate away regardless of whether the AI call succeeds.
+      api.post(`/handover/${childId.value}`, { audience: 'volunteer' }).catch(() => {})
 
       router.push({
         name: 'child-profile',
@@ -222,8 +226,8 @@ onMounted(() => { // autofill form if edit form
               </select>
             </div>
             <div class="col-sm-4">
-              <label class="form-label" for="topic">Topic covered</label>
-              <input id="topic" v-model.trim="form.topic" class="form-control" placeholder="e.g. Fractions"/>
+              <label class="form-label" for="topic">Topic / note</label>
+              <input id="topic" v-model.trim="form.topic" class="form-control" placeholder="e.g. Fractions, Comprehension"/>
             </div>
 
             <div class="col-6 col-sm-3">

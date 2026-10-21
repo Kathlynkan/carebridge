@@ -16,7 +16,7 @@ test.describe('Authentication', () => {
 
   test('coordinator lands on the dashboard', async ({ page }) => {
     await loginAs(page, 'coordinator')
-    await expect(page).toHaveURL(/\/coordinator$/)
+    await expect(page).toHaveURL(/\/teacher$/)
     await expect(page.getByText('Sessions this week')).toBeVisible()
   })
 
@@ -41,13 +41,13 @@ test.describe('Authentication', () => {
   })
 
   test('protected pages redirect to login', async ({ page }) => {
-    await page.goto('/coordinator')
+    await page.goto('/teacher')
     await expect(page).toHaveURL(/\/login\?redirect=/)
   })
 
-  test('a parent cannot open the coordinator dashboard', async ({ page }) => {
+  test('a parent cannot open the teacher dashboard', async ({ page }) => {
     await loginAs(page, 'parent')
-    await page.goto('/coordinator')
+    await page.goto('/teacher')
     await expect(page).toHaveURL(/\/parent$/)
   })
 })
@@ -78,7 +78,7 @@ test.describe('Sign up', () => {
     await page.locator('[data-test="signup-password"]').fill('secret123')
     await page.locator('[data-test="signup-confirm"]').fill('secret123')
     // Volunteers pick at least one skill and one day (click the button-style labels)
-    await page.locator('[data-test="signup-skills"]').getByText('Fractions').click()
+    await page.locator('[data-test="signup-skills"]').getByText('Math').click()
     await page.locator('[data-test="signup-days"]').getByText('Mon').click()
     await page.locator('[data-test="signup-submit"]').click()
 

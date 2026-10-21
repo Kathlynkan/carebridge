@@ -27,7 +27,7 @@ const form = ref({
   childId: route.params.id,
   deckId: '', // the id of the picked deck (empty = no deck)
   title: '',
-  subject: 'Math',
+  subject: 'English',
   details: '',
   dueDate: '',
   points: 10,

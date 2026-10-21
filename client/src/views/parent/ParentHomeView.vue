@@ -116,12 +116,16 @@ const nextSession = computed(() => {
   const today = new Date()
   let soonest = null
   for (const slot of schedule) {
-    let daysAway = DAY_NUMBERS[slot.day] - today.getDay()
+    const dayNum = DAY_NUMBERS[slot.day]
+    if (dayNum === undefined) continue // skip any slot with an unrecognised day name
+    let daysAway = dayNum - today.getDay()
     if (daysAway < 0) daysAway = daysAway + 7 // that day already passed this week, so it is next week
     if (soonest === null || daysAway < soonest.daysAway) {
       soonest = { daysAway: daysAway, volunteerId: slot.volunteerId }
     }
   }
+
+  if (!soonest) return null // all slots had unrecognised days
 
   // the date of that day, written like 2026-10-12 so formatDate can show it
   const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + soonest.daysAway)
@@ -252,6 +256,9 @@ onMounted(async () => {
         <div v-if="nextSession" class="top-extra top-next">
           Next session: {{ nextSession.isToday ? 'today, ' : '' }}{{ formatDate(nextSession.date) }}
           <span v-if="nextSession.volunteer">with {{ nextSession.volunteer }}</span>
+        </div>
+        <div v-else-if="latest" class="top-extra" style="color:var(--cb-muted)">
+          No upcoming session scheduled yet — your coordinator is working on it.
         </div>
       </div>
 

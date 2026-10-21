@@ -35,7 +35,7 @@ const recurringLabel = computed(() =>
 </script>
 
 <template>
-  <div class="cb-card handover-card p-3 p-md-4" data-test="handover-card" style="padding-top: 1.25rem !important;">
+  <div class="cb-card cb-card-blue handover-card p-3 p-md-4" data-test="handover-card" style="padding-top: 1.25rem !important;">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
       <h2 class="handover-title mb-0">
         <i class="bi bi-arrow-left-right me-2"></i>{{ title }}
