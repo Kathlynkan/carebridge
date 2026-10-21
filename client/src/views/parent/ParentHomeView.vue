@@ -134,7 +134,9 @@ onMounted(async () => {
         <span class="avatar">{{ selectedChild.avatar }}</span>
         <div>
           <h2 class="h5 mb-0">{{ selectedChild.name }}</h2>
-          <div class="small text-muted-cb">{{ selectedChild.level }} &middot; ⭐ {{ selectedChild.points }} stars earned</div>
+          <div class="small text-muted-cb">
+            {{ selectedChild.level }} &middot; ฿{{ selectedChild.points }} berries earned
+          </div>
         </div>
       </div>
 

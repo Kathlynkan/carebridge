@@ -1,4 +1,4 @@
-# Deploys Kids Lapis to Cloudflare every time code lands on the main branch (and only then).
+# Deploys CareBridge to Cloudflare every time code lands on the main branch (and only then).
 # It always builds from a fresh copy of main on GitHub, never from anyone's own computer.
 # One-time setup: in GitHub -> Settings -> Secrets and variables -> Actions, add
 #   CLOUDFLARE_API_TOKEN   (a Cloudflare API token that can edit Workers and Pages)

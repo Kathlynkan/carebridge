@@ -11,6 +11,7 @@ import userRoutes from './routes/users.js'
 import childRoutes from './routes/children.js'
 import sessionRoutes from './routes/sessions.js'
 import homeworkRoutes from './routes/homework.js'
+import deckRoutes from './routes/decks.js'
 import messageRoutes from './routes/messages.js'
 import handoverRoutes from './routes/handover.js'
 import dashboardRoutes from './routes/dashboard.js'
@@ -36,6 +37,7 @@ app.use('/matchmaking', matchmakingRoutes) // Yu Xuan
 app.use('/dashboard', dashboardRoutes) // Yu Xuan
 app.use('/sessions', sessionRoutes) // Ning Xuan
 app.use('/homework', homeworkRoutes) // Ning Xuan (assign) + Jachin (complete / rewards)
+app.use('/decks', deckRoutes) // Jachin (the decks of questions)
 app.use('/handover', handoverRoutes) // Yuqi
 app.use('/messages', messageRoutes) // Kat
 app.use('/progress', progressRoutes) // Jachin

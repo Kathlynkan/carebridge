@@ -32,20 +32,20 @@ async function loadData() {
 
   try {
     // get the children assigned to me (volunteer)
-    const childResponse = await api.get('/children')// "http://localhost:8000/children"
+    const childResponse = await api.get('/children')
     children.value = childResponse.data
 
     // get the sessions of all my children (newest first)
     const sessionResponse = await api.get('/sessions')
     sessions.value = sessionResponse.data
   } catch (err) {
-    error.value = errorMessage(err) 
+    error.value = errorMessage(err)
   } finally {
     loading.value = false
   }
 }
 
-// find each child's latest session to shown under my children tab
+// find each child's latest session to show under my children tab
 const lastSessionByChild = computed(() => {
   const map = {}
   for (const s of sessions.value) {

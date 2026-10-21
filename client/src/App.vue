@@ -6,7 +6,7 @@ import NavBar from './components/NavBar.vue'
 <template>
   <NavBar />
   <main class="app-main"> <!--main content area-->
-    <RouterView />
+    <RouterView /> <!--Routes the current page, for exmaple if child page then /child etc-->
   </main>
   <!-- displays footer at the bottom of every page -->
   <footer class="app-footer text-center small py-4">
