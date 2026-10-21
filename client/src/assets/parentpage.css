@@ -352,14 +352,14 @@
   border-style: solid;
 }
 .parentpage .cake i:nth-child(1).baked { background: var(--lapis-pink); }
-.parentpage .cake i:nth-child(2).baked { background: var(--lapis-yellow); }
-.parentpage .cake i:nth-child(3).baked { background: var(--lapis-lime); }
-.parentpage .cake i:nth-child(4).baked { background: var(--lapis-orange); }
-.parentpage .cake i:nth-child(5).baked { background: var(--lapis-purple); }
-.parentpage .cake i:nth-child(6).baked { background: var(--lapis-pink); }
-.parentpage .cake i:nth-child(7).baked { background: var(--lapis-yellow); }
-.parentpage .cake i:nth-child(8).baked { background: var(--lapis-lime); }
-.parentpage .cake i:nth-child(9).baked { background: var(--lapis-orange); }
+.parentpage .cake i:nth-child(2).baked { background: var(--lapis-cream); }
+.parentpage .cake i:nth-child(3).baked { background: var(--lapis-apricot); }
+.parentpage .cake i:nth-child(4).baked { background: var(--lapis-cream); }
+.parentpage .cake i:nth-child(5).baked { background: var(--lapis-lime); }
+.parentpage .cake i:nth-child(6).baked { background: var(--lapis-cream); }
+.parentpage .cake i:nth-child(7).baked { background: var(--lapis-sky); }
+.parentpage .cake i:nth-child(8).baked { background: var(--lapis-cream); }
+.parentpage .cake i:nth-child(9).baked { background: var(--lapis-purple); }
 
 /* ---------- topic colours on the parent page ---------- */
 /* academic = pink, social = blue, homework = lavender, schedule = apricot, highlights = yellow */
