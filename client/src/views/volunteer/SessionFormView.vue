@@ -249,7 +249,7 @@ onMounted(() => { // autofill form if edit form
 
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        <form class="cb-card p-4" data-test="session-form" @submit.prevent="handleSubmit">
+        <form class="cb-card p-4 ps-5" data-test="session-form" @submit.prevent="handleSubmit">
           <!-- 
           cb-card: custom class
           @submit: when form is submitted, call handleSubmit()
@@ -435,11 +435,6 @@ onMounted(() => { // autofill form if edit form
             </div>
 
             <div class="col-12">
-              <label class="form-label" for="socialNotes">Other Notes (Optional)</label>
-              <textarea id="socialNotes" v-model.trim="form.socialNotes" rows="3" class="form-control"></textarea>
-            </div>
-
-            <div class="col-12">
               <label class="form-label" for="photos">Photos</label>
               <input id="photos" type="file" multiple accept="image/*" class="form-control" @change="uploadPhotos">
 
@@ -457,6 +452,11 @@ onMounted(() => { // autofill form if edit form
                 </div>
 
               </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="socialNotes">Other Notes (Optional)</label>
+              <textarea id="socialNotes" v-model.trim="form.socialNotes" rows="3" class="form-control"></textarea>
             </div>
 
           </div>
