@@ -60,7 +60,7 @@ const roles = [
               <dt class="col-5">Struggle</dt><dd class="col-7">Finding common denominators</dd>
               <dt class="col-5">What worked</dt><dd class="col-7">Visual diagrams</dd>
               <dt class="col-5">Last session</dt><dd class="col-7">3/5 correct</dd>
-              <dt class="col-5">Next step</dt><dd class="col-7">Practise basic fraction addition</dd>
+              <dt class="col-5">Next step</dt><dd class="col-7">Practice basic fraction addition</dd>
             </dl>
           </div>
         </div>
