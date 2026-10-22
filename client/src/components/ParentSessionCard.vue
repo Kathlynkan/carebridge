@@ -1,7 +1,7 @@
 <!-- =============================================================
   ParentSessionCard - the session card from the whiteboard design.   Owner: Kat
   Left: a picture (with < > arrows when there is more than one photo).
-  Right: a dropdown (Academic or Social) and the details of that kind of session.
+  Right: the details, academic by default (or social when socialOnly is set).
     Academic = subject, score, what helped, next step and the homework.
     Social   = a notice board: how the child is doing, what they ate, what they did, a note.
   Props:  session (Object), child (Object), homework (Array)
@@ -16,11 +16,11 @@ const props = defineProps({
   session: { type: Object, required: true },
   child: { type: Object, required: true },
   homework: { type: Array, default: () => [] },
-  socialOnly: { type: Boolean, default: false }, // true = only the social view, without the dropdown
+  socialOnly: { type: Boolean, default: false }, // true = the social view, false = the academic view
 })
 
-// the dropdown: show the academic details or the social details of the session
-const kind = ref(props.socialOnly ? 'social' : 'academic')
+// the card shows the social details when socialOnly is true, otherwise the academic details
+const kind = computed(() => (props.socialOnly ? 'social' : 'academic'))
 
 // the photos of the session (none yet, the session form will add them later)
 const photos = computed(() => props.session.photos || [])
@@ -74,16 +74,8 @@ const extraHomework = computed(() => Math.max(0, props.homework.length - 3))
       <button v-if="photos.length > 1" type="button" class="pic-arrow" aria-label="Next photo" @click="nextPhoto(1)">&gt;</button>
     </div>
 
-    <!-- right: the dropdown and the details -->
+    <!-- right: the details -->
     <div class="session-info">
-      <label v-if="!socialOnly" class="session-kind">
-        Session
-        <select v-model="kind" class="form-select form-select-sm" data-test="session-kind">
-          <option value="academic">Academic</option>
-          <option value="social">Social</option>
-        </select>
-      </label>
-
       <!-- academic view -->
       <div v-if="kind === 'academic'">
         <h3 class="h5 mb-0">{{ session.subject }}: {{ session.topic }}</h3>

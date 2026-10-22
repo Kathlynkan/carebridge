@@ -195,15 +195,6 @@
   color: var(--lapis-plum);
 }
 
-.parentpage .session-kind {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  font-weight: 700;
-  color: var(--lapis-plum);
-}
-
 .parentpage .session-details {
   margin-bottom: 12px;
   font-weight: 500;
@@ -246,31 +237,6 @@
 .parentpage .status-box.late {
   background: var(--lapis-pink);
   color: var(--lapis-plum);
-}
-
-/* ---------- session timeline ---------- */
-
-.parentpage .timeline {
-  border-left: 4px solid var(--lapis-yellow);
-  margin-left: 6px;
-}
-
-.parentpage .timeline-item {
-  position: relative;
-  padding: 0 0 16px 20px;
-}
-
-.parentpage .timeline-item::before {
-  content: '';
-  position: absolute;
-  left: -9px;
-  top: 4px;
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-  background: var(--lapis-pink);
-  border: 1px solid var(--lapis-pink-dark);
-  box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
 /* ---------- kueh lapis pastel tiles ---------- */
@@ -368,10 +334,6 @@
 .parentpage .status-box { background: var(--topic-homework-soft); border-color: var(--lapis-yellow-dark); }
 .parentpage .status-box.late { background: var(--topic-alert); color: var(--lapis-plum); border-color: var(--lapis-pink-dark); }
 .parentpage .cake-box { background: var(--topic-homework-soft); border-color: var(--lapis-yellow-dark); }
-
-/* the timeline is about sessions, so it is pink */
-.parentpage .timeline { border-left-color: var(--topic-academic); }
-.parentpage .timeline-item::before { background: var(--topic-academic); }
 
 /* ---------- a calmer look for the parent page ---------- */
 
@@ -500,20 +462,6 @@
 }
 .parentpage .message-btn:hover {
   background: var(--topic-highlight-soft);
-}
-
-/* the folded row at the bottom */
-.parentpage .progress-toggle {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  min-height: 44px;
-  margin-bottom: 16px;
-  padding: 10px 16px;
-  border: 1px solid var(--lapis-cream-dark);
-  background: var(--lapis-cream);
-  color: var(--lapis-plum);
-  font-weight: 600;
 }
 
 /* homework status boxes: two by two on a small screen */

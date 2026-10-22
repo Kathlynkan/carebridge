@@ -15,7 +15,6 @@ import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth' // the logged-in user
 import PageHeader from '@/components/PageHeader.vue' // for the 'Hello {{parent}}'
 import StateMessage from '@/components/StateMessage.vue' // to show loading etc 
-import SkillProgressChart from '@/components/charts/SkillProgressChart.vue'
 import HomeworkQuestCard from '@/components/HomeworkQuestCard.vue'
 import HandoverCard from '@/components/HandoverCard.vue' 
 import ParentSessionCard from '@/components/ParentSessionCard.vue' // the session card from the whiteboard design
@@ -34,7 +33,6 @@ const handoverLoading = ref(false) // true while we wait for the summary
 const loading = ref(true) // true while the page is first loading
 const error = ref('') // the error sentence, empty if there is no error
 const noticeTab = ref('latest') // which tab of the notice board is open: 'social', 'latest' or 'homework'
-const showProgress = ref(false) // true when the progress chart and the past sessions are opened
 
 // ---------- values worked out from the things above ----------
 // the child we are showing now (found in the list by its id)
@@ -290,7 +288,7 @@ onMounted(async () => {
           <div class="notice-board" :class="'board-' + noticeTab" data-test="notice-board">
             <!-- the three tabs -->
             <div class="notice-tabs">
-              <button type="button" class="notice-tab tab-latest" :class="{ active: noticeTab === 'latest' }" @click="noticeTab = 'latest'">Latest session</button>
+              <button type="button" class="notice-tab tab-latest" :class="{ active: noticeTab === 'latest' }" @click="noticeTab = 'latest'">Academic</button>
               <button type="button" class="notice-tab tab-homework" :class="{ active: noticeTab === 'homework' }" @click="noticeTab = 'homework'">
                 Homework<span v-if="homeworkCounts.todo > 0" class="tab-count">{{ homeworkCounts.todo }}</span>
               </button>
@@ -374,32 +372,6 @@ onMounted(async () => {
           </div>
         </div>
 
-      </div>
-
-      <!-- below: the progress chart and the recent sessions, folded away until the parent opens them -->
-      <button type="button" class="progress-toggle" :aria-expanded="showProgress" data-test="progress-toggle" @click="showProgress = !showProgress">
-        <span>Progress and past sessions</span>
-        <span>{{ showProgress ? 'Hide' : 'Show' }}</span>
-      </button>
-      <div v-if="showProgress" class="row g-4">
-        <div class="col-lg-7">
-          <SkillProgressChart :sessions="sessions" />
-        </div>
-        <div class="col-lg-5">
-          <div v-if="recentSessions.length > 0" class="cb-card topic-academic p-3 p-md-4" data-test="session-timeline">
-            <h2 class="h5 mb-3">Recent sessions</h2>
-            <ul class="timeline list-unstyled mb-0">
-              <li v-for="session in recentSessions" :key="session.id" class="timeline-item">
-                <div class="small text-muted-cb">{{ formatDate(session.date) }}</div>
-                <div class="fw-semibold">{{ session.subject }}: {{ session.topic }}</div>
-                <div>
-                  Got {{ session.correct }} out of {{ session.attempted }} right
-                  <span v-if="MOOD_WORDS[session.mood]" class="text-muted-cb">&middot; {{ MOOD_WORDS[session.mood] }}</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
     </template>
   </div>
