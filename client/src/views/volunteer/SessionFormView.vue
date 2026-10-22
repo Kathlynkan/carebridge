@@ -236,17 +236,6 @@ onMounted(() => { // autofill form if edit form
               <input id="date" v-model="form.date" type="date" class="form-control"/>
               <!-- form-control: bootstrap-styled input -->
             </div>
-            <div class="col-sm-4">
-              <label class="form-label" for="subject">Subject</label>
-              <select id="subject" v-model="form.subject" class="form-select">
-                <!-- form-select: bootstrap-styled dropdown -->
-                <option v-for="s in SUBJECTS" :key="s">{{ s }}</option>
-              </select>
-            </div>
-            <div class="col-sm-4">
-              <label class="form-label" for="topic">Topic / note</label>
-              <input id="topic" v-model.trim="form.topic" class="form-control" placeholder="e.g. Fractions, Comprehension"/>
-            </div>
 
             <div class="col-sm-1"></div>
 
@@ -340,7 +329,7 @@ onMounted(() => { // autofill form if edit form
 
             <div class="col-md-6">
               <label class="form-label" for="next">Suggested next step</label>
-              <input id="next" v-model.trim="form.nextStep" class="form-control" placeholder="e.g. Practice fraction addition" />
+              <input id="next" v-model.trim="form.nextStep" class="form-control" placeholder="e.g. Practise fraction addition" />
             </div>
             <div class="col-12">
               <label class="form-label" for="notes">Other notes (optional)</label>
