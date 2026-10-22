@@ -233,7 +233,7 @@ onMounted(() => { // autofill form if edit form
               <!-- form-control: bootstrap-styled input -->
             </div>
 
-            <div class="col-sm-1"></div>
+            
 
             <div class="col-sm-8">
               <span class="form-label d-block">How was the child feeling?</span>
