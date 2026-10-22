@@ -8,7 +8,7 @@ const messageSchema = new mongoose.Schema(
     childId: { type: String, required: true, index: true },
     fromId: { type: String, required: true },
     text: { type: String, required: true, trim: true },
-    sentAt: { type: String, default: nowIso },
+    sentAt: { type: String, default: nowIso }, // sendAt is a field that the server adds to every message when the message is saved -> holds the time messages were sent 
     readBy: [String], // user ids who have read it
   },
   { toJSON: jsonOptions },
