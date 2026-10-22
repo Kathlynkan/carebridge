@@ -364,14 +364,13 @@ onMounted(() => { // autofill form if edit form
             </div>
 
             <div class="col-12">
-              <label class="form-label" for="socialNotes">Notes</label>
+              <label class="form-label" for="socialNotes">Other Notes (Optional)</label>
               <textarea id="socialNotes" v-model.trim="form.socialNotes" rows="3" class="form-control"></textarea>
             </div>
 
             <div class="col-12">
               <label class="form-label" for="photos">Photos</label>
-              <input id="photos" type="file" placeholder="Upload photos here"
-              multiple accept="image/*" class="form-control" @change="uploadPhotos">
+              <input id="photos" type="file" multiple accept="image/*" class="form-control" @change="uploadPhotos">
 
               <!-- photo preview directly below uplaod input -->
               <div v-if="form.photos.length > 0" class="d-flex flex-wrap gap-2 mt-2">
@@ -383,7 +382,7 @@ onMounted(() => { // autofill form if edit form
                   <button type="button" 
                     class="btn-close bg-danger position-absolute rounded-circle top-0 end-0 p-1"
                     style="width: 12px; height: 12px; font-size: 10px; opacity: 1;" 
-                    @click="removePhoto(index)">X</button>
+                    @click="removePhoto(index)"></button>
                 </div>
 
               </div>
