@@ -69,7 +69,7 @@ The homework route is split — see the callout at the bottom of this section.
 | `server/utils/access.js` | `canAccessChild`, `childFilterFor`, `visibleChildIds` — who can see which child |
 | `server/utils/db.js` | MongoDB Atlas connection (loads `config.env`) |
 | `server/utils/seed.js` | `pnpm seed` — wipes DB and loads `server/data/seed.json` |
-| `server/server.js` | Express app — CORS, JSON, mounts all routes, error handler |
+| `server/server.js` | Express + socket.io app — CORS, JSON, socket rooms per childId, mounts all routes |
 | `server/config.env` | DB connection string + Gemini API key (not in git) |
 | `server/data/seed.json` | Demo data — children, parents, volunteers, sessions, homework, messages |
 | `client/e2e/auth.spec.js` | E2E — login per role, wrong-role redirect, sign-up flow |
@@ -88,7 +88,7 @@ The homework route is split — see the callout at the bottom of this section.
 | `server/routes/handover.js` | POST /handover/:childId — calls Gemini, parses JSON, caches result, fallback |
 | `server/models/Handover.js` | Mongoose schema — cached AI summary per child, `audience` field |
 | `server/routes/__tests__/handover.test.js` | Unit/integration tests for handover route |
-| `client/e2e/volunteer.spec.js` | E2E — handover shows, session history shows, recurring-struggle badge |
+| `client/e2e/volunteer.spec.js` | E2E — handover shows, session history, recurring badge (Yuqi); session recording (Ning Xuan); homework assignment (Jachin) |
 
 ### Ning Xuan — Session logging & homework assignment
 
@@ -107,13 +107,13 @@ The homework route is split — see the callout at the bottom of this section.
 | File | What it does |
 |---|---|
 | `client/src/views/parent/ParentHomeView.vue` | Parent home — child switcher, AI handover (parent-friendly), session timeline, homework status |
-| `client/src/views/shared/MessagesView.vue` | Chat page — child sidebar, message thread, polling every 10 s |
+| `client/src/views/shared/MessagesView.vue` | Chat page — child sidebar, message thread, real-time via socket.io (marks read on open) |
 | `client/src/components/ChatThread.vue` | Message list + send bar — emits `send`, auto-scrolls |
 | `client/src/components/ParentSessionCard.vue` | Simplified session card for parent view (no jargon) |
 | `client/src/components/ParentSocialDay.vue` | One day entry in the parent's social/mood timeline |
-| `server/routes/messages.js` | GET (with sender names), POST, PUT /read, GET /unread — one conversation per child |
+| `server/routes/messages.js` | GET (with sender names), POST (emits socket event), PUT /read, GET /unread |
 | `server/models/Message.js` | Mongoose schema — childId, fromId, text, sentAt, readBy array |
-| `client/e2e/parent.spec.js` | E2E — parent sees latest session, sends message, volunteer sees it |
+| `client/e2e/messages.spec.js` | E2E — child list, thread visible, switch child, send message, teacher sees thread |
 
 ### Yu Xuan — Coordinator dashboard & matchmaking
 
@@ -130,7 +130,6 @@ The homework route is split — see the callout at the bottom of this section.
 | `server/utils/matchmaking.js` | `scoreVolunteer`, `rankVolunteers` — pure scoring functions |
 | `server/tests/alerts.test.js` | Unit tests for each alert rule |
 | `server/tests/matchmaking.test.js` | Unit tests for the scoring function |
-| `client/e2e/teacher.spec.js` | E2E — coordinator sees alerts, assigns volunteer, alert disappears |
 
 ### Jachin — Data visualisation & child gamification
 
@@ -147,7 +146,9 @@ The homework route is split — see the callout at the bottom of this section.
 | `server/routes/decks.js` | GET /decks — question banks for the homework deck picker |
 | `server/routes/homework.js` *(shared — submit/verify/leaderboard only)* | PUT /homework/:id/submit (child), PUT /homework/:id/verify (awards berries), GET /homework/leaderboard |
 | `server/models/Deck.js` | Mongoose schema — question bank (title, subject, questions with answers) |
-| `client/e2e/child.spec.js` | E2E — child marks quest done, status changes, badge shelf, leaderboard tab switch |
+| `client/e2e/child.spec.js` | E2E — child marks quest done, verify flow (DB write), API failure state, badge shelf, leaderboard |
+| `client/e2e/parent.spec.js` | E2E — parent greeting, child info, handover, recurring badge, mood timeline, SkillProgressChart, child switcher |
+| `client/e2e/teacher.spec.js` | E2E — dashboard KPI cards, alerts table + filter, follow-up toggle, matchmaking, manage children, manage volunteers |
 
 ### Shared files — everyone can explain how it applies to their slice
 
