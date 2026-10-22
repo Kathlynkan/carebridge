@@ -30,7 +30,7 @@ const roles = [
   <section class="hero py-5">
     <div class="container py-md-4">
       <div class="row align-items-center g-4">
-        <div class="col-lg-7">
+        <div>
           <span class="badge badge-accent mb-3">For student care centres</span>
           <h1 class="display-5 fw-heavy mb-3">
             When the volunteer changes, the child's progress shouldn't reset.
@@ -49,19 +49,6 @@ const roles = [
                 Volunteer / parent sign up
               </RouterLink>
             </template>
-          </div>
-        </div>
-        <div class="col-lg-5">
-          <div class="cb-card p-4 handover-demo">
-            <div class="small text-muted-cb mb-2">Example</div>
-            <h2 class="h5 mb-3">Today's Handover</h2>
-            <dl class="row small mb-0">
-              <dt class="col-5">Continue</dt><dd class="col-7">Fractions</dd>
-              <dt class="col-5">Struggle</dt><dd class="col-7">Finding common denominators</dd>
-              <dt class="col-5">What worked</dt><dd class="col-7">Visual diagrams</dd>
-              <dt class="col-5">Last session</dt><dd class="col-7">3/5 correct</dd>
-              <dt class="col-5">Next step</dt><dd class="col-7">Practice basic fraction addition</dd>
-            </dl>
           </div>
         </div>
       </div>
