@@ -3,7 +3,7 @@
   Route: /messages/:childId?   (used by parents and teachers)
 ============================================================= -->
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
@@ -26,6 +26,7 @@ const messages = ref([])
 const loading = ref(true)
 const sending = ref(false)
 const error = ref('')
+const pollTimer = ref(null)
 
 async function loadMessages(childId) {
   if (!childId) return
@@ -74,7 +75,13 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
+  // Poll every 10 s so new messages appear without a manual refresh
+  pollTimer.value = setInterval(() => {
+    if (route.params.childId) loadMessages(route.params.childId)
+  }, 10_000)
 })
+
+onUnmounted(() => clearInterval(pollTimer.value))
 </script>
 
 <template>

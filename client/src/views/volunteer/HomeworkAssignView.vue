@@ -1,15 +1,5 @@
-<!-- =============================================================
-  Give homework to a child                            Owner: Ning Xuan
-  Route: /children/:id/homework/new
-  The homework then appears on the child's quest page (Jachin)
-  and on the parent page (Kat).
-  TODO (Ning Xuan):
-    [done] POST /homework with { childId, title, subject, details, dueDate, points }
-    [done] validation: title required, due date not in the past
-    [done] "suggest from next step": pre-fill title from the latest session's nextStep
-  Jachin: the volunteer can also pick a DECK of questions. The deck fills in the title, subject and instructions,
-  and the child answers the questions of the deck as a quiz on the quest page.
-============================================================= -->
+<!-- Give homework to a child                            Owner: Ning Xuan
+  Route: /children/:id/homework/new -->
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

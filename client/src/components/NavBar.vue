@@ -2,9 +2,10 @@
   NavBar — shows different links for each role.      Owner: Kai Sen
 ============================================================= -->
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { RouterLink, useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import api from '@/services/api'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -12,7 +13,10 @@ const route = useRoute()
 const menuOpen = ref(false) // on a small screen the links hide behind the hamburger button until this is true
 
 // close the menu every time the parent goes to another page
-watch(() => route.fullPath, () => { menuOpen.value = false })
+watch(() => route.fullPath, () => {
+  menuOpen.value = false
+  fetchUnread()
+})
 
 const LINKS = {
   volunteer: [
@@ -36,6 +40,20 @@ const LINKS = {
 }
 
 const links = computed(() => LINKS[auth.role] || [])
+
+const unreadTotal = ref(0)
+
+async function fetchUnread() {
+  if (!auth.isLoggedIn || !['teacher', 'parent'].includes(auth.role)) return
+  try {
+    const res = await api.get('/messages/unread')
+    unreadTotal.value = Object.values(res.data).reduce((a, b) => a + b, 0)
+  } catch {
+    // badge is non-critical — silently ignore errors
+  }
+}
+
+onMounted(fetchUnread)
 
 async function logout() {
   await auth.logout()
@@ -71,6 +89,11 @@ async function logout() {
           :to="link.to"
         >
           <i class="bi me-1" :class="link.icon"></i>{{ link.label }}
+          <span
+            v-if="link.icon === 'bi-chat-dots' && unreadTotal > 0"
+            class="badge rounded-pill ms-1"
+            style="background:var(--lapis-pink);color:var(--lapis-plum);font-size:0.6rem"
+          >{{ unreadTotal }}</span>
         </RouterLink>
       </div>
 

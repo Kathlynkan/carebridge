@@ -41,6 +41,8 @@ test.describe('Parent portal', () => {
   })
 
   test('shows session timeline with mood labels', async ({ page }) => {
+    // The session timeline is in the Social tab — switch to it first
+    await page.getByRole('button', { name: 'Social' }).click()
     const timeline = page.locator('[data-test="session-timeline"]')
     await expect(timeline).toBeVisible()
     // Ethan has sessions with mood: frustrated -> "😕 Found it hard",
