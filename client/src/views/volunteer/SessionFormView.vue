@@ -248,7 +248,7 @@ onMounted(() => { // autofill form if edit form
               <input id="topic" v-model.trim="form.topic" class="form-control" placeholder="e.g. Fractions, Comprehension"/>
             </div>
 
-            <div class="col-sm-1"></div>
+            
 
             <div class="col-sm-8">
               <span class="form-label d-block">How was the child feeling?</span>
