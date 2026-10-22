@@ -340,7 +340,7 @@ onMounted(() => { // autofill form if edit form
 
             <div class="col-md-6">
               <label class="form-label" for="next">Suggested next step</label>
-              <input id="next" v-model.trim="form.nextStep" class="form-control" placeholder="e.g. Practise fraction addition" />
+              <input id="next" v-model.trim="form.nextStep" class="form-control" placeholder="e.g. Practice fraction addition" />
             </div>
             <div class="col-12">
               <label class="form-label" for="notes">Other notes (optional)</label>

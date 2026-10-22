@@ -596,7 +596,7 @@
         "Finding common denominators"
       ],
       "whatWorked": "Fraction strips",
-      "nextStep": "Practise equivalent fractions with strips",
+      "nextStep": "Practice equivalent fractions with strips",
       "mood": "okay",
       "notes": ""
     },
@@ -613,7 +613,7 @@
         "Finding common denominators"
       ],
       "whatWorked": "Visual diagrams",
-      "nextStep": "Practise basic fraction addition",
+      "nextStep": "Practice basic fraction addition",
       "mood": "happy",
       "notes": "",
       "activity": "Drawing",
@@ -673,7 +673,7 @@
         "Mixed numbers"
       ],
       "whatWorked": "Visual diagrams",
-      "nextStep": "Practise basic fraction addition",
+      "nextStep": "Practice basic fraction addition",
       "mood": "happy",
       "notes": "Much more confident today!",
       "activity": "Outdoor play",
@@ -916,7 +916,7 @@
         "Mixing up b and d"
       ],
       "whatWorked": "Saying each word out loud",
-      "nextStep": "Practise school words",
+      "nextStep": "Practice school words",
       "mood": "okay",
       "notes": ""
     },
@@ -993,7 +993,7 @@
       "id": "h_2",
       "childId": "c_1",
       "volunteerId": "u_vol2",
-      "title": "7 times table x3",
+      "title": "7 times table",
       "subject": "Math",
       "details": "Say the 7 times table out loud three times.",
       "dueDate": "2026-10-02",
@@ -1070,7 +1070,7 @@
       "volunteerId": "u_vol3",
       "title": "Spelling list 6",
       "subject": "English",
-      "details": "Practise list 6 with look-cover-write-check.",
+      "details": "Practice list 6 with look-cover-write-check.",
       "dueDate": "2026-10-07",
       "points": 15,
       "status": "assigned",
