@@ -16,7 +16,7 @@ import api from '@/services/api'
 // Where each role lands after logging in
 export const ROLE_HOME = {
   volunteer: '/volunteer',
-  teacher: '/coordinator',
+  teacher: '/teacher',
   parent: '/parent',
   child: '/child',
 }

@@ -27,7 +27,7 @@ function time(iso) {
 </script>
 
 <template>
-  <div class="cb-card d-flex flex-column chat" style="padding-top: 0.5rem !important;">
+  <div class="cb-card cb-card-blue d-flex flex-column chat" style="padding-top: 0.5rem !important;">
     <div class="flex-grow-1 overflow-auto p-3" data-test="chat-messages">
       <p v-if="messages.length === 0" class="empty-chat text-center mt-4">
         No messages yet. Say hello!
@@ -79,7 +79,7 @@ function time(iso) {
   max-width: 78%;
   padding: 0.5rem 0.85rem;
   border-radius: 14px;
-  border: 1px solid var(--lapis-shadow);
+  border: 1px solid var(--lapis-blue-dark);
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   font-weight: 500;
 }
@@ -115,7 +115,7 @@ function time(iso) {
 }
 
 .chat-input-row {
-  border-top-color: var(--lapis-shadow) !important;
+  border-top-color: var(--lapis-blue-dark) !important;
   border-top-width: 3px !important;
 }
 </style>

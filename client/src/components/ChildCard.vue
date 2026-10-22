@@ -19,7 +19,7 @@ const lastSeen = computed(() =>
 
 <template>
   <div
-    class="cb-card cb-card-hover p-3 h-100 d-flex flex-column"
+    class="cb-card cb-card-pink cb-card-hover p-3 h-100 d-flex flex-column"
     role="button"
     data-test="child-card"
     style="padding-top: 1.25rem !important;"

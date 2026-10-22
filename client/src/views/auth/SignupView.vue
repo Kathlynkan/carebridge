@@ -69,7 +69,7 @@ async function handleSignup() {
       <div class="col-sm-10 col-md-7 col-lg-5">
         <div class="cb-card p-4 p-md-5">
           <h1 class="h3 mb-1">Create an account</h1>
-          <p class="text-muted-cb mb-4">Coordinators create child accounts for the centre.</p>
+          <p class="text-muted-cb mb-4">Teachers create child accounts for the centre.</p>
 
           <div v-if="error" class="alert alert-danger small" data-test="signup-error">
             {{ error }}

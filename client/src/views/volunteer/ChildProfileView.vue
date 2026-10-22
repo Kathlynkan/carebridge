@@ -86,6 +86,15 @@ async function verifyQuest(homeworkId) {
   }
 }
 
+async function deleteHomework(homeworkId) {
+  try {
+    await api.delete(`/homework/${homeworkId}`)
+    homework.value = homework.value.filter((h) => h.id !== homeworkId)
+  } catch (err) {
+    error.value = errorMessage(err)
+  }
+}
+
 async function deleteSession(sessionId) {
   try {
     await api.delete(`/sessions/${sessionId}`)
@@ -174,6 +183,7 @@ onMounted(() => {
                 mode="volunteer"
                 :busy="checkingQuestId !== null"
                 @verify="verifyQuest"
+                @delete="deleteHomework"
               />
             </div>
           </div>

@@ -3,7 +3,6 @@
   Pattern: v-model inputs -> async submit -> loading + error states -> router.push
   TODO (Kai Sen):
     [ ] show/hide password toggle
-    [ ] remove the "demo accounts" box before final submission (keep them in README)
 ============================================================= -->
 <script setup>
 import { ref } from 'vue'
@@ -19,18 +18,6 @@ const email = ref('')
 const password = ref('')
 const loading = ref(false)
 const error = ref('')
-
-const demoAccounts = [
-  { role: 'Volunteer', email: 'volunteer@kidslapis.sg' },
-  { role: 'Teacher', email: 'teacher@kidslapis.sg' },
-  { role: 'Parent', email: 'parent@kidslapis.sg' },
-  { role: 'Child', email: 'child@kidslapis.sg' },
-]
-
-function fillDemo(account) {
-  email.value = account.email
-  password.value = 'password123'
-}
 
 async function handleLogin() {
   error.value = ''
@@ -94,20 +81,6 @@ async function handleLogin() {
           </p>
         </div>
 
-        <div class="cb-card p-3 mt-3 small">
-          <strong>Demo accounts</strong> (password: <code>password123</code>)
-          <div class="d-flex flex-wrap gap-2 mt-2">
-            <button
-              v-for="a in demoAccounts"
-              :key="a.email"
-              type="button"
-              class="btn btn-sm btn-outline-secondary"
-              @click="fillDemo(a)"
-            >
-              {{ a.role }}
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   </div>

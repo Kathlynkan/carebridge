@@ -38,7 +38,7 @@ const date = dateString.slice(0, 10) // format to yyyy-mm-dd
 const form = ref({
   // academic
   date: date,
-  subject: 'Math',
+  subject: 'English',
   topic: '',
   attempted: 0,
   correct: 0,
@@ -126,6 +126,10 @@ async function handleSubmit() {
         photos: form.value.photos
       })
 
+      // Refresh the handover immediately so the next volunteer doesn't see a stale summary.
+      // Fire-and-forget: we navigate away regardless of whether the AI call succeeds.
+      api.post(`/handover/${childId.value}`, { audience: 'volunteer' }).catch(() => {})
+
       router.push({
         name: 'child-profile',
         params: {id: childId.value},
@@ -203,3 +207,228 @@ onMounted(() => { // autofill form if edit form
 
 </script>
 
+<template>
+  <div class="container py-4">
+    <PageHeader
+      :title="isEdit ? 'Edit session' : 'Record a session'"
+      subtitle="Takes about a minute. The next volunteer will thank you!"
+    />
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <form class="cb-card p-4" data-test="session-form" @submit.prevent="handleSubmit">
+          <!-- 
+          cb-card: custom class
+          @submit: when form is submitted, call handleSubmit()
+          .prevent: stop browser's default form behavior, else will interfere with Vue app 
+          without .prevent: click submit > browser submit form > page reloads
+          with .prevent: click submit > page does NOT reload > hangleSubmit() runs > call api.push(), api.put(), etc
+          -->
+          <div v-if="error" class="alert alert-warning small">{{ error }}</div>
+          <!-- alert: bootstrap alert box, alert-warning: set alert colour to yellow/orange-->
+
+          <h2 class="h5 mb-3">Academic</h2>
+
+          <div class="row g-4">
+            <div class="col-sm-3">
+              <label class="form-label" for="date">Date</label>
+              <!-- form-label: bootstrap form label styling-->
+              <input id="date" v-model="form.date" type="date" class="form-control"/>
+              <!-- form-control: bootstrap-styled input -->
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label" for="subject">Subject</label>
+              <select id="subject" v-model="form.subject" class="form-select">
+                <!-- form-select: bootstrap-styled dropdown -->
+                <option v-for="s in SUBJECTS" :key="s">{{ s }}</option>
+              </select>
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label" for="topic">Topic / note</label>
+              <input id="topic" v-model.trim="form.topic" class="form-control" placeholder="e.g. Fractions, Comprehension"/>
+            </div>
+
+            <div class="col-sm-1"></div>
+
+            <div class="col-sm-8">
+              <span class="form-label d-block">How was the child feeling?</span>
+              <!-- d-block: display label on its own line, label takes up entire row -->
+              <div class="btn-group flex-wrap" role="group">
+                <!-- 
+                btn-group: group mood buttons together
+                flex-wrap: allow buttons to wrap onto next line on smaller screens
+                 -->
+                <template v-for="m in MOODS" :key="m.value">
+                  <input :id="'mood-' + m.value" v-model="form.mood" type="radio" class="btn-check" :value="m.value" />
+                  <!-- btn-check: hidden radio button for bootstrap button toggle-->
+                  <label class="btn btn-outline-secondary btn-sm" :for="'mood-' + m.value">
+                    <!--
+                    btn-outline-secondary: gray outlined button style
+                    btn-sm: small button size
+                    -->
+                    {{ m.emoji }} {{ m.label }}
+                  </label>
+                </template>
+              </div>
+            </div>
+
+            <div class="col-sm-3">
+              <label class="form-label" for="subject">Subject</label>
+              <select id="subject" v-model="form.subject" class="form-select">
+                <!-- form-select: bootstrap-styled dropdown -->
+                <option v-for="s in SUBJECTS" :key="s">{{ s }}</option>
+              </select>
+            </div>
+
+            <div class="col-sm-1"></div>
+
+            <div class="col-sm-7">
+              <label class="form-label" for="topic">Topic covered</label>
+              <input id="topic" v-model.trim="form.topic" class="form-control" placeholder="e.g. Fractions"/>
+            </div>
+
+            <div class="col-6 col-sm-3">
+              <label class="form-label" for="attempted">Attempted</label>
+              <div class="input-group">
+                <button type="button" class="btn btn-outline-secondary" @click="form.attempted = Math.max(0,(form.attempted || 0)-1)">-</button>
+                <input id="attempted" v-model.number="form.attempted" type="number" min="0" class="form-control" />
+                <button type="button" class="btn btn-outline-secondary" @click="form.attempted = (form.attempted || 0)+1">+</button>
+              </div>
+            </div>
+
+            <div class="col-sm-1"></div>
+
+            <div class="col-6 col-sm-3">
+              <label class="form-label" for="correct">Correct</label>
+              <div class="input-group">
+                <button type="button" class="btn btn-outline-secondary" @click="form.correct = Math.max(0,(form.correct || 0)-1)">-</button>
+                <input id="correct" v-model.number="form.correct" type="number" min="0" class="form-control" />
+                <button type="button" class="btn btn-outline-secondary" @click="form.correct = (form.correct || 0)+1">+</button>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="struggle">Skills the child struggled with</label>
+              <input
+                id="struggle"
+                v-model.trim="newStruggle"
+                class="form-control"
+                placeholder="Type a skill and press Enter"
+                @keydown.enter.prevent="addStruggle"
+              />
+              <div class="mt-2">
+                <span v-for="s in form.struggles" :key="s" class="badge badge-danger-soft me-1">
+                  <!--
+                  badge: bootstrap badge/tag styling
+                  badge-danger-soft: custom soft-red badge colour
+                  me-1: (margin-end) small right margin between badges
+                  -->
+                  {{ s }}
+                  <button type="button" class="border-0 bg-transparent ms-1" @click="removeStruggle(s)">X</button>
+                  <!--
+                  border-0: remove button border
+                  ms-1: (margin-start) small spacing before remove button
+                  -->
+                </span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label" for="worked">Teaching method that worked</label>
+              <input id="worked" v-model.trim="form.whatWorked" class="form-control" placeholder="e.g. Visual diagrams" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label" for="next">Suggested next step</label>
+              <input id="next" v-model.trim="form.nextStep" class="form-control" placeholder="e.g. Practice fraction addition" />
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="notes">Other notes (optional)</label>
+              <textarea id="notes" v-model="form.notes" rows="3" class="form-control"></textarea>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <h2 class="h5 mb-3">Social</h2>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="activity">Activity</label>
+              <input id="activity" v-model.trim="form.activity" class="form-control" placeholder="e.g. Board games">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label" for="interaction">Peer Interaction</label>
+              <select id="interaction" v-model="form.interaction" class="form-select">
+                <option value="">Select</option>
+                <option>Excellent</option>
+                <option>Good</option>
+                <option>Fair</option>
+                <option>Limited</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label" for="behaviour">Positive Behaviour Observed</label>
+              <input id="behaviour" v-model.trim="form.behaviour" class="form-control" placeholder="e.g. Helped another child">
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="socialNotes">Notes</label>
+              <textarea id="socialNotes" v-model.trim="form.socialNotes" rows="3" class="form-control"></textarea>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="photos">Photos</label>
+              <input id="photos" type="file" placeholder="Upload photos here"
+              multiple accept="image/*" class="form-control" @change="uploadPhotos">
+
+              <!-- photo preview directly below uplaod input -->
+              <div v-if="form.photos.length > 0" class="d-flex flex-wrap gap-2 mt-2">
+                <div v-for="(photo, index) in form.photos" :key="index" class="position-relative">
+                  <img :src="getPhotoURL(photo)"
+                  class="rounded"
+                  style="width: 100px; height: 100px; object-fit: cover;">
+
+                  <button type="button" 
+                    class="btn-close bg-danger position-absolute rounded-circle top-0 end-0 p-1"
+                    style="width: 12px; height: 12px; font-size: 10px; opacity: 1;" 
+                    @click="removePhoto(index)">X</button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <!-- right-aligned buttons with gap in between and top margin -->
+            <button type="button" class="btn btn-outline-secondary" @click="cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary" :disabled="saving">
+              {{ isEdit ? 'Save changes' : 'Save session' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+  /* Center text and force alignment over Bootstrap defaults */
+  /* override framework styles, browser ignores those standard rules and applies that style 
+  regardless of where it appears or how specific other selectors are */
+  input[type="number"] {
+    text-align: center !important;
+    -moz-appearance: textfield !important; /* Firefox */
+    appearance: textfield !important;
+  }
+
+  /* Hide webkit arrows in Chrome, Safari, Edge, Opera */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+  }
+</style>
