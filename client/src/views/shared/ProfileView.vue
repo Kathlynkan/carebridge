@@ -96,10 +96,6 @@ async function save() {
     loading.value = false
   }
 }
-
-function cancel() {
-  router.back() // return user to wherever they came from
-}
 </script>
 
 <template>
