@@ -374,7 +374,7 @@ onMounted(() => { // autofill form if edit form
 
           <h2 class="h5 mb-3">Social</h2>
 
-          <div class="row g-3">
+          <div class="row g-4">
             <div class="col-md-6">
               <label class="form-label" for="meal">Today's Meal</label>
               <input id="meal" v-model.trim="form.meal" class="form-control" placeholder="e.g. Chicken rice and apples">
