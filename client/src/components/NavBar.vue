@@ -2,12 +2,17 @@
   NavBar — shows different links for each role.      Owner: Kai Sen
 ============================================================= -->
 <script setup>
-import { computed } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { computed, ref, watch } from 'vue'
+import { RouterLink, useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const auth = useAuthStore()
 const router = useRouter()
+const route = useRoute()
+const menuOpen = ref(false) // on a small screen the links hide behind the hamburger button until this is true
+
+// close the menu every time the parent goes to another page
+watch(() => route.fullPath, () => { menuOpen.value = false })
 
 const LINKS = {
   volunteer: [
@@ -46,6 +51,18 @@ async function logout() {
         Kids Lapis
       </RouterLink>
 
+      <button
+        type="button"
+        class="lapis-burger"
+        aria-label="Menu"
+        :aria-expanded="menuOpen"
+        data-test="nav-burger"
+        @click="menuOpen = !menuOpen"
+      >
+        <i class="bi" :class="menuOpen ? 'bi-x-lg' : 'bi-list'"></i>
+      </button>
+
+      <div class="lapis-menu" :class="{ open: menuOpen }">
       <div class="lapis-links">
         <RouterLink
           v-for="link in links"
@@ -70,6 +87,7 @@ async function logout() {
       <div v-else class="lapis-right">
         <RouterLink class="btn btn-outline-secondary btn-sm" to="/login">Log in</RouterLink>
         <RouterLink class="btn btn-primary btn-sm" to="/signup">Sign up</RouterLink>
+      </div>
       </div>
     </div>
   </nav>
@@ -176,10 +194,61 @@ async function logout() {
   color: var(--lapis-plum);
 }
 
-@media (max-width: 575px) {
+/* the menu: on a wide screen it is one row beside the brand, on a small screen it hides behind the hamburger */
+.lapis-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.lapis-burger {
+  display: none;
+  margin-left: auto;
+  width: 44px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background: var(--lapis-cream);
+  border: 1px solid var(--lapis-cream-dark);
+  border-radius: 4px;
+  color: var(--lapis-plum);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+@media (max-width: 767px) {
+  .lapis-burger {
+    display: flex;
+  }
+  .lapis-menu {
+    display: none;
+    flex: 0 0 100%;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 0.5rem;
+  }
+  .lapis-menu.open {
+    display: flex;
+  }
   .lapis-links {
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-direction: column;
+    align-items: stretch;
+    flex: none;
+  }
+  .lapis-nav-link {
+    padding: 0.7rem 0.75rem;
+    font-size: 0.85rem;
+  }
+  .lapis-right {
+    flex-direction: column;
+    align-items: stretch;
+    margin-left: 0;
+  }
+  .lapis-user-pill {
+    justify-content: center;
+    padding: 0.6rem 0.7rem;
   }
 }
 </style>

@@ -34,6 +34,7 @@ const handoverLoading = ref(false) // true while we wait for the summary
 const loading = ref(true) // true while the page is first loading
 const error = ref('') // the error sentence, empty if there is no error
 const noticeTab = ref('latest') // which tab of the notice board is open: 'social', 'latest' or 'homework'
+const showProgress = ref(false) // true when the progress chart and the past sessions are opened
 
 // ---------- values worked out from the things above ----------
 // the child we are showing now (found in the list by its id)
@@ -138,6 +139,19 @@ const nextSession = computed(() => {
   }
 })
 
+// the next session as a short label for the small tile, like "Thu 24" ("Today" when it is today)
+const nextShort = computed(() => {
+  if (!nextSession.value) return 'Not set yet'
+  if (nextSession.value.isToday) return 'Today'
+  return new Date(nextSession.value.date + 'T00:00:00').toLocaleDateString('en-SG', { weekday: 'short', day: 'numeric' })
+})
+
+// the text of the message button: the volunteer who ran the latest session
+const messageLabel = computed(() => {
+  if (latest.value && latest.value.volunteerName) return 'Message ' + firstName(latest.value.volunteerName)
+  return 'Message volunteer'
+})
+
 // how many of the 9 cake layers are baked: one for every checked homework (a full cake is 9, then a new one starts)
 const layersBaked = computed(() => {
   const checked = homeworkCounts.value.checked
@@ -224,26 +238,42 @@ onMounted(async () => {
     <StateMessage v-else-if="!selectedChild" message="No child is linked to your account yet." />
 
     <template v-else>
-      <!-- child buttons: only shown when the parent has 2 or more children -->
-      <div v-if="children.length > 1" class="d-flex flex-wrap gap-2 mb-3" data-test="child-switcher">
-        <button
-          v-for="child in children"
-          :key="child.id"
-          type="button"
-          class="btn"
-          :class="child.id === selectedId ? 'btn-primary' : 'btn-outline-primary'"
-          @click="switchChild(child.id)"
-        >
-          {{ child.avatar }} {{ firstName(child.name) }}
-        </button>
+      <!-- the child's name and level, and the child buttons (only when the parent has 2 or more children) -->
+      <div class="child-row" data-test="child-switcher">
+        <div class="d-flex align-items-center gap-2">
+          <span class="avatar">{{ selectedChild.avatar }}</span>
+          <div>
+            <h2 class="h6 mb-0">{{ selectedChild.name }}</h2>
+            <div class="small text-muted-cb">{{ selectedChild.level }} &middot; ⭐ {{ selectedChild.points }} stars</div>
+          </div>
+        </div>
+        <div v-if="children.length > 1" class="d-flex flex-wrap gap-2">
+          <button
+            v-for="child in children"
+            :key="child.id"
+            type="button"
+            class="btn btn-sm"
+            :class="child.id === selectedId ? 'btn-primary' : 'btn-outline-primary'"
+            @click="switchChild(child.id)"
+          >
+            {{ firstName(child.name) }}
+          </button>
+        </div>
       </div>
 
-      <!-- the child's name, level and stars -->
-      <div class="cb-card p-3 p-md-4 mb-4 d-flex align-items-center gap-3">
-        <span class="avatar">{{ selectedChild.avatar }}</span>
-        <div>
-          <h2 class="h5 mb-0">{{ selectedChild.name }}</h2>
-          <div class="small text-muted-cb">{{ selectedChild.level }} &middot; ⭐ {{ selectedChild.points }} stars earned</div>
+      <!-- three small tiles: what needs attention -->
+      <div class="status-strip" data-test="status-strip">
+        <div class="strip-tile" :class="homeworkCounts.late > 0 ? 'tile-late' : 'tile-ok'">
+          <strong>{{ homeworkCounts.late > 0 ? homeworkCounts.late + ' late' : 'On time' }}</strong>
+          <span class="small">{{ homeworkCounts.late > 0 ? 'Homework past its date' : 'No late homework' }}</span>
+        </div>
+        <div class="strip-tile tile-todo">
+          <strong>{{ homeworkCounts.todo }} to do</strong>
+          <span class="small">Remind at home</span>
+        </div>
+        <div class="strip-tile tile-next">
+          <strong>{{ nextShort }}</strong>
+          <span class="small">Next session<template v-if="nextSession && nextSession.volunteer"> · {{ firstName(nextSession.volunteer) }}</template></span>
         </div>
       </div>
 
@@ -251,28 +281,20 @@ onMounted(async () => {
       <div v-if="topSentence" class="top-summary" data-test="top-summary">
         <span class="top-label">Today at a glance</span>
         {{ topSentence }}
-        <!-- who ran the last session, and when the next one is -->
-        <div v-if="latest && latest.volunteerName" class="top-extra">{{ latest.volunteerName }} ran {{ latestWeekday }}'s session.</div>
-        <div v-if="nextSession" class="top-extra top-next">
-          Next session: {{ nextSession.isToday ? 'today, ' : '' }}{{ formatDate(nextSession.date) }}
-          <span v-if="nextSession.volunteer">with {{ nextSession.volunteer }}</span>
-        </div>
-        <div v-else-if="latest" class="top-extra" style="color:var(--cb-muted)">
-          No upcoming session scheduled yet — your coordinator is working on it.
-        </div>
+        <div v-if="latest && latest.volunteerName" class="top-extra">Ran by {{ latest.volunteerName }}</div>
       </div>
 
       <!-- the notice board (the AI summary is inside it, under the academic details) -->
       <div class="row g-4 mb-4">
         <div class="col-12">
           <div class="notice-board" :class="'board-' + noticeTab" data-test="notice-board">
-            <h2 class="board-title">Notice board</h2>
-
             <!-- the three tabs -->
             <div class="notice-tabs">
-              <button type="button" class="notice-tab tab-social" :class="{ active: noticeTab === 'social' }" @click="noticeTab = 'social'">Social</button>
               <button type="button" class="notice-tab tab-latest" :class="{ active: noticeTab === 'latest' }" @click="noticeTab = 'latest'">Latest session</button>
-              <button type="button" class="notice-tab tab-homework" :class="{ active: noticeTab === 'homework' }" @click="noticeTab = 'homework'">Homework</button>
+              <button type="button" class="notice-tab tab-homework" :class="{ active: noticeTab === 'homework' }" @click="noticeTab = 'homework'">
+                Homework<span v-if="homeworkCounts.todo > 0" class="tab-count">{{ homeworkCounts.todo }}</span>
+              </button>
+              <button type="button" class="notice-tab tab-social" :class="{ active: noticeTab === 'social' }" @click="noticeTab = 'social'">Social</button>
             </div>
 
             <!-- tab: social = one post-it per session. Click it to open the social card of that session. -->
@@ -307,6 +329,9 @@ onMounted(async () => {
                   <div v-else class="small text-muted-cb">No summary yet.</div>
                 </template>
               </ParentSessionCard>
+              <router-link v-if="latest" :to="{ name: 'messages', params: { childId: selectedChild.id } }" class="message-btn" data-test="message-volunteer">
+                {{ messageLabel }}
+              </router-link>
             </div>
 
             <!-- tab: homework = the homework of the child -->
@@ -351,8 +376,12 @@ onMounted(async () => {
 
       </div>
 
-      <!-- below: the progress chart and the recent sessions -->
-      <div class="row g-4">
+      <!-- below: the progress chart and the recent sessions, folded away until the parent opens them -->
+      <button type="button" class="progress-toggle" :aria-expanded="showProgress" data-test="progress-toggle" @click="showProgress = !showProgress">
+        <span>Progress and past sessions</span>
+        <span>{{ showProgress ? 'Hide' : 'Show' }}</span>
+      </button>
+      <div v-if="showProgress" class="row g-4">
         <div class="col-lg-7">
           <SkillProgressChart :sessions="sessions" />
         </div>

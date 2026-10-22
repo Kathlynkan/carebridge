@@ -395,3 +395,130 @@
 .parentpage .board-social .note   { background: var(--topic-social-soft);   border-color: var(--lapis-blue-dark); }
 .parentpage .board-latest .note   { background: var(--topic-academic-soft); border-color: var(--lapis-lime-dark); }
 .parentpage .board-homework .note { background: var(--topic-homework-soft); border-color: var(--lapis-yellow-dark); }
+
+/* ---------- the layout for parents: the most important things first ---------- */
+
+/* the child's name and the child buttons share one row */
+.parentpage .child-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+/* three small tiles: late homework, homework to do, next session */
+.parentpage .status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.parentpage .strip-tile {
+  flex: 1;
+  min-width: 96px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  border: 1px solid var(--lapis-cream-dark);
+  color: var(--lapis-plum);
+}
+.parentpage .strip-tile strong {
+  font-size: 20px;
+  line-height: 1.2;
+}
+.parentpage .tile-late { background: var(--topic-alert-soft); border-color: var(--topic-alert); }
+.parentpage .tile-ok { background: var(--topic-schedule-soft); border-color: var(--topic-schedule); }
+.parentpage .tile-todo { background: var(--topic-homework-soft); border-color: var(--topic-homework); }
+.parentpage .tile-next { background: var(--topic-schedule-soft); border-color: var(--topic-schedule); }
+
+/* the sentence banner is smaller now, the tiles above it carry the numbers */
+.parentpage .top-summary {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.parentpage .top-extra {
+  font-size: 14px;
+}
+
+/* the notice board has no title now, so it needs less space on top */
+.parentpage .notice-board {
+  padding-top: 12px;
+}
+.parentpage .notice-tabs {
+  flex-wrap: nowrap;
+  gap: 0;
+  border-bottom: 1px solid var(--lapis-cream-dark);
+}
+.parentpage .notice-tab {
+  flex: 1;
+  min-height: 44px;
+  padding: 8px 4px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+}
+.parentpage .notice-tab.tab-social { border-bottom-color: var(--topic-social); }
+.parentpage .notice-tab.tab-latest { border-bottom-color: var(--topic-academic); }
+.parentpage .notice-tab.tab-homework { border-bottom-color: var(--topic-homework); }
+.parentpage .notice-tab:hover { box-shadow: none; }
+.parentpage .notice-tab.active { background: transparent; }
+.parentpage .notice-tab.tab-social.active { background: var(--topic-social-soft); }
+.parentpage .notice-tab.tab-latest.active { background: var(--topic-academic-soft); }
+.parentpage .notice-tab.tab-homework.active { background: var(--topic-homework-soft); }
+
+/* the number of homework to do, on the Homework tab */
+.parentpage .tab-count {
+  display: inline-block;
+  min-width: 20px;
+  margin-left: 6px;
+  padding: 0 6px;
+  background: var(--lapis-plum);
+  color: var(--lapis-cream);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+/* the message button under the latest session */
+.parentpage .message-btn {
+  display: block;
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid var(--lapis-pink-dark);
+  background: transparent;
+  color: var(--lapis-pink-dark);
+  text-align: center;
+  font-weight: 600;
+  text-decoration: none;
+}
+.parentpage .message-btn:hover {
+  background: var(--topic-highlight-soft);
+}
+
+/* the folded row at the bottom */
+.parentpage .progress-toggle {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: 16px;
+  padding: 10px 16px;
+  border: 1px solid var(--lapis-cream-dark);
+  background: var(--lapis-cream);
+  color: var(--lapis-plum);
+  font-weight: 600;
+}
+
+/* homework status boxes: two by two on a small screen */
+@media (max-width: 480px) {
+  .parentpage .status-box {
+    flex: 1 1 40%;
+  }
+}
