@@ -49,13 +49,16 @@ const form = ref({
   notes: '',
 
   // social
-  activity: '',
+  meal: '',
+  portion: '',
+  activity: [],
   interaction: '',
   behaviour: '',
   socialNotes: '',
   photos: []
 })
 const newStruggle = ref('')
+const newActivity = ref('')
 const saving = ref(false) // track whether the form is currently saving
 const error = ref('')
 
@@ -74,6 +77,8 @@ async function loadSession() {
     form.value.nextStep = session.nextStep
     form.value.mood = session.mood
     form.value.notes = session.notes
+    form.value.meal = session.meal
+    form.value.portion = session.portion
     form.value.activity = session.activity
     form.value.interaction = session.interaction
     form.value.behaviour = session.behaviour
@@ -119,6 +124,8 @@ async function handleSubmit() {
         nextStep: form.value.nextStep,
         mood: form.value.mood,
         notes: form.value.notes,
+        meal: form.value.meal,
+        portion: form.value.portion,
         activity: form.value.activity,
         interaction: form.value.interaction,
         behaviour: form.value.behaviour,
@@ -193,6 +200,32 @@ function removeStruggle(struggle) {
   }
 
   form.value.struggles = updatedStruggles
+}
+
+function addActivity() {
+  if (!newActivity.value) {
+    return
+  } else if (form.value.activity.includes(newActivity.value)) {
+    // avoid duplicates
+    return
+  }
+
+  // add new struggle
+  form.value.activity.push(newActivity.value.trim())
+
+  newActivity.value = ''
+}
+
+function removeActivity(activity) {
+  const updatedActivity = []
+
+  for (const a of form.value.activity) {
+    if (a !== activity) {
+      updatedActivity.push(a)
+    }
+  }
+
+  form.value.activity = updatedActivity
 }
 
 function cancel() {
@@ -343,8 +376,46 @@ onMounted(() => { // autofill form if edit form
 
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label" for="activity">Activity</label>
-              <input id="activity" v-model.trim="form.activity" class="form-control" placeholder="e.g. Board games">
+              <label class="form-label" for="meal">Today's Meal</label>
+              <input id="meal" v-model.trim="form.meal" class="form-control" placeholder="e.g. Chicken rice and apples">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label" for="portion">Portion Eaten</label>
+              <select id="portion" v-model="form.portion" class="form-select">
+                <option value="">Select</option>
+                <option>All</option>
+                <option>Most</option>
+                <option>Half</option>
+                <option>Little</option>
+                <option>None</option>
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="activity">Activities</label>
+              <input
+                id="activity"
+                v-model.trim="newActivity"
+                class="form-control"
+                placeholder="Type a skill and press Enter"
+                @keydown.enter.prevent="addActivity"
+              />
+              <div class="mt-2">
+                <span v-for="a in form.activity" :key="a" class="badge badge-danger-soft me-1">
+                  <!--
+                  badge: bootstrap badge/tag styling
+                  badge-danger-soft: custom soft-red badge colour
+                  me-1: (margin-end) small right margin between badges
+                  -->
+                  {{ a }}
+                  <button type="button" class="border-0 bg-transparent ms-1" @click="removeActivity(a)">X</button>
+                  <!--
+                  border-0: remove button border
+                  ms-1: (margin-start) small spacing before remove button
+                  -->
+                </span>
+              </div>
             </div>
 
             <div class="col-md-6">
