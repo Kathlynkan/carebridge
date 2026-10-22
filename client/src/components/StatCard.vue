@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="cb-card cb-card-hover p-3 h-100 d-flex align-items-center gap-3" :class="`cb-card-${color}`" style="padding-top: 1.25rem !important;">
+  <div class="cb-card cb-card-hover cb-card-top p-3 h-100 d-flex align-items-center gap-3" :class="`cb-card-${color}`">
     <div class="stat-icon" :data-color="color">
       <i class="bi" :class="icon"></i>
     </div>

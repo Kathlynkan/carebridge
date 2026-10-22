@@ -3,10 +3,6 @@
 // -------------------------------------------------------------
 // This file is COMPLETE and doubles as the reference pattern for
 // everyone else's routes:  validate -> Model.create / find -> res.json
-//
-// TODO (Kai Sen):
-//   [x] Hash passwords with bcryptjs
-//   [x] Stronger validation (email format, password length)
 // =============================================================
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'

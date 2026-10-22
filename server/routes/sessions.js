@@ -2,13 +2,6 @@
 // /sessions  - session records (the core of the app)   Owner: Ning Xuan
 // -------------------------------------------------------------
 // Fields: see models/Session.jsn
-// GET is DONE so that Yuqi / Kat / Jachin / Yu Xuan can build on it.
-//
-// TODO (Ning Xuan):
-//   [done] POST   /sessions        volunteer records a session
-//   [done] PUT    /sessions/:id    edit (only the volunteer who wrote it, or a coordinator)
-//   [done] DELETE /sessions/:id    delete (same rule)
-//   [done] Validate: correct <= attempted, date not in the future, topic required
 // =============================================================
 import { Router } from 'express'
 import { Child, Session, User, Handover } from '../models/index.js' // import mongoDB collections
