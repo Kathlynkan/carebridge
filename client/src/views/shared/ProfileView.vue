@@ -6,6 +6,7 @@
 ============================================================= -->
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 import PageHeader from '@/components/PageHeader.vue'
@@ -13,6 +14,7 @@ import PeelCard from '@/components/PeelCard.vue'
 import { SKILL_OPTIONS, DAYS } from '@/utils/constants'
 
 const auth = useAuthStore()
+const router = useRouter()
 
 const AVATARS = [
   '🙂', '😊', '😄', '😎', '🤩', '🥳', '😸',
@@ -40,6 +42,10 @@ onMounted(async () => {
     } catch { /* silent */ }
   }
 })
+
+function cancel() {
+  router.back() // return user to wherever they came from
+}
 
 async function save() {
   success.value = ''
