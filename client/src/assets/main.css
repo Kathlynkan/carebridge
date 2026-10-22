@@ -795,6 +795,13 @@ body {
   background: transparent !important;
 }
 
+.lapis-app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
+}
+
 .app-main {
   flex: 1;
   background: transparent !important;
@@ -846,6 +853,8 @@ h4, h5, h6 {
 .cb-card-lime   { background: #E8F5DC; border-color: #68A048; }
 .cb-card-yellow { background: #FBF5DC; border-color: #C8A028; }
 .cb-card-blue   { background: #DFF0F8; border-color: #4890B8; }
+.cb-card-orange { background: #FBF0E4; border-color: #C87830; }
+.cb-card-purple { background: #F0EAF8; border-color: #7850B8; }
 
 .cb-card-hover { cursor: pointer; }
 

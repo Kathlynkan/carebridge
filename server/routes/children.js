@@ -9,7 +9,7 @@
 //   [x] DELETE /children/:id    remove a child (coordinator only)
 // =============================================================
 import { Router } from 'express'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { Child, User, Session, Homework, Message, Handover } from '../models/index.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
 import { canAccessChild, childFilterFor } from '../utils/access.js'

@@ -12,17 +12,17 @@ import { useAuthStore } from '@/stores/auth'
 const auth = useAuthStore()
 
 const steps = [
-  { icon: 'bi-person-vcard', title: 'Before a session', text: "See the child's recent topics, struggles and what worked." },
-  { icon: 'bi-pencil-square', title: 'After a session', text: 'Record the topic, score, struggles and next step in under a minute.' },
-  { icon: 'bi-arrow-left-right', title: 'Handover', text: 'An AI summary tells the next volunteer exactly where to continue.' },
-  { icon: 'bi-graph-up-arrow', title: 'Track progress', text: 'See which skills are improving and which keep coming back.' },
+  { icon: 'bi-person-vcard', title: 'Before a session', text: "See the child's recent topics, struggles and what worked.", color: 'pink' },
+  { icon: 'bi-pencil-square', title: 'After a session', text: 'Record the topic, score, struggles and next step in under a minute.', color: 'lime' },
+  { icon: 'bi-arrow-left-right', title: 'Handover', text: 'An AI summary tells the next volunteer exactly where to continue.', color: 'yellow' },
+  { icon: 'bi-graph-up-arrow', title: 'Track progress', text: 'See which skills are improving and which keep coming back.', color: 'orange' },
 ]
 
 const roles = [
-  { icon: 'bi-person-heart', name: 'Volunteers', text: 'Pick up where the last volunteer left off.' },
-  { icon: 'bi-speedometer2', name: 'Teachers', text: 'Spot children who need follow-up and match them with the right volunteer. Teacher accounts are set up by the centre.' },
-  { icon: 'bi-house-heart', name: 'Parents', text: 'Know what your child worked on today, even when you work late.' },
-  { icon: 'bi-stars', name: 'Children', text: 'Earn stars and badges for finishing homework quests.' },
+  { icon: 'bi-person-heart', name: 'Volunteers', text: 'Pick up where the last volunteer left off.', color: 'lime' },
+  { icon: 'bi-speedometer2', name: 'Teachers', text: 'Spot children who need follow-up and match them with the right volunteer. Teacher accounts are set up by the centre.', color: 'purple' },
+  { icon: 'bi-house-heart', name: 'Parents', text: 'Know what your child worked on today, even when you work late.', color: 'orange' },
+  { icon: 'bi-stars', name: 'Children', text: 'Earn stars and badges for finishing homework quests.', color: 'pink' },
 ]
 </script>
 
@@ -59,7 +59,7 @@ const roles = [
     <h2 class="h3 text-center mb-4">How it works</h2>
     <div class="row g-3">
       <div v-for="(step, i) in steps" :key="step.title" class="col-sm-6 col-lg-3">
-        <div class="cb-card p-3 h-100">
+        <div class="cb-card p-3 h-100" :class="`cb-card-${step.color}`">
           <div class="step-num mb-2">{{ i + 1 }}</div>
           <h3 class="h6"><i class="bi me-1" :class="step.icon"></i>{{ step.title }}</h3>
           <p class="small text-muted-cb mb-0">{{ step.text }}</p>
@@ -72,7 +72,7 @@ const roles = [
     <h2 class="h3 text-center mb-4">One app, four views</h2>
     <div class="row g-3">
       <div v-for="r in roles" :key="r.name" class="col-sm-6 col-lg-3">
-        <div class="cb-card p-3 h-100 text-center">
+        <div class="cb-card p-3 h-100 text-center" :class="`cb-card-${r.color}`">
           <i class="bi fs-2 text-primary" :class="r.icon"></i>
           <h3 class="h6 mt-2">{{ r.name }}</h3>
           <p class="small text-muted-cb mb-0">{{ r.text }}</p>

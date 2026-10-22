@@ -289,7 +289,7 @@ onMounted(loadData)
 
         <template v-else>
           <!-- search + filter -->
-          <div class="cb-card p-3 mb-3">
+          <div class="cb-card cb-card-lime p-3 mb-3">
             <div class="row g-2 align-items-end">
               <div class="col-12 col-md-7">
                 <label for="search" class="form-label small mb-1">Search</label>

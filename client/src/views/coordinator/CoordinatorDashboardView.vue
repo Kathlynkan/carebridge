@@ -155,7 +155,7 @@ function daysAgo(dateStr) {
       <div class="row g-4">
         <!-- Needs attention -->
         <div class="col-lg-7">
-          <div class="cb-card p-3">
+          <div class="cb-card cb-card-yellow p-3">
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
               <h2 class="h6 mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Needs attention</h2>
               <div class="d-flex align-items-center gap-2">
