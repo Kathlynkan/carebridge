@@ -40,9 +40,11 @@ test.describe('Messages — parent', () => {
     test.skip(testInfo.project.name === 'mobile', 'state-mutating — runs on chromium only')
 
     const msg = `Parent test message ${Date.now()}`
-    await page.locator('[data-test="chat-input"]').fill(msg)
-    // Submit with Enter key (same as clicking the send button)
-    await page.locator('[data-test="chat-input"]').press('Enter')
+    // pressSequentially fires real keyboard events, ensuring Vue v-model updates draft
+    await page.locator('[data-test="chat-input"]').click()
+    await page.locator('[data-test="chat-input"]').pressSequentially(msg)
+    await expect(page.locator('[data-test="chat-send"]')).toBeEnabled()
+    await page.locator('[data-test="chat-send"]').click()
 
     // The message must appear in the thread immediately after sending
     await expect(page.locator('[data-test="chat-messages"]')).toContainText(msg)

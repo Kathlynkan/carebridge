@@ -24,8 +24,8 @@ test.describe('Parent portal', () => {
   test('shows the selected child name and star count', async ({ page }) => {
     // Ethan is the first child for parent@kidslapis.sg
     await expect(page.getByText('Ethan Wong')).toBeVisible()
-    // The child card shows level and star count
-    await expect(page.getByText(/stars earned/)).toBeVisible()
+    // The child card shows level and star count (e.g. "130 stars")
+    await expect(page.getByText(/\d+ stars/)).toBeVisible()
   })
 
   test('shows the handover card', async ({ page }) => {

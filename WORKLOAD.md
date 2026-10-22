@@ -242,7 +242,7 @@ Every page in the running app shows a yellow **"Owner / to build"** panel (`<Tod
 |---|---|
 | ✅ Must | `POST /children` + "Add child" Bootstrap modal on Manage Children. |
 | Should | `PUT` / `DELETE /children/:id` (decide what happens to that child's sessions). |
-| ⏳ Should | Hash passwords with `bcryptjs`. Better validation on sign up (email format, password ≥ 8, confirm password). |
+| ✅ Should | Hash passwords with `bcryptjs`. Better validation on sign up (email format, password ≥ 8, confirm password, skills/days for volunteers). |
 | Should | Sign up extras: volunteers pick skills + days, parents enter a **child code** from the centre to link their child. |
 | Should | Navbar unread-message badge (using Kat's endpoint). Landing page polish. Remove the demo-account box before submission (keep the accounts in the README). |
 | ✅ Must | **MongoDB Atlas setup** for the team: one free cluster, one database user, Network Access `0.0.0.0/0`. Share the connection string privately. Everyone uses their own database name for development (see README, Step 0). |

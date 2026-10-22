@@ -116,7 +116,7 @@ The E2E tests run on two projects: **Desktop Chrome** and **iPhone 6** (responsi
 
 | Spec | Covers | Owner |
 |---|---|---|
-| `e2e/auth.spec.js` | Landing page, login for all 4 roles, wrong password, route guards | Kai Sen |
+| `e2e/auth.spec.js` | Landing page, login for all 4 roles, wrong password, route guards, sign-up (new volunteer, validation errors, duplicate email) | Kai Sen |
 | `e2e/volunteer.spec.js` | Assigned children only, handover + history on profile, open/submit session form, assign homework | Yuqi / Ning Xuan / Jachin |
 | `e2e/child.spec.js` | Child quests (submit, verify, API failure), leaderboard (loads, tab switch) | Jachin |
 | `e2e/parent.spec.js` | Parent home: greeting, child info, handover card, recurring badge, session timeline with mood labels, SkillProgressChart, child switcher, switching children | Jachin |

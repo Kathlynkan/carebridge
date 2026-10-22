@@ -57,10 +57,12 @@ test.describe('Volunteer records a session', () => {
   test('submitting the session form creates a session and returns to child profile', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name === 'mobile', 'state-mutating — runs on chromium only')
 
+    // Use Chloe (c_4) to avoid contaminating Ethan's session history,
+    // which other tests (handover, recurring-badge) rely on.
     await loginAs(page, 'volunteer')
     await page.locator('[data-test="tab-all"]').click()
-    await page.locator('[data-test="child-card"]', { hasText: 'Ethan Wong' }).click()
-    await expect(page).toHaveURL(/\/children\/c_1$/)
+    await page.locator('[data-test="child-card"]', { hasText: 'Chloe Lee' }).click()
+    await expect(page).toHaveURL(/\/children\/c_4$/)
 
     await page.locator('[data-test="record-session"]').click()
     await expect(page.locator('[data-test="session-form"]')).toBeVisible()
@@ -74,9 +76,9 @@ test.describe('Volunteer records a session', () => {
     // Submit — POST /sessions writes to MongoDB and redirects to child profile
     await page.locator('[data-test="session-submit"]').click()
 
-    await expect(page).toHaveURL(/\/children\/c_1/)
-    // New session should appear at the top of the session list
-    await expect(page.locator('[data-test="session-card"]').first()).toBeVisible()
+    await expect(page).toHaveURL(/\/children\/c_4/)
+    // handover-card only renders after loadData() finishes (v-else block)
+    await expect(page.locator('[data-test="handover-card"]')).toBeVisible({ timeout: 10000 })
   })
 })
 

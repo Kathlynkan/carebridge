@@ -60,12 +60,13 @@ test.describe('Quest verification (volunteer)', () => {
     // This button only appears when homework.status === 'submitted' in the DB.
     const verifyBtn = page.locator('[data-test="verify-quest-btn"]').first()
     await expect(verifyBtn).toBeVisible()
+    const countBefore = await page.locator('[data-test="verify-quest-btn"]').count()
 
     await verifyBtn.click()
 
     // PUT /homework/:id/verify writes to MongoDB: sets status → 'verified', adds points.
-    // The view reloads homework from the DB; a verified quest has no Verify button.
-    await expect(page.locator('[data-test="verify-quest-btn"]')).toHaveCount(0)
+    // The view reloads homework from the DB; one fewer verify button should appear.
+    await expect(page.locator('[data-test="verify-quest-btn"]')).toHaveCount(countBefore - 1)
   })
 })
 

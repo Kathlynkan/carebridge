@@ -81,7 +81,7 @@ function time(isDate) {
     <form class="chat-input-row" @submit.prevent="submit"> <!--runs the submit button and prevents the page frm reloading-->
 
       <input v-model="draft" class="form-control" placeholder="Type a message..." data-test="chat-input" /> <!-- saves a draft of whatever user types -->
-      <button class="btn btn-primary" type="submit" aria-label="Send" :disabled="sending || draft.trim() === ''"> <!-- the button is disabkles whenit is sending a message or when the message is empty after white spaces are trimmed -->
+      <button class="btn btn-primary" type="submit" aria-label="Send" :disabled="sending || draft.trim() === ''" data-test="chat-send"> <!-- the button is disabkles whenit is sending a message or when the message is empty after white spaces are trimmed -->
         ➤
       </button>
     </form>

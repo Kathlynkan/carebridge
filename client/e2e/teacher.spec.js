@@ -17,9 +17,10 @@ test.describe('Teacher dashboard', () => {
   })
 
   test('shows KPI stat cards', async ({ page }) => {
-    await expect(page.getByText('Children')).toBeVisible()
-    await expect(page.getByText('Volunteers')).toBeVisible()
-    await expect(page.getByText('Sessions this week')).toBeVisible()
+    // scope to .stat-label to avoid matching the NavBar links with the same words
+    await expect(page.locator('.stat-label', { hasText: 'Children' })).toBeVisible()
+    await expect(page.locator('.stat-label', { hasText: 'Volunteers' })).toBeVisible()
+    await expect(page.locator('.stat-label', { hasText: 'Sessions this week' })).toBeVisible()
   })
 
   test('alerts table loads with at least one row', async ({ page }) => {
@@ -47,14 +48,15 @@ test.describe('Teacher dashboard', () => {
   })
 
   test('can toggle a follow-up flag', async ({ page }) => {
+    // The toggle is a <button> with aria-pressed, not a checkbox — use aria-pressed for state
     const toggle = page.locator('[data-test="follow-up-toggle"]').first()
     await expect(toggle).toBeVisible()
-    const wasBefore = await toggle.isChecked()
+    const wasBefore = (await toggle.getAttribute('aria-pressed')) === 'true'
     await toggle.click()
     if (wasBefore) {
-      await expect(toggle).not.toBeChecked()
+      await expect(toggle).toHaveAttribute('aria-pressed', 'false')
     } else {
-      await expect(toggle).toBeChecked()
+      await expect(toggle).toHaveAttribute('aria-pressed', 'true')
     }
   })
 })
@@ -112,6 +114,8 @@ test.describe('Teacher: manage volunteers', () => {
   })
 
   test('filtering by skill does not show more volunteers than unfiltered', async ({ page }) => {
+    // wait for cards to load before counting, otherwise we get 0
+    await expect(page.locator('[data-test="volunteer-card"]').first()).toBeVisible()
     const totalBefore = await page.locator('[data-test="volunteer-card"]').count()
     await page.locator('[data-test="skill-filter"]').selectOption('Math')
     const totalAfter = await page.locator('[data-test="volunteer-card"]').count()
