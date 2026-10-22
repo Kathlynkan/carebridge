@@ -1,6 +1,6 @@
 <!-- =============================================================
-  Messages: volunteer <-> parent, one conversation per child.   Owner: Kat
-  Route: /messages/:childId?   (used by volunteers, parents, coordinators)
+  Messages: parent <-> teacher, one conversation per child.   Owner: Kat
+  Route: /messages/:childId?   (used by parents and teachers)
 ============================================================= -->
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
@@ -16,8 +16,8 @@ const router = useRouter()
 const auth = useAuthStore()
 
 const subtitle = computed(() => {
-  if (auth.role === 'parent') return 'Chat with the volunteers working with your child.'
-  if (auth.role === 'teacher') return 'View conversations between parents and volunteers.'
+  if (auth.role === 'parent') return "Chat with your child's teachers."
+  if (auth.role === 'teacher') return 'Chat with parents about their child.'
   return 'Chat about your child\'s progress.'
 })
 

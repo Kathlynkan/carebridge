@@ -1283,11 +1283,11 @@
     {
       "id": "m_1",
       "childId": "c_1",
-      "fromId": "u_vol1",
+      "fromId": "u_coord",
       "text": "Hi Mrs Wong! Ethan did really well with fractions today - 4/5 correct.",
       "sentAt": "2026-10-04T09:40:00.000Z",
       "readBy": [
-        "u_vol1",
+        "u_coord",
         "u_par1"
       ]
     },
@@ -1295,41 +1295,41 @@
       "id": "m_2",
       "childId": "c_1",
       "fromId": "u_par1",
-      "text": "Thank you Aisha! He told me about the pizza drawings haha",
+      "text": "Thank you Ms Tan! He told me about the pizza drawings haha",
       "sentAt": "2026-10-04T12:15:00.000Z",
       "readBy": [
         "u_par1",
-        "u_vol1"
+        "u_coord"
       ]
     },
     {
       "id": "m_3",
       "childId": "c_1",
-      "fromId": "u_vol1",
+      "fromId": "u_coord",
       "text": "I gave him a short fraction worksheet - could you remind him to try it this weekend?",
       "sentAt": "2026-10-05T09:35:00.000Z",
       "readBy": [
-        "u_vol1"
+        "u_coord"
       ]
     },
     {
       "id": "m_4",
       "childId": "c_3",
-      "fromId": "u_vol3",
+      "fromId": "u_coord",
       "text": "Arjun's spelling is improving! Silent letters are still tricky.",
       "sentAt": "2026-10-05T10:00:00.000Z",
       "readBy": [
-        "u_vol3"
+        "u_coord"
       ]
     },
     {
       "id": "m_5",
       "childId": "c_7",
-      "fromId": "u_vol1",
+      "fromId": "u_coord",
       "text": "Hi Mrs Wong! Mia is getting better at her spelling - 6 out of 8 today.",
       "sentAt": "2026-10-08T09:30:00.000Z",
       "readBy": [
-        "u_vol1"
+        "u_coord"
       ]
     }
   ]
