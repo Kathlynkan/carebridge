@@ -271,10 +271,10 @@ router.put('/:id', requireRole('volunteer', 'teacher'), async (req, res) => {
     session.nextStep = req.body.nextStep
     session.mood = req.body.mood
     session.notes = req.body.notes
-    session.activity: req.body.activity
-    session.interaction: req.body.interaction
-    session.behaviour: req.body.behaviour
-    session.socialNotes: req.body.socialNotes
+    session.activity = req.body.activity
+    session.interaction = req.body.interaction
+    session.behaviour = req.body.behaviour
+    session.socialNotes = req.body.socialNotes
     session.activity = req.body.activity
     session.interaction = req.body.interaction
     session.behaviour = req.body.behaviour
