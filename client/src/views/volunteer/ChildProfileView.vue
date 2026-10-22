@@ -144,6 +144,7 @@ onMounted(() => {
           v-if="auth.role === 'volunteer'"
           :to="{ name: 'homework-new', params: { id: child.id } }"
           class="btn btn-outline-primary"
+          data-test="assign-homework"
         >
           <i class="bi bi-journal-plus me-1"></i>Give homework
         </RouterLink>

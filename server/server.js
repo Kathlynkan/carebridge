@@ -2,8 +2,10 @@
 // Kids Lapis API server  (Express + MongoDB/Mongoose, like the IS113 / Week 5 blog-with-mongodb service)
 // Run:  pnpm dev   ->  http://localhost:8000
 // =============================================================
+import { createServer } from 'http'
 import express from 'express'
 import cors from 'cors'
+import { Server as SocketServer } from 'socket.io'
 import { connectDb } from './utils/db.js' // also loads config.env
 
 import authRoutes from './routes/auth.js'
@@ -19,10 +21,24 @@ import progressRoutes from './routes/progress.js'
 import matchmakingRoutes from './routes/matchmaking.js'
 
 const app = express()
+const httpServer = createServer(app)
+const io = new SocketServer(httpServer, {
+  cors: { origin: process.env.CLIENT_URL || true },
+})
 const PORT = process.env.PORT || 8000
 
 app.use(cors({ origin: process.env.CLIENT_URL || true }))
 app.use(express.json())
+
+// Store io on the app so routes can emit events via req.app.get('io')
+app.set('io', io)
+
+// Each connected client joins a room named after the childId it is viewing,
+// so the server can push new messages only to the relevant browsers.
+io.on('connection', (socket) => {
+  socket.on('join', (childId) => socket.join(`child:${childId}`))
+  socket.on('leave', (childId) => socket.leave(`child:${childId}`))
+})
 
 // Health check - handy for deployment platforms and E2E tests
 app.get('/', (req, res) => {
@@ -50,6 +66,6 @@ app.use((err, req, res, next) => {
 })
 
 await connectDb()
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Kids Lapis API running at http://localhost:${PORT}`)
 })

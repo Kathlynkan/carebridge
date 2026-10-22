@@ -133,7 +133,7 @@ async function handleSubmit() {
 
           <div class="mb-3">
             <label class="form-label" for="title">Title</label>
-            <input id="title" v-model.trim="form.title" class="form-control" placeholder="e.g. Fraction addition worksheet" />
+            <input id="title" v-model.trim="form.title" class="form-control" placeholder="e.g. Fraction addition worksheet" data-test="hw-title" />
           </div>
           <div class="row g-3 mb-3">
             <div class="col-sm-4">
@@ -144,7 +144,7 @@ async function handleSubmit() {
             </div>
             <div class="col-sm-4">
               <label class="form-label" for="due">Due date</label>
-              <input id="due" v-model="form.dueDate" type="date" class="form-control" />
+              <input id="due" v-model="form.dueDate" type="date" class="form-control" data-test="hw-due" />
             </div>
             <div class="col-sm-4">
               <label class="form-label" for="points">Reward points</label>
@@ -161,7 +161,7 @@ async function handleSubmit() {
           </div>
           <div class="d-flex justify-content-end gap-2">
             <button type="button" class="btn btn-outline-secondary" @click="router.back()">Cancel</button>
-            <button type="submit" class="btn btn-primary">Assign homework</button>
+            <button type="submit" class="btn btn-primary" data-test="hw-submit">Assign homework</button>
           </div>
         </form>
       </div>

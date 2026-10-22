@@ -268,10 +268,6 @@ router.put('/:id', requireRole('volunteer', 'teacher'), async (req, res) => {
     session.interaction = req.body.interaction
     session.behaviour = req.body.behaviour
     session.socialNotes = req.body.socialNotes
-    session.activity = req.body.activity
-    session.interaction = req.body.interaction
-    session.behaviour = req.body.behaviour
-    session.socialNotes = req.body.socialNotes
     session.photos = req.body.photos || []
 
     await session.save()
