@@ -1,18 +1,18 @@
 /* Styles for the parent home page (ParentHomeView.vue).
    Every rule starts with .parentpage so it only affects that page.
-   All colours use lapis design tokens from main.css. */
+   The colours are written as hex codes. */
 
 /* ---------- top summary sentence ---------- */
 
 .parentpage .top-summary {
   margin-bottom: 24px;
   padding: 20px 24px;
-  border: 1px solid var(--role-accent-dark, var(--lapis-orange-dark));
+  border: 1px solid #C07838;
   border-radius: 0;
-  background: var(--lapis-cream);
+  background: #FBF8F3;
   position: relative;
   overflow: hidden;
-  color: var(--lapis-plum);
+  color: #4A3F3A;
   font-size: 20px;
   font-weight: 700;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
@@ -31,7 +31,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--lapis-plum);
+  color: #4A3F3A;
   opacity: 0.7;
 }
 
@@ -40,9 +40,9 @@
 .parentpage .notice-board {
   padding: 20px;
   padding-top: 28px;
-  border: 1px solid var(--lapis-cream-dark);
+  border: 1px solid #C8B8A8;
   border-radius: 0;
-  background: var(--lapis-cream);
+  background: #FBF8F3;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
   position: relative;
   overflow: hidden;
@@ -52,12 +52,12 @@
   display: inline-block;
   margin: 0 0 16px;
   padding: 6px 16px;
-  background: var(--lapis-cream);
-  color: var(--lapis-plum);
+  background: #FBF8F3;
+  color: #4A3F3A;
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 700;
   font-size: 18px;
-  border: 1px solid var(--lapis-cream-dark);
+  border: 1px solid #C8B8A8;
   border-radius: 0;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
@@ -71,9 +71,9 @@
 
 .parentpage .notice-tab {
   padding: 6px 16px;
-  border: 1px solid var(--lapis-cream-dark);
-  background: var(--lapis-cream);
-  color: var(--lapis-plum);
+  border: 1px solid #C8B8A8;
+  background: #FBF8F3;
+  color: #4A3F3A;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -89,9 +89,9 @@
 }
 
 .parentpage .notice-tab.active {
-  background: var(--lapis-yellow);
-  border-color: var(--lapis-yellow-dark);
-  color: var(--lapis-plum);
+  background: #F5DF98;
+  border-color: #C8A028;
+  color: #4A3F3A;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
 
@@ -100,11 +100,11 @@
   position: relative;
   margin-bottom: 12px;
   padding: 18px 12px 12px;
-  background: var(--lapis-yellow);
-  border: 1px solid var(--lapis-yellow-dark);
+  background: #F5DF98;
+  border: 1px solid #C8A028;
   border-radius: 0;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
-  color: var(--lapis-plum);
+  color: #4A3F3A;
 }
 
 .parentpage .note::before {
@@ -115,14 +115,14 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background: var(--lapis-pink);
-  border: 2px solid var(--lapis-pink-dark);
+  background: #E8A0B8;
+  border: 2px solid #C07090;
 }
 
 .parentpage .note summary {
   cursor: pointer;
   font-weight: 700;
-  color: var(--lapis-plum);
+  color: #4A3F3A;
 }
 
 .parentpage .note-label {
@@ -132,7 +132,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--lapis-plum);
+  color: #4A3F3A;
   opacity: 0.65;
 }
 
@@ -143,7 +143,7 @@
   flex-wrap: wrap;
   gap: 16px;
   padding: 24px 16px 16px;
-  background: var(--lapis-cream);
+  background: #FBF8F3;
 }
 
 .parentpage .session-pic {
@@ -159,7 +159,7 @@
   width: 120px;
   height: 160px;
   object-fit: cover;
-  border: 1px solid var(--lapis-cream-dark);
+  border: 1px solid #C8B8A8;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
 }
@@ -171,17 +171,17 @@
   justify-content: center;
   width: 120px;
   height: 160px;
-  border: 1px dashed var(--lapis-purple);
+  border: 1px dashed #C0A8D8;
   border-radius: 8px;
-  background: var(--lapis-cream);
-  color: var(--cb-muted);
+  background: #FBF8F3;
+  color: #8D7F77;
 }
 
 .parentpage .pic-arrow {
   border: 0;
   background: transparent;
   font-size: 24px;
-  color: var(--lapis-pink);
+  color: #E8A0B8;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.1s ease;
@@ -192,13 +192,13 @@
 .parentpage .session-info {
   flex: 1;
   min-width: 200px;
-  color: var(--lapis-plum);
+  color: #4A3F3A;
 }
 
 .parentpage .session-details {
   margin-bottom: 12px;
   font-weight: 500;
-  color: var(--lapis-plum);
+  color: #4A3F3A;
 }
 
 /* ---------- homework status boxes ---------- */
@@ -216,27 +216,27 @@
   align-items: center;
   min-width: 96px;
   padding: 8px 12px;
-  border: 1px solid var(--lapis-cream-dark);
+  border: 1px solid #C8B8A8;
   border-radius: 0;
-  background: var(--lapis-cream);
+  background: #FBF8F3;
   box-shadow: 0 1px 3px rgba(74, 63, 58, 0.10);
-  color: var(--lapis-plum);
+  color: #4A3F3A;
   font-weight: 700;
 }
 
 .parentpage .status-box.late {
-  background: var(--lapis-pink);
-  color: var(--lapis-plum);
+  background: #E8A0B8;
+  color: #4A3F3A;
 }
 
 /* ---------- kueh lapis pastel tiles ---------- */
 
 /* the child card is sky blue, the timeline card is lavender */
 .parentpage .tile-sky {
-  background: var(--lapis-sky);
+  background: #B9D9E6;
 }
 .parentpage .tile-lav {
-  background: var(--lapis-purple);
+  background: #C0A8D8;
 }
 
 /* ---------- topic colours on the parent page ---------- */
@@ -244,64 +244,64 @@
 
 /* today at a glance: soft orange panel; the next session line is the schedule colour */
 .parentpage .top-summary {
-  background: var(--role-accent-soft, #FBF0E4);
+  background: #FBF0E4;
 }
 .parentpage .top-next {
   display: inline-block;
   padding: 2px 12px;
-  background: var(--topic-schedule);
+  background: #A8CC90;
 }
 
 /* the notice board takes the colour of the open tab */
-.parentpage .notice-board.board-social { background: var(--topic-social); }
-.parentpage .notice-board.board-latest { background: var(--topic-academic); }
-.parentpage .notice-board.board-homework { background: var(--topic-homework); }
+.parentpage .notice-board.board-social { background: #88C0D8; }
+.parentpage .notice-board.board-latest { background: #A8CC90; }
+.parentpage .notice-board.board-homework { background: #F5DF98; }
 
 /* the tabs: each one has its topic colour underneath, and is filled when open */
-.parentpage .notice-tab.tab-social { border-bottom: 8px solid var(--topic-social); }
-.parentpage .notice-tab.tab-latest { border-bottom: 8px solid var(--topic-academic); }
-.parentpage .notice-tab.tab-homework { border-bottom: 8px solid var(--topic-homework); }
-.parentpage .notice-tab.tab-social.active { background: var(--topic-social); }
-.parentpage .notice-tab.tab-latest.active { background: var(--topic-academic); }
-.parentpage .notice-tab.tab-homework.active { background: var(--topic-homework); }
+.parentpage .notice-tab.tab-social { border-bottom: 8px solid #88C0D8; }
+.parentpage .notice-tab.tab-latest { border-bottom: 8px solid #A8CC90; }
+.parentpage .notice-tab.tab-homework { border-bottom: 8px solid #F5DF98; }
+.parentpage .notice-tab.tab-social.active { background: #88C0D8; }
+.parentpage .notice-tab.tab-latest.active { background: #A8CC90; }
+.parentpage .notice-tab.tab-homework.active { background: #F5DF98; }
 
 /* the notes on the board are the soft version of the board colour */
-.parentpage .board-social .note { background: var(--topic-social-soft); }
-.parentpage .board-latest .note { background: var(--topic-academic-soft); }
-.parentpage .board-homework .note { background: var(--topic-homework-soft); }
+.parentpage .board-social .note { background: #DFF0F8; }
+.parentpage .board-latest .note { background: #E8F5DC; }
+.parentpage .board-homework .note { background: #FBF5DC; }
 
 /* the session card: academic = pink, social = blue */
 .parentpage .parent-session-card.kind-academic {
-  background: var(--topic-academic-soft);
-  border-top: 8px solid var(--topic-academic);
+  background: #E8F5DC;
+  border-top: 8px solid #A8CC90;
 }
 
 /* homework is lavender: the status boxes */
-.parentpage .status-box { background: var(--topic-homework-soft); border-color: var(--lapis-yellow-dark); }
-.parentpage .status-box.late { background: var(--topic-alert); color: var(--lapis-plum); border-color: var(--lapis-pink-dark); }
+.parentpage .status-box { background: #FBF5DC; border-color: #C8A028; }
+.parentpage .status-box.late { background: #E8A0B8; color: #4A3F3A; border-color: #C07090; }
 
 /* ---------- a calmer look for the parent page ---------- */
 
 /* the banner is a soft role-accent panel with a rose edge */
 .parentpage .top-summary {
-  background: var(--role-accent-soft, #FBF0E4);
-  border-left: 4px solid var(--lapis-pink);
+  background: #FBF0E4;
+  border-left: 4px solid #E8A0B8;
 }
 
 /* the notice board is a cream panel; its topic colour is a bar on top and the open tab */
-.parentpage .notice-board.board-social { background: var(--lapis-cream); border-top: 6px solid var(--topic-social); }
-.parentpage .notice-board.board-latest { background: var(--lapis-cream); border-top: 6px solid var(--topic-academic); }
-.parentpage .notice-board.board-homework { background: var(--lapis-cream); border-top: 6px solid var(--topic-homework); }
+.parentpage .notice-board.board-social { background: #FBF8F3; border-top: 6px solid #88C0D8; }
+.parentpage .notice-board.board-latest { background: #FBF8F3; border-top: 6px solid #A8CC90; }
+.parentpage .notice-board.board-homework { background: #FBF8F3; border-top: 6px solid #F5DF98; }
 
 /* tabs: a thin coloured line underneath instead of a thick block */
-.parentpage .notice-tab.tab-social { border-bottom: 3px solid var(--topic-social); }
-.parentpage .notice-tab.tab-latest { border-bottom: 3px solid var(--topic-academic); }
-.parentpage .notice-tab.tab-homework { border-bottom: 3px solid var(--topic-homework); }
+.parentpage .notice-tab.tab-social { border-bottom: 3px solid #88C0D8; }
+.parentpage .notice-tab.tab-latest { border-bottom: 3px solid #A8CC90; }
+.parentpage .notice-tab.tab-homework { border-bottom: 3px solid #F5DF98; }
 
 /* the tinted notes read as a quiet card with a coloured edge */
-.parentpage .board-social .note   { background: var(--topic-social-soft);   border-color: var(--lapis-blue-dark); }
-.parentpage .board-latest .note   { background: var(--topic-academic-soft); border-color: var(--lapis-lime-dark); }
-.parentpage .board-homework .note { background: var(--topic-homework-soft); border-color: var(--lapis-yellow-dark); }
+.parentpage .board-social .note   { background: #DFF0F8;   border-color: #4890B8; }
+.parentpage .board-latest .note   { background: #E8F5DC; border-color: #68A048; }
+.parentpage .board-homework .note { background: #FBF5DC; border-color: #C8A028; }
 
 /* ---------- the layout for parents: the most important things first ---------- */
 
@@ -328,17 +328,17 @@
   display: flex;
   flex-direction: column;
   padding: 8px 12px;
-  border: 1px solid var(--lapis-cream-dark);
-  color: var(--lapis-plum);
+  border: 1px solid #C8B8A8;
+  color: #4A3F3A;
 }
 .parentpage .strip-tile strong {
   font-size: 20px;
   line-height: 1.2;
 }
-.parentpage .tile-late { background: var(--topic-alert-soft); border-color: var(--topic-alert); }
-.parentpage .tile-ok { background: var(--topic-schedule-soft); border-color: var(--topic-schedule); }
-.parentpage .tile-todo { background: var(--topic-homework-soft); border-color: var(--topic-homework); }
-.parentpage .tile-next { background: var(--topic-schedule-soft); border-color: var(--topic-schedule); }
+.parentpage .tile-late { background: #FAE8F2; border-color: #E8A0B8; }
+.parentpage .tile-ok { background: #E8F5DC; border-color: #A8CC90; }
+.parentpage .tile-todo { background: #FBF5DC; border-color: #F5DF98; }
+.parentpage .tile-next { background: #E8F5DC; border-color: #A8CC90; }
 
 /* the sentence banner is smaller now, the tiles above it carry the numbers */
 .parentpage .top-summary {
@@ -358,7 +358,7 @@
 .parentpage .notice-tabs {
   flex-wrap: nowrap;
   gap: 0;
-  border-bottom: 1px solid var(--lapis-cream-dark);
+  border-bottom: 1px solid #C8B8A8;
 }
 .parentpage .notice-tab {
   flex: 1;
@@ -372,14 +372,14 @@
   letter-spacing: 0;
   font-size: 14px;
 }
-.parentpage .notice-tab.tab-social { border-bottom-color: var(--topic-social); }
-.parentpage .notice-tab.tab-latest { border-bottom-color: var(--topic-academic); }
-.parentpage .notice-tab.tab-homework { border-bottom-color: var(--topic-homework); }
+.parentpage .notice-tab.tab-social { border-bottom-color: #88C0D8; }
+.parentpage .notice-tab.tab-latest { border-bottom-color: #A8CC90; }
+.parentpage .notice-tab.tab-homework { border-bottom-color: #F5DF98; }
 .parentpage .notice-tab:hover { box-shadow: none; }
 .parentpage .notice-tab.active { background: transparent; }
-.parentpage .notice-tab.tab-social.active { background: var(--topic-social-soft); }
-.parentpage .notice-tab.tab-latest.active { background: var(--topic-academic-soft); }
-.parentpage .notice-tab.tab-homework.active { background: var(--topic-homework-soft); }
+.parentpage .notice-tab.tab-social.active { background: #DFF0F8; }
+.parentpage .notice-tab.tab-latest.active { background: #E8F5DC; }
+.parentpage .notice-tab.tab-homework.active { background: #FBF5DC; }
 
 /* the number of homework to do, on the Homework tab */
 .parentpage .tab-count {
@@ -387,8 +387,8 @@
   min-width: 20px;
   margin-left: 6px;
   padding: 0 6px;
-  background: var(--lapis-plum);
-  color: var(--lapis-cream);
+  background: #4A3F3A;
+  color: #FBF8F3;
   font-size: 12px;
   line-height: 20px;
 }
@@ -422,10 +422,10 @@
 .parentpage .hw-item {
   margin-bottom: 8px;
   padding: 10px 12px;
-  border: 1px solid var(--lapis-cream-dark);
+  border: 1px solid #C8B8A8;
   border-left-width: 5px;
-  background: var(--lapis-cream);
-  color: var(--lapis-plum);
+  background: #FBF8F3;
+  color: #4A3F3A;
 }
 .parentpage .hw-top {
   display: flex;
@@ -446,14 +446,14 @@
   margin-top: 4px;
 }
 
-.parentpage .hw-late { background: var(--topic-alert-soft); border-color: var(--topic-alert); }
-.parentpage .hw-late .hw-tag { background: var(--topic-alert); }
-.parentpage .hw-todo { border-color: var(--topic-homework); }
-.parentpage .hw-todo .hw-tag { background: var(--topic-homework-soft); }
+.parentpage .hw-late { background: #FAE8F2; border-color: #E8A0B8; }
+.parentpage .hw-late .hw-tag { background: #E8A0B8; }
+.parentpage .hw-todo { border-color: #F5DF98; }
+.parentpage .hw-todo .hw-tag { background: #FBF5DC; }
 .parentpage .hw-waiting { border-color: #F0D49A; }
 .parentpage .hw-waiting .hw-tag { background: #FFF3DC; }
-.parentpage .hw-done { background: var(--topic-schedule-soft); border-color: var(--topic-schedule); }
-.parentpage .hw-done .hw-tag { background: var(--topic-schedule); }
+.parentpage .hw-done { background: #E8F5DC; border-color: #A8CC90; }
+.parentpage .hw-done .hw-tag { background: #A8CC90; }
 
 .parentpage .hw-toggle {
   display: flex;
@@ -462,9 +462,9 @@
   min-height: 44px;
   margin-bottom: 8px;
   padding: 10px 12px;
-  border: 1px solid var(--topic-schedule);
-  background: var(--topic-schedule-soft);
-  color: var(--lapis-plum);
+  border: 1px solid #A8CC90;
+  background: #E8F5DC;
+  color: #4A3F3A;
   font-weight: 600;
 }
 
@@ -481,7 +481,7 @@
   content: 'Tap to open';
   display: block;
   font-size: 12px;
-  color: var(--cb-muted);
+  color: #8D7F77;
 }
 .parentpage details.hw-item[open] > summary::after {
   content: 'Tap to close';
@@ -491,7 +491,7 @@
 .parentpage .hw-box {
   margin-top: 8px;
   padding: 8px 10px;
-  border-left: 3px solid var(--lapis-cream-dark);
+  border-left: 3px solid #C8B8A8;
 }
 .parentpage .hw-box-label {
   display: block;
@@ -504,7 +504,7 @@
 .parentpage .hw-box-tricky { border-left-color: #BA7517; }
 .parentpage .hw-box-helped { border-left-color: #55704B; }
 .parentpage .hw-box-next { border-left-color: #8C6DB3; }
-.parentpage .hw-box-note { border-left-color: var(--lapis-pink); }
+.parentpage .hw-box-note { border-left-color: #E8A0B8; }
 
 .parentpage .hw-photos {
   display: flex;
@@ -516,7 +516,7 @@
   width: 96px;
   height: 72px;
   object-fit: cover;
-  border: 1px solid var(--lapis-cream-dark);
+  border: 1px solid #C8B8A8;
 }
 
 /* the score of a finished homework: a green pill under the title */
@@ -527,7 +527,7 @@
   display: inline-block;
   margin: 4px 0;
   padding: 1px 10px;
-  background: var(--topic-schedule);
+  background: #A8CC90;
   font-size: 13px;
   font-weight: 700;
 }
@@ -555,7 +555,7 @@
   background: #FFF3DC;
 }
 .parentpage .week-face-now {
-  outline: 2px solid var(--topic-social);
+  outline: 2px solid #88C0D8;
 }
 
 /* the moods share the same colours everywhere */
@@ -574,10 +574,10 @@
 .parentpage .day-card {
   margin-bottom: 10px;
   padding: 12px;
-  border: 1px solid var(--lapis-cream-dark);
-  border-top: 4px solid var(--topic-social);
+  border: 1px solid #C8B8A8;
+  border-top: 4px solid #88C0D8;
   background: #fff;
-  color: var(--lapis-plum);
+  color: #4A3F3A;
 }
 .parentpage .day-card-small {
   padding: 9px 12px;
@@ -595,7 +595,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--cb-muted);
+  color: #8D7F77;
 }
 .parentpage .day-card-small > summary {
   cursor: pointer;
@@ -635,9 +635,9 @@
   display: inline-block;
   margin: 0 4px 4px 0;
   padding: 2px 10px;
-  border: 1px solid var(--topic-social);
+  border: 1px solid #88C0D8;
   border-radius: 12px;
-  background: var(--topic-social-soft);
+  background: #DFF0F8;
   font-size: 13px;
 }
 .parentpage .day-line {
@@ -645,7 +645,7 @@
   gap: 10px;
   margin-top: 6px;
   padding-top: 8px;
-  border-top: 1px solid var(--lapis-cream-dark);
+  border-top: 1px solid #C8B8A8;
 }
 .parentpage .day-icon {
   display: flex;
@@ -655,13 +655,13 @@
   height: 26px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: var(--topic-social-soft);
+  background: #DFF0F8;
 }
 .parentpage .day-note {
   margin-top: 8px;
   padding: 8px 10px;
-  border-left: 3px solid var(--lapis-pink);
-  background: var(--topic-highlight-soft);
+  border-left: 3px solid #E8A0B8;
+  background: #FBF5DC;
 }
 
 /* photos: one big, two small */
@@ -675,7 +675,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border: 1px solid var(--lapis-cream-dark);
+  border: 1px solid #C8B8A8;
 }
 .parentpage .day-photo-big {
   flex: 2;
@@ -712,8 +712,8 @@
   width: 100%;
   min-height: 44px;
   padding: 10px;
-  border: 1px solid var(--topic-social);
-  background: var(--topic-social-soft);
-  color: var(--lapis-plum);
+  border: 1px solid #88C0D8;
+  background: #DFF0F8;
+  color: #4A3F3A;
   font-weight: 600;
 }
