@@ -242,7 +242,7 @@ onMounted(() => { // autofill form if edit form
 
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        <form class="cb-card p-4 ps-5" data-test="session-form" @submit.prevent="handleSubmit">
+        <form class="cb-card p-4 px-5" data-test="session-form" @submit.prevent="handleSubmit">
           <!-- 
           cb-card: custom class
           @submit: when form is submitted, call handleSubmit()
