@@ -12,7 +12,7 @@ const auth = useAuthStore()
   <NavBar />
   <main class="app-main">
     <RouterView v-slot="{ Component }">
-      <Transition name="page-peel" mode="out-in">
+      <Transition name="page-peel">
         <component :is="Component" :key="route.path" />
       </Transition>
     </RouterView>

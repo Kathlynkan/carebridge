@@ -3,8 +3,9 @@
   Route: /messages/:childId?   (used by parents and teachers)
 ============================================================= -->
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { io } from 'socket.io-client'
 import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 import PageHeader from '@/components/PageHeader.vue'
@@ -18,7 +19,7 @@ const auth = useAuthStore()
 const subtitle = computed(() => {
   if (auth.role === 'parent') return "Chat with your child's teachers."
   if (auth.role === 'teacher') return 'Chat with parents about their child.'
-  return 'Chat about your child\'s progress.'
+  return "Chat about your child's progress."
 })
 
 const children = ref([])
@@ -27,11 +28,25 @@ const loading = ref(true)
 const sending = ref(false)
 const error = ref('')
 
+// ── Socket.io (real-time delivery) ───────────────────────────────────────────
+const socket = ref(null)
+const currentRoom = ref(null)
+
+function joinRoom(childId) {
+  if (!socket.value || !childId || childId === currentRoom.value) return
+  if (currentRoom.value) socket.value.emit('leave', currentRoom.value)
+  currentRoom.value = childId
+  socket.value.emit('join', childId)
+}
+
+// ── HTTP helpers ──────────────────────────────────────────────────────────────
 async function loadMessages(childId) {
   if (!childId) return
   try {
     const res = await api.get('/messages', { params: { childId } })
     messages.value = res.data
+    // Mark all messages in this thread as read (clears the navbar unread badge)
+    api.put('/messages/read', { childId }).catch(() => {})
   } catch (err) {
     error.value = errorMessage(err)
   }
@@ -54,13 +69,26 @@ function selectChild(childId) {
   router.push({ name: 'messages', params: { childId } })
 }
 
-// When the URL changes (/messages/c_1 -> /messages/c_2), reload (Week 6: watchers)
+// When the URL changes (/messages/c_1 -> /messages/c_2), reload and switch room
 watch(
   () => route.params.childId,
-  (childId) => loadMessages(childId),
+  (childId) => {
+    loadMessages(childId)
+    joinRoom(childId)
+  },
 )
 
 onMounted(async () => {
+  // Connect socket for real-time message delivery
+  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+  socket.value = io(apiBase, { transports: ['websocket', 'polling'] })
+  socket.value.on('new-message', (message) => {
+    // Deduplicate: onSend already pushed our own message optimistically
+    if (!messages.value.find((m) => m.id === message.id)) {
+      messages.value.push(message)
+    }
+  })
+
   try {
     const res = await api.get('/children')
     children.value = res.data
@@ -68,12 +96,17 @@ onMounted(async () => {
       selectChild(children.value[0].id)
     } else {
       await loadMessages(route.params.childId)
+      joinRoom(route.params.childId)
     }
   } catch (err) {
     error.value = errorMessage(err)
   } finally {
     loading.value = false
   }
+})
+
+onUnmounted(() => {
+  if (socket.value) socket.value.disconnect()
 })
 </script>
 
@@ -86,13 +119,14 @@ onMounted(async () => {
 
     <div v-else class="row g-3">
       <div class="col-md-4">
-        <div class="list-group">
+        <div class="list-group" data-test="child-list">
           <button
             v-for="c in children"
             :key="c.id"
             type="button"
             class="list-group-item list-group-item-action d-flex align-items-center gap-2"
             :class="{ active: c.id === route.params.childId }"
+            data-test="child-item"
             @click="selectChild(c.id)"
           >
             <span>{{ c.avatar }}</span> {{ c.name }}

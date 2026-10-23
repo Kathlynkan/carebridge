@@ -1,23 +1,15 @@
-<!-- =============================================================
-  Parent home: "What did my child do today?"          Owner: Kat
-  -------------------------------------------------------------
-  Already loads the parent's children + each child's sessions & homework.
-  TODO (Kat):
-    [x] child switcher when a parent has 2+ children (Ravi Kumar has 2 in the demo data)
-    [x] "Today at student care" card in parent-friendly words
-        (reuse <HandoverCard> with POST /handover/:id { audience: 'parent' })
-    [x] timeline of recent sessions (simpler than the volunteer view - no jargon)
-    [x] homework status so parents can remind their child at home
-============================================================= -->
+<!-- Parent home: "What did my child do today?"          Owner: Kat -->
 <script setup>
 import { ref, computed, onMounted } from 'vue' 
 import api, { errorMessage } from '@/services/api'
 import { useAuthStore } from '@/stores/auth' // the logged-in user
 import PageHeader from '@/components/PageHeader.vue' // for the 'Hello {{parent}}'
 import StateMessage from '@/components/StateMessage.vue' // to show loading etc 
-import HandoverCard from '@/components/HandoverCard.vue' 
+import HandoverCard from '@/components/HandoverCard.vue'
 import ParentSessionCard from '@/components/ParentSessionCard.vue' // the session card from the whiteboard design
 import ParentSocialDay from '@/components/ParentSocialDay.vue' // one day of the social tab
+import SkillProgressChart from '@/components/charts/SkillProgressChart.vue'
+import PeelCard from '@/components/PeelCard.vue'
 import { firstName, formatDate, daysSince } from '@/utils/format' // small helpers for names, dates and scores
 import '@/assets/parentpage.css' // the styles of this page (the timeline)
 
@@ -330,7 +322,7 @@ onMounted(async () => {
             </div>
 
             <!-- tab: social = a diary: the newest day is open, the earlier days are short cards -->
-            <div v-if="noticeTab === 'social'" data-test="social-tab">
+            <div v-if="noticeTab === 'social'" data-test="session-timeline">
               <p v-if="sessions.length === 0" class="note mb-0">Nothing posted yet.</p>
               <template v-else>
                 <!-- the mood of the last five sessions -->
@@ -476,6 +468,11 @@ onMounted(async () => {
         </div>
 
       </div>
+
+      <PeelCard title="Progress over time" icon="bi-graph-up-arrow" :initial-open="true">
+        <SkillProgressChart :sessions="sessions" />
+      </PeelCard>
+
     </template>
   </div>
 </template>

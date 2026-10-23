@@ -18,10 +18,9 @@ const isOverdue = computed(
 
 <template>
   <div
-    class="cb-card cb-card-yellow p-3 h-100 d-flex flex-column"
+    class="cb-card cb-card-yellow cb-card-top p-3 h-100 d-flex flex-column"
     data-test="homework-card"
     :style="isOverdue ? 'border-color:var(--topic-alert)' : ''"
-    style="padding-top: 1.25rem !important;"
   >
     <div class="d-flex justify-content-between align-items-start gap-2">
       <h3 class="h6 mb-1" style="text-shadow:none;color:var(--lapis-plum)">{{ homework.title }}</h3>

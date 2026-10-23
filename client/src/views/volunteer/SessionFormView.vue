@@ -3,13 +3,6 @@
   Routes:  /children/:id/sessions/new     (create)
            /sessions/:sessionId/edit      (edit - same form)
   -------------------------------------------------------------
-  The form fields are already bound with v-model. TODO (Ning Xuan):
-    [done] submit: POST /sessions (create) or PUT /sessions/:id (edit)
-        then router.push to the child profile
-    [done] edit mode: load the session with GET /sessions/:sessionId and fill the form
-    [done] validation: topic required, correct <= attempted (computed + .is-invalid)
-    [done] "struggles" as tags: type + Enter to add, x to remove (Week 5 list exercise)
-    [ ] quick-pick chips from the child's previous struggles
 ============================================================= -->
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -464,7 +457,7 @@ onMounted(() => { // autofill form if edit form
           <div class="d-flex justify-content-end gap-2 mt-4">
             <!-- right-aligned buttons with gap in between and top margin -->
             <button type="button" class="btn btn-outline-secondary" @click="cancel">Cancel</button>
-            <button type="submit" class="btn btn-primary" :disabled="saving">
+            <button type="submit" class="btn btn-primary" :disabled="saving" data-test="session-submit">
               {{ isEdit ? 'Save changes' : 'Save session' }}
             </button>
           </div>

@@ -24,8 +24,8 @@ test.describe('Parent portal', () => {
   test('shows the selected child name and star count', async ({ page }) => {
     // Ethan is the first child for parent@kidslapis.sg
     await expect(page.getByText('Ethan Wong')).toBeVisible()
-    // The child card shows level and star count
-    await expect(page.getByText(/stars earned/)).toBeVisible()
+    // The child card shows level and star count (e.g. "130 stars")
+    await expect(page.getByText(/\d+ stars/)).toBeVisible()
   })
 
   test('shows the handover card', async ({ page }) => {
@@ -41,6 +41,8 @@ test.describe('Parent portal', () => {
   })
 
   test('shows session timeline with mood labels', async ({ page }) => {
+    // The session timeline is in the Social tab — switch to it first
+    await page.getByRole('button', { name: 'Social' }).click()
     const timeline = page.locator('[data-test="session-timeline"]')
     await expect(timeline).toBeVisible()
     // Ethan has sessions with mood: frustrated -> "😕 Found it hard",

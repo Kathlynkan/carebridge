@@ -22,8 +22,8 @@ export const ROLE_HOME = {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref(localStorage.getItem('cb_token'))
-  const user = ref(JSON.parse(localStorage.getItem('cb_user') || 'null'))
+  const token = ref(sessionStorage.getItem('cb_token'))
+  const user = ref(JSON.parse(sessionStorage.getItem('cb_user') || 'null'))
 
   const isLoggedIn = computed(() => !!token.value && !!user.value)
   const role = computed(() => user.value?.role || null)
@@ -32,15 +32,15 @@ export const useAuthStore = defineStore('auth', () => {
   function saveSession(data) {
     token.value = data.token
     user.value = data.user
-    localStorage.setItem('cb_token', data.token)
-    localStorage.setItem('cb_user', JSON.stringify(data.user))
+    sessionStorage.setItem('cb_token', data.token)
+    sessionStorage.setItem('cb_user', JSON.stringify(data.user))
   }
 
   function clearSession() {
     token.value = null
     user.value = null
-    localStorage.removeItem('cb_token')
-    localStorage.removeItem('cb_user')
+    sessionStorage.removeItem('cb_token')
+    sessionStorage.removeItem('cb_user')
   }
 
   async function login(email, password) {
@@ -64,7 +64,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   function patchUser(updated) {
     user.value = { ...user.value, ...updated }
-    localStorage.setItem('cb_user', JSON.stringify(user.value))
+    sessionStorage.setItem('cb_user', JSON.stringify(user.value))
   }
 
   return { token, user, isLoggedIn, role, homePath, login, signup, logout, clearSession, patchUser }

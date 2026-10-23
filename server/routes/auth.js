@@ -3,10 +3,6 @@
 // -------------------------------------------------------------
 // This file is COMPLETE and doubles as the reference pattern for
 // everyone else's routes:  validate -> Model.create / find -> res.json
-//
-// TODO (Kai Sen):
-//   [x] Hash passwords with bcryptjs
-//   [x] Stronger validation (email format, password length)
 // =============================================================
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
@@ -27,16 +23,7 @@ const cleanEmail = (email) =>
 
 // The only skills and days a volunteer can pick.
 // Must match SKILL_OPTIONS and DAYS in client/src/utils/constants.js (the server can't import client files).
-const SKILL_OPTIONS = [
-  'Primary Math',
-  'Fractions',
-  'Problem Sums',
-  'English Comprehension',
-  'Composition',
-  'Spelling',
-  'Science',
-  'Mother Tongue',
-]
+const SKILL_OPTIONS = ['English', 'Math', 'Science', 'Mother Tongue']
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
 
 // true if `list` is an array with at least one item, and every item is in `allowed`

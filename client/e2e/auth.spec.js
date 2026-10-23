@@ -77,9 +77,11 @@ test.describe('Sign up', () => {
     await page.locator('[data-test="signup-email"]').fill(email)
     await page.locator('[data-test="signup-password"]').fill('secret123')
     await page.locator('[data-test="signup-confirm"]').fill('secret123')
-    // Volunteers pick at least one skill and one day (click the button-style labels)
-    await page.locator('[data-test="signup-skills"]').getByText('Math').click()
-    await page.locator('[data-test="signup-days"]').getByText('Mon').click()
+    // The skill/day checkboxes are visually hidden (Bootstrap btn-check class).
+    // Click the visible label elements — the browser forwards the click to the
+    // hidden input, toggling it and firing a change event that Vue's v-model picks up.
+    await page.locator('[data-test="signup-skills"] label', { hasText: 'Math' }).click()
+    await page.locator('[data-test="signup-days"] label', { hasText: 'Mon' }).click()
     await page.locator('[data-test="signup-submit"]').click()
 
     await expect(page).toHaveURL(/\/volunteer$/)

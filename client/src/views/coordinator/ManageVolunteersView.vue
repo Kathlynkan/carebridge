@@ -1,12 +1,4 @@
-<!-- =============================================================
-  Manage volunteers                                   Owner: Yu Xuan
-  -------------------------------------------------------------
-  Already: list of volunteers with skills + availability.
-  TODO (Yu Xuan):
-    [ ] edit a volunteer's skills / available days (checkboxes, Week 5) -> PUT /users/:id
-    [ ] show how many children each volunteer has (workload)
-    [ ] filter by skill
-============================================================= -->
+<!-- Manage volunteers                                   Owner: Yu Xuan -->
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import api, { errorMessage } from '@/services/api'

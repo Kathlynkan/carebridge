@@ -21,6 +21,7 @@ import SessionCard from '@/components/SessionCard.vue'
 import HomeworkQuestCard from '@/components/HomeworkQuestCard.vue'
 import SkillProgressChart from '@/components/charts/SkillProgressChart.vue'
 import TopicSummaryChart from '@/components/charts/TopicSummaryChart.vue'
+import PeelCard from '@/components/PeelCard.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -143,6 +144,7 @@ onMounted(() => {
           v-if="auth.role === 'volunteer'"
           :to="{ name: 'homework-new', params: { id: child.id } }"
           class="btn btn-outline-primary"
+          data-test="assign-homework"
         >
           <i class="bi bi-journal-plus me-1"></i>Give homework
         </RouterLink>
@@ -155,26 +157,31 @@ onMounted(() => {
         <div class="col-lg-7">
           <HandoverCard :handover="handover" :loading="handoverLoading" class="mb-4" />
 
-          <h2 class="h5 mb-3">Session history</h2>
-          <StateMessage v-if="sessions.length === 0" message="No sessions recorded yet." />
-          <div class="d-flex flex-column gap-3">
-            <SessionCard
-              v-for="s in sessions"
-              :key="s.id"
-              :session="s"
-              :can-edit="s.volunteerId === auth.user?.id || auth.role === 'teacher'"
-              @edit="editSession"
-              @delete="deleteSession"
-            />
-          </div>
+          <PeelCard title="Session history" icon="bi-clock-history" :initial-open="true">
+            <StateMessage v-if="sessions.length === 0" message="No sessions recorded yet." />
+            <div class="d-flex flex-column gap-3">
+              <SessionCard
+                v-for="s in sessions"
+                :key="s.id"
+                :session="s"
+                :can-edit="s.volunteerId === auth.user?.id || auth.role === 'teacher'"
+                @edit="editSession"
+                @delete="deleteSession"
+              />
+            </div>
+          </PeelCard>
         </div>
 
         <div class="col-lg-5 d-flex flex-column gap-4">
-          <SkillProgressChart :sessions="sessions" />
-          <TopicSummaryChart :sessions="sessions" />
+          <PeelCard title="Skill progress" icon="bi-graph-up-arrow" :initial-open="true">
+            <SkillProgressChart :sessions="sessions" />
+          </PeelCard>
 
-          <div>
-            <h2 class="h5 mb-3">Homework ({{ pendingHomework.length }} pending)</h2>
+          <PeelCard title="Topic summary" icon="bi-pie-chart" :initial-open="true">
+            <TopicSummaryChart :sessions="sessions" />
+          </PeelCard>
+
+          <PeelCard :title="`Homework (${pendingHomework.length} pending)`" icon="bi-journal-check" :initial-open="true">
             <div class="d-flex flex-column gap-2">
               <HomeworkQuestCard
                 v-for="h in homework"
@@ -186,7 +193,7 @@ onMounted(() => {
                 @delete="deleteHomework"
               />
             </div>
-          </div>
+          </PeelCard>
         </div>
       </div>
     </template>

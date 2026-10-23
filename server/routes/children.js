@@ -1,15 +1,9 @@
 // =============================================================
 // /children  - child profiles             Owner: Kai Sen
 // -------------------------------------------------------------
-// GET routes are DONE (everyone's pages depend on them).
-//
-// TODO (Kai Sen):
-//   [x] POST   /children        create a child (coordinator only)
-//   [x] PUT    /children/:id    edit a child   (coordinator only)
-//   [x] DELETE /children/:id    remove a child (coordinator only)
 // =============================================================
 import { Router } from 'express'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { Child, User, Session, Homework, Message, Handover } from '../models/index.js'
 import { requireAuth, requireRole } from '../middleware/auth.js'
 import { canAccessChild, childFilterFor } from '../utils/access.js'

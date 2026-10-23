@@ -116,11 +116,12 @@ The E2E tests run on two projects: **Desktop Chrome** and **iPhone 6** (responsi
 
 | Spec | Covers | Owner |
 |---|---|---|
-| `e2e/auth.spec.js` | Landing page, login for all 4 roles, wrong password, route guards | Kai Sen |
-| `e2e/volunteer.spec.js` | Assigned children only, handover + history on profile, open session form | Yuqi / Ning Xuan |
-| `e2e/child.spec.js` | Child quests (submit, waiting message, badge shelf), leaderboard (loads, tab switch) | Jachin |
+| `e2e/auth.spec.js` | Landing page, login for all 4 roles, wrong password, route guards, sign-up (new volunteer, validation errors, duplicate email) | Kai Sen |
+| `e2e/volunteer.spec.js` | Assigned children only, handover + history on profile, open/submit session form, assign homework | Yuqi / Ning Xuan / Jachin |
+| `e2e/child.spec.js` | Child quests (submit, verify, API failure), leaderboard (loads, tab switch) | Jachin |
 | `e2e/parent.spec.js` | Parent home: greeting, child info, handover card, recurring badge, session timeline with mood labels, SkillProgressChart, child switcher, switching children | Jachin |
-| `e2e/teacher.spec.js` | Dashboard KPI cards, alerts table + type filter, follow-up toggle, unassigned alert → matchmaking, matchmaking suggestions, manage children, manage volunteers | Jachin |
+| `e2e/teacher.spec.js` | Dashboard KPI cards, alerts table + type filter, follow-up toggle, unassigned alert → matchmaking, matchmaking suggestions, manage children, manage volunteers | Yu Xuan |
+| `e2e/messages.spec.js` | Parent child list, chat thread visible, switch child, send message + real-time delivery, teacher sees same thread | Kat |
 
 ---
 
@@ -146,7 +147,7 @@ kids-lapis/
         ├── main.js        <- Bootstrap, Pinia, Router
         ├── App.vue        <- NavBar + <RouterView />
         ├── router/        <- all routes + role guard
-        ├── stores/auth.js <- logged-in user (Pinia + localStorage)
+        ├── stores/auth.js <- logged-in user (Pinia + sessionStorage)
         ├── services/api.js<- shared axios instance (adds the token)
         ├── utils/         <- format, constants, gamification (+ unit tests)
         ├── components/    <- reusable pieces (cards, charts, chat...)
@@ -163,7 +164,7 @@ All routes except `/auth/signup` and `/auth/login` need `Authorization: Bearer <
 |---|---|---|---|
 | `POST /auth/signup`, `POST /auth/login`, `GET /auth/me`, `POST /auth/logout` | Accounts | ✅ done | Kai Sen |
 | `GET /children`, `GET /children/:id` | Children visible to me | ✅ done | Kai Sen |
-| `POST / PUT / DELETE /children` | Manage children | ⏳ TODO | Kai Sen |
+| `POST / PUT / DELETE /children` | Manage children | ✅ done | Kai Sen |
 | `GET /users?role=volunteer`, `GET /users/:id`, `PUT /users/:id` | Volunteers & profiles | ✅ done | Yu Xuan |
 | `GET /sessions?childId=`, `GET /sessions/:id` | Session history | ✅ done | Ning Xuan |
 | `POST / PUT / DELETE /sessions` | Record / edit / delete | ✅ done | Ning Xuan |
