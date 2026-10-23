@@ -18,7 +18,7 @@ const sessionSchema = new mongoose.Schema(
     mood: { type: String, enum: ['happy', 'okay', 'tired', 'frustrated'], default: 'okay' },
     notes: String,
     meal: String,
-    protion: String,
+    portion: String,
     activity: [String],
     interaction: String,
     behaviour: String,
