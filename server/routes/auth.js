@@ -94,7 +94,9 @@ router.post('/login', async (req, res) => {
   const { password } = req.body
   const user = await User.findOne({ email: cleanEmail(req.body.email) })
 
-  const valid = user && (await bcrypt.compare(password, user.password))
+  // typeof check: bcrypt.compare throws (-> 500) if password is missing or not text
+  const valid =
+    user && typeof password === 'string' && (await bcrypt.compare(password, user.password))
   if (!valid) {
     return res.status(401).json({ message: 'Incorrect email or password.' })
   }

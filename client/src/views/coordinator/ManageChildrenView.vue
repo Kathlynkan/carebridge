@@ -4,8 +4,8 @@
   Done: table of all children
         "Add child" / "Edit" modal -> POST /children, PUT /children/:id
         "Delete" with a warning    -> DELETE /children/:id
-  TODO (Kai Sen):
-    [ ] search + responsive table (.table-responsive) / cards on mobile
+        Search box (name, level, school, needs)
+        Table from md up, cards on phones
 ============================================================= -->
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -41,8 +41,33 @@ onMounted(async () => {
 // Keep the table in A-Z order, like the server's list
 const sortByName = (list) => list.sort((a, b) => a.name.localeCompare(b.name))
 
+// ---------- Search ----------
+const search = ref('')
+
+// The children that match the search box (all of them when the box is empty).
+// A child matches if the text appears in their name, level, school or any of their needs.
+const filteredChildren = computed(() => {
+  const text = search.value.trim().toLowerCase()
+  if (!text) return children.value
+  return children.value.filter((c) =>
+    [c.name, c.level, c.school, ...(c.needs || [])].some((field) =>
+      String(field ?? '')
+        .toLowerCase()
+        .includes(text),
+    ),
+  )
+})
+
 // ---------- "Add child" / "Edit child" modal (one form for both) ----------
-const emptyForm = () => ({ name: '', level: '', school: '', parentId: '', needs: [], childEmail: '', childPassword: '' })
+const emptyForm = () => ({
+  name: '',
+  level: '',
+  school: '',
+  parentId: '',
+  needs: [],
+  childEmail: '',
+  childPassword: '',
+})
 
 const showModal = ref(false)
 const editingId = ref(null) // null = adding a new child, otherwise the id of the child being edited
@@ -158,61 +183,152 @@ async function confirmDelete() {
     <StateMessage v-if="loading" type="loading" />
     <StateMessage v-else-if="error" type="error" :message="error" />
 
-    <div v-else class="cb-card table-responsive">
-      <table class="table align-middle mb-0">
-        <thead>
-          <tr>
-            <th>Child</th>
-            <th>Level</th>
-            <th>Needs</th>
-            <th>Volunteers</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="c in children" :key="c.id" data-test="child-row">
-            <td>{{ c.avatar }} {{ c.name }}</td>
-            <td>{{ c.level }}</td>
-            <td>
-              <span v-for="n in c.needs" :key="n" class="badge badge-soft me-1">{{ n }}</span>
-            </td>
-            <td>
-              <span v-if="c.volunteerIds.length">{{ c.volunteerIds.length }}</span>
+    <template v-else>
+      <!-- Search box -->
+      <div class="mb-3">
+        <label for="child-search" class="visually-hidden">Search children</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input
+            id="child-search"
+            v-model="search"
+            type="search"
+            class="form-control"
+            placeholder="Search by name, level, school or need..."
+            data-test="child-search"
+          />
+        </div>
+        <div v-if="search.trim()" class="small text-muted-cb mt-1" data-test="child-search-count">
+          Showing {{ filteredChildren.length }} of {{ children.length }} children
+        </div>
+      </div>
+
+      <StateMessage
+        v-if="children.length === 0"
+        type="empty"
+        message='No children yet. Click "Add child" to enrol the first one.'
+      />
+      <StateMessage
+        v-else-if="filteredChildren.length === 0"
+        type="empty"
+        :message="`No children match &quot;${search.trim()}&quot;.`"
+      >
+        <button type="button" class="btn btn-sm btn-outline-secondary" @click="search = ''">
+          Clear search
+        </button>
+      </StateMessage>
+
+      <template v-else>
+        <!-- Phones: one card per child (the table is too wide for a 375px screen) -->
+        <div class="d-md-none">
+          <div
+            v-for="c in filteredChildren"
+            :key="c.id"
+            class="cb-card p-3 mb-2"
+            data-test="child-card"
+          >
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <div class="fw-semibold">{{ c.avatar }} {{ c.name }}</div>
+                <div class="small text-muted-cb">
+                  {{ c.level }}<span v-if="c.school"> · {{ c.school }}</span>
+                </div>
+              </div>
+              <span v-if="c.volunteerIds.length" class="small text-nowrap">
+                <i class="bi bi-people me-1"></i>{{ c.volunteerIds.length }}
+              </span>
               <span v-else class="badge badge-danger-soft">Unassigned</span>
-            </td>
-            <td class="text-end text-nowrap">
+            </div>
+            <div v-if="c.needs?.length" class="mt-2">
+              <span v-for="n in c.needs" :key="n" class="badge badge-soft me-1">{{ n }}</span>
+            </div>
+            <div class="d-flex gap-2 mt-3">
               <RouterLink
                 :to="{ name: 'child-profile', params: { id: c.id } }"
-                class="btn btn-sm btn-outline-primary"
+                class="btn btn-sm btn-outline-primary flex-grow-1"
               >
                 View
               </RouterLink>
-              <!-- Icon-only buttons keep the row short on phones; aria-label is read out by screen readers -->
               <button
                 type="button"
-                class="btn btn-sm btn-outline-secondary ms-1"
+                class="btn btn-sm btn-outline-secondary"
                 :aria-label="`Edit ${c.name}`"
                 title="Edit"
-                data-test="edit-child"
                 @click="openEdit(c)"
               >
                 <i class="bi bi-pencil"></i>
               </button>
               <button
                 type="button"
-                class="btn btn-sm btn-outline-danger ms-1"
+                class="btn btn-sm btn-outline-danger"
                 :aria-label="`Delete ${c.name}`"
                 title="Delete"
-                data-test="delete-child"
                 @click="openDelete(c)"
               >
                 <i class="bi bi-trash"></i>
               </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tablet and up: the table -->
+        <div class="cb-card table-responsive d-none d-md-block">
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Child</th>
+                <th>Level</th>
+                <th>Needs</th>
+                <th>Volunteers</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="c in filteredChildren" :key="c.id" data-test="child-row">
+                <td>{{ c.avatar }} {{ c.name }}</td>
+                <td>{{ c.level }}</td>
+                <td>
+                  <span v-for="n in c.needs" :key="n" class="badge badge-soft me-1">{{ n }}</span>
+                </td>
+                <td>
+                  <span v-if="c.volunteerIds.length">{{ c.volunteerIds.length }}</span>
+                  <span v-else class="badge badge-danger-soft">Unassigned</span>
+                </td>
+                <td class="text-end text-nowrap">
+                  <RouterLink
+                    :to="{ name: 'child-profile', params: { id: c.id } }"
+                    class="btn btn-sm btn-outline-primary"
+                  >
+                    View
+                  </RouterLink>
+                  <!-- Icon-only buttons keep the row short on phones; aria-label is read out by screen readers -->
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary ms-1"
+                    :aria-label="`Edit ${c.name}`"
+                    title="Edit"
+                    data-test="edit-child"
+                    @click="openEdit(c)"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger ms-1"
+                    :aria-label="`Delete ${c.name}`"
+                    title="Delete"
+                    data-test="delete-child"
+                    @click="openDelete(c)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+    </template>
 
     <!-- Add / Edit child modal (the same form is used for both).
          Bootstrap's modal look, but Vue decides when it shows (v-if),
