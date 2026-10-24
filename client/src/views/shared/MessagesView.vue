@@ -57,7 +57,11 @@ async function onSend(text) {
   sending.value = true
   try {
     const res = await api.post('/messages', { childId: route.params.childId, text })
-    messages.value.push(res.data)
+    // The socket 'new-message' event for our own message often arrives before this
+    // response, so only add it if the socket hasn't already (otherwise it shows twice)
+    if (!messages.value.find((m) => m.id === res.data.id)) {
+      messages.value.push(res.data)
+    }
   } catch (err) {
     error.value = errorMessage(err)
   } finally {
@@ -134,7 +138,12 @@ onUnmounted(() => {
         </div>
       </div>
       <div class="col-md-8">
-        <ChatThread :messages="messages" :current-user-id="auth.user.id" :sending="sending" @send="onSend" />
+        <ChatThread
+          :messages="messages"
+          :current-user-id="auth.user.id"
+          :sending="sending"
+          @send="onSend"
+        />
       </div>
     </div>
   </div>

@@ -6,8 +6,8 @@
 //   const auth = useAuthStore()
 //   auth.user.name, auth.role, auth.isLoggedIn, auth.logout()
 //
-// The token + user are saved in localStorage (Week 6) so a page
-// refresh does not log you out.
+// The token + user are saved in sessionStorage (Week 6) so a page
+// refresh does not log you out. Closing the tab does log you out.
 // =============================================================
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'

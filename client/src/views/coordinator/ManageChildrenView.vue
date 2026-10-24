@@ -41,6 +41,10 @@ onMounted(async () => {
 // Keep the table in A-Z order, like the server's list
 const sortByName = (list) => list.sort((a, b) => a.name.localeCompare(b.name))
 
+// The linked parent's name, or '' if the child has no parent account yet
+// (then the table shows the child code to give to the parent instead)
+const parentName = (child) => parents.value.find((p) => p.id === child.parentId)?.name || ''
+
 // ---------- Search ----------
 const search = ref('')
 
@@ -50,7 +54,7 @@ const filteredChildren = computed(() => {
   const text = search.value.trim().toLowerCase()
   if (!text) return children.value
   return children.value.filter((c) =>
-    [c.name, c.level, c.school, ...(c.needs || [])].some((field) =>
+    [c.name, c.level, c.school, c.linkCode, ...(c.needs || [])].some((field) =>
       String(field ?? '')
         .toLowerCase()
         .includes(text),
@@ -242,6 +246,15 @@ async function confirmDelete() {
             <div v-if="c.needs?.length" class="mt-2">
               <span v-for="n in c.needs" :key="n" class="badge badge-soft me-1">{{ n }}</span>
             </div>
+            <div class="small mt-2">
+              <template v-if="c.parentId">
+                <i class="bi bi-house-heart me-1"></i>{{ parentName(c) || 'Parent linked' }}
+              </template>
+              <template v-else>
+                Child code for parent:
+                <code class="fw-bold" data-test="child-code">{{ c.linkCode }}</code>
+              </template>
+            </div>
             <div class="d-flex gap-2 mt-3">
               <RouterLink
                 :to="{ name: 'child-profile', params: { id: c.id } }"
@@ -280,6 +293,7 @@ async function confirmDelete() {
                 <th>Level</th>
                 <th>Needs</th>
                 <th>Volunteers</th>
+                <th>Parent</th>
                 <th></th>
               </tr>
             </thead>
@@ -293,6 +307,13 @@ async function confirmDelete() {
                 <td>
                   <span v-if="c.volunteerIds.length">{{ c.volunteerIds.length }}</span>
                   <span v-else class="badge badge-danger-soft">Unassigned</span>
+                </td>
+                <td>
+                  <span v-if="c.parentId" class="small">{{ parentName(c) || 'Linked' }}</span>
+                  <!-- No parent yet: show the code the centre gives the parent for sign up -->
+                  <span v-else class="small text-nowrap" title="Give this code to the parent">
+                    Code: <code class="fw-bold" data-test="child-code">{{ c.linkCode }}</code>
+                  </span>
                 </td>
                 <td class="text-end text-nowrap">
                   <RouterLink
