@@ -85,7 +85,11 @@ watch(
 onMounted(async () => {
   // Connect socket for real-time message delivery
   const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-  socket.value = io(apiBase, { transports: ['websocket', 'polling'] })
+  // auth.token: the server refuses live connections without a valid login (Kai Sen, server.js)
+  socket.value = io(apiBase, {
+    auth: { token: auth.token },
+    transports: ['websocket', 'polling'],
+  })
   socket.value.on('new-message', (message) => {
     // Deduplicate: onSend already pushed our own message optimistically
     if (!messages.value.find((m) => m.id === message.id)) {

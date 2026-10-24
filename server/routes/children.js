@@ -86,8 +86,9 @@ router.post('/', requireRole('teacher'), async (req, res) => {
     if (!EMAIL_RE.test(email)) {
       return res.status(400).json({ message: 'Child login email is not valid.' })
     }
-    if (typeof childPassword !== 'string' || childPassword.length < 6) {
-      return res.status(400).json({ message: 'Child login password must be at least 6 characters.' })
+    // Same minimum as every other account (MIN_PASSWORD_LENGTH in routes/auth.js)
+    if (typeof childPassword !== 'string' || childPassword.length < 8) {
+      return res.status(400).json({ message: 'Child login password must be at least 8 characters.' })
     }
     const exists = await User.exists({ email })
     if (exists) {
