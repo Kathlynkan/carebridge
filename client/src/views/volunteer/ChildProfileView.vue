@@ -148,7 +148,12 @@ onMounted(() => {
         >
           <i class="bi bi-journal-plus me-1"></i>Give homework
         </RouterLink>
-        <RouterLink :to="{ name: 'messages', params: { childId: child.id } }" class="btn btn-outline-secondary">
+        <!-- Teachers only: volunteers can't use Messages (chat is parent <-> teacher) -->
+        <RouterLink
+          v-if="auth.role === 'teacher'"
+          :to="{ name: 'messages', params: { childId: child.id } }"
+          class="btn btn-outline-secondary"
+        >
           <i class="bi bi-chat-dots me-1"></i>Message parent
         </RouterLink>
       </PageHeader>
